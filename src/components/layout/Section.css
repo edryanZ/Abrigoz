@@ -1,0 +1,101 @@
+/* =========================================================
+   ABRIGO 2.0 • Section
+========================================================= */
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ===========================
+   Header
+=========================== */
+
+.section__header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.section__header--left {
+    align-items: flex-start;
+    text-align: left;
+}
+
+.section__header--center {
+    align-items: center;
+    text-align: center;
+}
+
+.section__title {
+    margin: 0;
+
+    font-size: clamp(1.35rem, 2vw, 2rem);
+    font-weight: 700;
+
+    color: var(--text-primary);
+}
+
+.section__subtitle {
+    margin: 0;
+
+    max-width: 700px;
+
+    font-size: .95rem;
+    line-height: 1.7;
+
+    color: var(--text-secondary);
+}
+
+/* ===========================
+   Content
+=========================== */
+
+.section__content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ===========================
+   Layout: Stack
+=========================== */
+
+.section__content--stack {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===========================
+   Layout: Grid
+=========================== */
+
+.section__content--grid {
+    display: grid;
+    gap: 24px;
+}
+
+/* ===========================
+   Tablet
+=========================== */
+
+@media (min-width: 768px) {
+
+    .section__content--grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+/* ===========================
+   Desktop
+=========================== */
+
+@media (min-width: 1200px) {
+
+    .section__content--grid {
+        gap: 32px;
+    }
+
+}

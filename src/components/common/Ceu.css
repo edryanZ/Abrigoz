@@ -1,0 +1,360 @@
+/* ===========================================================
+   ABRIGO 2.0 • CÉU
+=========================================================== */
+
+.ceu{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    z-index:-10;
+    pointer-events:none;
+}
+
+/* ===========================================================
+   GRADIENTES
+=========================================================== */
+
+.ceu-gradiente{
+    position:absolute;
+    inset:0;
+    transition:background 2s ease;
+}
+
+.ceu.noite .ceu-gradiente{
+    background:
+        radial-gradient(circle at top,#2d4b7a 0%,#16233f 35%,#09111f 100%);
+}
+
+.ceu.amanhecer .ceu-gradiente{
+    background:
+        linear-gradient(
+            to bottom,
+            #ffb46b 0%,
+            #ffdbb1 30%,
+            #91b7ff 70%,
+            #5c7fc7 100%
+        );
+}
+
+.ceu.dia .ceu-gradiente{
+    background:
+        linear-gradient(
+            to bottom,
+            #8ec9ff,
+            #b8e4ff,
+            #d9f2ff
+        );
+}
+
+.ceu.entardecer .ceu-gradiente{
+    background:
+        linear-gradient(
+            to bottom,
+            #ff934f,
+            #f06ca4,
+            #4c4fa8,
+            #13203b
+        );
+}
+
+/* ===========================================================
+   PARALLAX
+=========================================================== */
+
+.parallax{
+    position:absolute;
+    inset:0;
+    transition:transform .3s ease-out;
+}
+
+/* ===========================================================
+   LUA
+=========================================================== */
+
+.lua{
+
+    position:absolute;
+
+    top:9%;
+    right:10%;
+
+    width:130px;
+    height:130px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(circle at 35% 35%,#fff,#f5f1d2);
+
+    box-shadow:
+        0 0 40px rgba(255,255,255,.55),
+        0 0 80px rgba(255,255,255,.20);
+
+    animation:
+        luaFlutuando 8s ease-in-out infinite;
+
+}
+
+.halo-lua{
+
+    position:absolute;
+
+    top:7%;
+    right:8%;
+
+    width:190px;
+    height:190px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(circle,
+        rgba(255,255,255,.22),
+        transparent 72%);
+
+    animation:
+        respirar 5s ease-in-out infinite;
+
+}
+
+/* ===========================================================
+   ESTRELAS
+=========================================================== */
+
+.estrelas{
+
+    position:absolute;
+    inset:0;
+
+}
+
+.estrela{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    background:white;
+
+    opacity:.85;
+
+    animation:
+        piscar linear infinite;
+
+}
+
+.estrela.grande{
+
+    box-shadow:
+        0 0 10px rgba(255,255,255,.8);
+
+}
+
+/* ===========================================================
+   ESTRELA CADENTE
+=========================================================== */
+
+.estrela-cadente{
+
+    position:absolute;
+
+    width:180px;
+    height:2px;
+
+    background:
+        linear-gradient(
+            to right,
+            white,
+            transparent
+        );
+
+    transform:
+        rotate(-35deg);
+
+    animation:
+        cair 1.4s linear forwards;
+
+}
+
+/* ===========================================================
+   NÉVOA
+=========================================================== */
+
+.nevoa{
+
+    position:absolute;
+
+    width:160%;
+    height:420px;
+
+    left:-25%;
+
+    filter:blur(60px);
+
+    opacity:.12;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(255,255,255,.30),
+            transparent
+        );
+
+}
+
+.nevoa1{
+
+    bottom:-100px;
+
+    animation:
+        moverNevoa1 60s linear infinite;
+
+}
+
+.nevoa2{
+
+    bottom:120px;
+
+    opacity:.07;
+
+    animation:
+        moverNevoa2 90s linear infinite;
+
+}
+
+/* ===========================================================
+   ANIMAÇÕES
+=========================================================== */
+
+@keyframes piscar{
+
+    0%{
+        opacity:.3;
+    }
+
+    50%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:.35;
+    }
+
+}
+
+@keyframes respirar{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.08);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+
+}
+
+@keyframes luaFlutuando{
+
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-8px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
+
+}
+
+@keyframes cair{
+
+    from{
+
+        opacity:1;
+
+        transform:
+            translate(0,0)
+            rotate(-35deg);
+
+    }
+
+    to{
+
+        opacity:0;
+
+        transform:
+            translate(-700px,350px)
+            rotate(-35deg);
+
+    }
+
+}
+
+@keyframes moverNevoa1{
+
+    from{
+        transform:translateX(0);
+    }
+
+    to{
+        transform:translateX(-12%);
+    }
+
+}
+
+@keyframes moverNevoa2{
+
+    from{
+        transform:translateX(-8%);
+    }
+
+    to{
+        transform:translateX(10%);
+    }
+
+}
+
+/* ===========================================================
+   RESPONSIVIDADE
+=========================================================== */
+
+@media (max-width:768px){
+
+    .lua{
+
+        width:90px;
+        height:90px;
+
+        right:6%;
+
+    }
+
+    .halo-lua{
+
+        width:140px;
+        height:140px;
+
+        right:4%;
+
+    }
+
+}
+
+@media (prefers-reduced-motion:reduce){
+
+    *{
+
+        animation:none !important;
+        transition:none !important;
+
+    }
+
+}

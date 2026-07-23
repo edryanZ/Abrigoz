@@ -1,0 +1,135 @@
+/* =========================================================
+   ABRIGO 2.0 • Glass Button
+========================================================= */
+
+.glass-button {
+    border: none;
+    outline: none;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+    font-weight: 600;
+
+    transition:
+        transform .25s ease,
+        background .25s ease,
+        color .25s ease,
+        box-shadow .25s ease;
+
+    user-select: none;
+}
+
+/* ---------- NOVO ---------- */
+
+.glass-button:focus-visible{
+
+    outline:3px solid rgba(255,255,255,.45);
+
+    outline-offset:3px;
+
+}
+
+/* -------------------------- */
+
+.glass-button--sm{
+    padding:10px 18px;
+    font-size:.9rem;
+    border-radius:14px;
+}
+
+.glass-button--md{
+    padding:14px 24px;
+    font-size:1rem;
+    border-radius:16px;
+}
+
+.glass-button--lg{
+    padding:18px 32px;
+    font-size:1.05rem;
+    border-radius:18px;
+}
+
+.glass-button--primary{
+
+    background:rgba(255,255,255,.12);
+
+    color:var(--text-primary);
+
+    border:1px solid rgba(255,255,255,.18);
+
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+
+}
+
+.glass-button--primary:hover:not(:disabled){
+
+    transform:translateY(-2px);
+
+    background:rgba(255,255,255,.18);
+
+    box-shadow:0 10px 24px rgba(0,0,0,.18);
+
+}
+
+.glass-button--secondary{
+
+    background:transparent;
+
+    color:var(--text-primary);
+
+    border:1px solid rgba(255,255,255,.15);
+
+}
+
+.glass-button--secondary:hover:not(:disabled){
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.glass-button--ghost{
+
+    background:transparent;
+
+    color:var(--text-secondary);
+
+}
+
+.glass-button--ghost:hover:not(:disabled){
+
+    color:var(--text-primary);
+
+}
+
+.glass-button--full{
+
+    width:100%;
+
+}
+
+.glass-button:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+}
+
+@media (max-width:768px){
+
+    .glass-button{
+
+        width:100%;
+
+    }
+
+}

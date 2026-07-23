@@ -1,0 +1,166 @@
+.sobre-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.sobre-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+
+  padding: var(--card-padding);
+
+  border-radius: var(--card-radius);
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  backdrop-filter: blur(16px);
+
+  transition:
+    transform var(--transition-fast),
+    background var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.sobre-item:hover {
+  transform: translateY(-4px);
+
+  background: rgba(255, 255, 255, 0.14);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.sobre-item span {
+  font-size: 2rem;
+}
+
+.sobre-item h3 {
+  margin: 0;
+
+  font-size: var(--title-sm);
+
+  color: var(--text-primary);
+}
+
+.sobre-item p {
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  line-height: var(--line-height-text);
+}
+
+.sobre-info {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: var(--space-lg);
+
+  margin-top: var(--space-lg);
+}
+
+.sobre-info div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+  padding: var(--card-padding);
+
+  border-radius: var(--card-radius);
+
+  background: rgba(255, 255, 255, 0.08);
+
+  text-align: center;
+}
+
+.sobre-info strong {
+  font-size: var(--text-md);
+
+  color: var(--text-primary);
+}
+
+.sobre-info p {
+  margin: 0;
+
+  color: var(--text-secondary);
+}
+
+.sobre-final {
+  text-align: center;
+}
+
+.citacao {
+  margin: 0;
+
+  font-size: var(--title-sm);
+
+  font-style: italic;
+
+  line-height: 1.8;
+
+  color: var(--text-primary);
+}
+
+/* ===========================
+   Tablet
+=========================== */
+
+@media (max-width: 1023px) {
+  .sobre-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sobre-info {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===========================
+   Celular
+=========================== */
+
+@media (max-width: 767px) {
+  .sobre-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sobre-item {
+    padding: 20px;
+  }
+
+  .sobre-info {
+    gap: var(--space-md);
+  }
+
+  .citacao {
+    font-size: var(--text-lg);
+  }
+}
+
+/* ===========================
+   Celular pequeno
+=========================== */
+
+@media (max-width: 479px) {
+  .sobre-item {
+    padding: 18px;
+  }
+
+  .sobre-item span {
+    font-size: 1.8rem;
+  }
+
+  .sobre-item h3 {
+    font-size: var(--text-lg);
+  }
+
+  .citacao {
+    font-size: var(--text-md);
+  }
+}

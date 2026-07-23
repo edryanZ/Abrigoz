@@ -1,0 +1,52 @@
+/* =========================================================
+   ABRIGO 2.0 • Page Title
+========================================================= */
+
+.page-title {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.page-title--center {
+    text-align: center;
+    align-items: center;
+}
+
+.page-title--left {
+    text-align: left;
+    align-items: flex-start;
+}
+
+.page-title__title {
+    margin: 0;
+
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    line-height: 1.2;
+
+    color: var(--text-primary);
+}
+
+.page-title__subtitle {
+    margin: 0;
+
+    max-width: 700px;
+
+    font-size: .95rem;
+    line-height: 1.7;
+
+    color: var(--text-secondary);
+}
+
+@media (max-width:768px){
+
+    .page-title__title{
+        font-size:1.35rem;
+    }
+
+    .page-title__subtitle{
+        font-size:.9rem;
+    }
+
+}

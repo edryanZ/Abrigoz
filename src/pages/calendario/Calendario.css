@@ -1,0 +1,438 @@
+.calendario {
+
+  min-height:100vh;
+
+  background:transparent;
+
+  padding:40px 40px 40px 130px;
+
+  display:flex;
+
+  justify-content:center;
+
+}
+
+
+
+.calendario-card {
+
+  width:100%;
+
+  max-width:900px;
+
+
+  background:
+
+  rgba(255,255,255,.45);
+
+
+  backdrop-filter:blur(12px);
+
+
+  border:
+
+  1px solid rgba(255,255,255,.5);
+
+
+  border-radius:30px;
+
+
+  padding:28px;
+
+
+  box-shadow:
+
+  0 15px 40px rgba(0,0,0,.18);
+
+}
+
+
+
+
+
+.cabecalho-calendario {
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:30px;
+
+}
+
+
+
+.cabecalho-calendario h2 {
+
+  color:#3b2a20;
+
+  font-size:28px;
+
+}
+
+
+
+
+
+.cabecalho-calendario button {
+
+  background:#b08968;
+
+  color:white;
+
+  border:none;
+
+  width:40px;
+
+  height:40px;
+
+  border-radius:50%;
+
+  cursor:pointer;
+
+  font-size:20px;
+
+}
+
+
+
+
+
+.dias-semana {
+
+  display:grid;
+
+  grid-template-columns:repeat(7,1fr);
+
+  gap:10px;
+
+  margin-bottom:10px;
+
+}
+
+
+
+.dias-semana span {
+
+  text-align:center;
+
+  font-weight:bold;
+
+  color:#5b3a29;
+
+}
+
+
+
+
+
+.grade-calendario {
+
+  display:grid;
+
+  grid-template-columns:repeat(7,1fr);
+
+  gap:12px;
+
+}
+
+
+
+
+
+.dia {
+
+  min-height:80px;
+
+
+  background:
+
+  rgba(255,255,255,.5);
+
+
+  border-radius:18px;
+
+
+  padding:15px;
+
+
+  cursor:pointer;
+
+
+  transition:.3s;
+
+
+  color:#3b2a20;
+
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:space-between;
+
+
+}
+
+
+
+.dia:hover {
+
+  transform:translateY(-5px);
+
+  background:
+
+  rgba(255,255,255,.7);
+
+}
+
+
+
+
+
+.emoji-evento {
+
+  font-size:20px;
+
+  text-align:center;
+
+}
+
+
+
+
+
+/* Modal */
+
+
+.modal-overlay {
+
+  position:fixed;
+
+  inset:0;
+
+  background:rgba(0,0,0,.6);
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  z-index:1000;
+
+  padding:20px;
+
+}
+
+
+
+
+
+.modal-calendario {
+
+  background:white;
+
+  color:#3b2a20;
+
+  width:100%;
+
+  max-width:620px;
+
+  max-height:85vh;
+
+  overflow-y:auto;
+
+  border-radius:30px;
+
+  padding:28px;
+
+  position:relative;
+
+}
+
+
+
+
+
+.fechar-modal {
+
+  position:absolute;
+
+  right:20px;
+
+  top:20px;
+
+  border:none;
+
+  background:#b08968;
+
+  color:white;
+
+  width:35px;
+
+  height:35px;
+
+  border-radius:50%;
+
+  cursor:pointer;
+
+}
+
+
+
+
+
+.modal-calendario h2 {
+
+  color:#5b3a29;
+
+  margin-bottom:25px;
+
+}
+
+
+
+
+
+.bloco {
+
+  background:#f7eee5;
+
+  border-radius:20px;
+
+  padding:16px;
+
+  margin-bottom:20px;
+
+}
+
+
+
+
+
+.bloco h3 {
+
+  color:#5b3a29;
+
+  margin-bottom:10px;
+
+}
+
+
+
+
+
+.bloco p {
+
+  color:#4a3728;
+
+  line-height:1.6;
+
+}
+
+
+
+
+
+.musica iframe {
+
+  border-radius:15px;
+
+}
+
+
+
+
+
+details {
+
+  background:#f7eee5;
+
+  padding:15px;
+
+  border-radius:15px;
+
+}
+
+
+
+
+
+summary {
+
+  cursor:pointer;
+
+  color:#5b3a29;
+
+  font-weight:bold;
+
+}
+
+
+
+
+
+@media(max-width:700px){
+
+
+.calendario {
+
+  padding:100px 15px 30px;
+
+}
+
+
+
+.calendario-card {
+
+  padding:20px;
+
+}
+
+
+
+.grade-calendario {
+
+  gap:6px;
+
+}
+
+
+
+.dia {
+
+  min-height:60px;
+
+  padding:8px;
+
+}
+
+
+
+.cabecalho-calendario h2 {
+
+  font-size:22px;
+
+}
+
+
+}
+.dia.hoje{
+  background: linear-gradient(135deg, #f4d35e, #f7b267);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 20px rgba(244, 211, 94, .45);
+  font-weight: bold;
+  transform: scale(1.05);
+}
+
+.dia.hoje span{
+  color: #3b2a20;
+  font-weight: 700;
+}
+
+.dia.hoje:hover{
+  transform: scale(1.08);
+}

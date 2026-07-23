@@ -1,0 +1,97 @@
+/*
+========================================
+ABRIGO 2.0
+DESIGN TOKENS
+========================================
+*/
+
+:root {
+
+  /* ==========================
+     LAYOUT
+  ========================== */
+
+  --container-width: 1180px;
+
+  --content-padding: 32px;
+
+  --section-gap: 56px;
+
+  --card-padding: 28px;
+
+  --card-radius: 26px;
+
+  --button-radius: 16px;
+
+  --modal-radius: 32px;
+
+  /* ==========================
+     ESPAÇAMENTOS
+  ========================== */
+
+  --space-xxs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* ==========================
+     TIPOGRAFIA
+  ========================== */
+
+  --title-xl: 44px;
+  --title-lg: 34px;
+  --title-md: 28px;
+  --title-sm: 22px;
+
+  --text-lg: 17px;
+  --text-md: 16px;
+  --text-sm: 15px;
+  --text-xs: 14px;
+
+  --line-height-title: 1.15;
+  --line-height-text: 1.7;
+
+  /* ==========================
+     BOTÕES
+  ========================== */
+
+  --button-height: 50px;
+
+  /* ==========================
+     TRANSIÇÕES
+  ========================== */
+
+  --transition-fast: .20s ease;
+
+  --transition-normal: .30s ease;
+
+  --transition-slow: .45s ease;
+
+  /* ==========================
+     SOMBRAS
+  ========================== */
+
+  --shadow-sm:
+      0 6px 18px rgba(0,0,0,.10);
+
+  --shadow-md:
+      0 12px 30px rgba(0,0,0,.16);
+
+  --shadow-lg:
+      0 18px 45px rgba(0,0,0,.22);
+
+  /* ==========================
+     Z-INDEX
+  ========================== */
+
+  --z-navbar: 100;
+
+  --z-overlay: 900;
+
+  --z-modal: 1000;
+
+}

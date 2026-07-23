@@ -1,0 +1,175 @@
+/*
+========================================
+RESPONSIVIDADE GLOBAL
+Abrigo 2.0
+========================================
+
+Breakpoints
+
+0 - 479px      -> Celulares pequenos
+480 - 767px    -> Celulares
+768 - 1023px   -> Tablets
+1024 - 1439px  -> Notebook/Desktop
+1440px+        -> Desktop grande
+
+*/
+
+/* ============================
+   DESKTOP GRANDE
+============================ */
+
+@media (min-width: 1440px) {
+
+  :root{
+
+    --container-width:1320px;
+
+    --section-gap:64px;
+
+    --card-padding:32px;
+
+    --content-padding:40px;
+
+    --title-xl:48px;
+    --title-lg:38px;
+    --title-md:30px;
+
+    --text-lg:18px;
+    --text-md:16px;
+    --text-sm:15px;
+
+    --button-height:52px;
+
+    --card-radius:28px;
+
+  }
+
+}
+
+/* ============================
+   NOTEBOOK / DESKTOP
+============================ */
+
+@media (min-width:1024px) and (max-width:1439px){
+
+  :root{
+
+    --container-width:1180px;
+
+    --section-gap:56px;
+
+    --card-padding:28px;
+
+    --content-padding:32px;
+
+    --title-xl:44px;
+    --title-lg:34px;
+    --title-md:28px;
+
+    --text-lg:17px;
+    --text-md:16px;
+    --text-sm:15px;
+
+    --button-height:50px;
+
+    --card-radius:26px;
+
+  }
+
+}
+
+/* ============================
+   TABLET
+============================ */
+
+@media (min-width:768px) and (max-width:1023px){
+
+  :root{
+
+    --container-width:900px;
+
+    --section-gap:48px;
+
+    --card-padding:24px;
+
+    --content-padding:28px;
+
+    --title-xl:38px;
+    --title-lg:30px;
+    --title-md:24px;
+
+    --text-lg:16px;
+    --text-md:15px;
+    --text-sm:14px;
+
+    --button-height:48px;
+
+    --card-radius:24px;
+
+  }
+
+}
+
+/* ============================
+   CELULAR
+============================ */
+
+@media (min-width:480px) and (max-width:767px){
+
+  :root{
+
+    --container-width:100%;
+
+    --section-gap:40px;
+
+    --card-padding:20px;
+
+    --content-padding:20px;
+
+    --title-xl:34px;
+    --title-lg:28px;
+    --title-md:22px;
+
+    --text-lg:16px;
+    --text-md:15px;
+    --text-sm:14px;
+
+    --button-height:46px;
+
+    --card-radius:22px;
+
+  }
+
+}
+
+/* ============================
+   CELULAR PEQUENO
+============================ */
+
+@media (max-width:479px){
+
+  :root{
+
+    --container-width:100%;
+
+    --section-gap:32px;
+
+    --card-padding:18px;
+
+    --content-padding:16px;
+
+    --title-xl:30px;
+    --title-lg:24px;
+    --title-md:20px;
+
+    --text-lg:15px;
+    --text-md:14px;
+    --text-sm:13px;
+
+    --button-height:44px;
+
+    --card-radius:20px;
+
+  }
+
+}
