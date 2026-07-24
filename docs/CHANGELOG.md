@@ -187,3 +187,30 @@ Cada nova versão deve ser adicionada acima das anteriores para manter o histór
 # Objetivo
 
 O Changelog permite acompanhar toda a evolução do Abrigo, facilitando o desenvolvimento, a manutenção e o entendimento das mudanças realizadas ao longo do tempo.
+## Objetivo
+
+Reorganizar completamente a estrutura do Abrigo seguindo a arquitetura Module First.
+
+## Alterações
+
+- Reorganização das páginas em módulos
+- Criação da camada Shared
+- Criação da camada Core
+- Migração dos Contexts
+- Migração dos Services
+- Migração dos Utils
+- Migração das Constants
+- Correção dos imports
+- Atualização das rotas
+- Atualização do MusicContext
+- Inclusão de novas músicas
+- Inclusão de capa padrão do player
+- Correção dos erros gerados durante a migração
+
+## Resultado
+
+- Projeto compilando
+- Todas as páginas funcionando
+- Arquitetura padronizada
+- Código organizado
+- Base preparada para novas funcionalidades
