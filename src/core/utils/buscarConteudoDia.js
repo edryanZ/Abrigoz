@@ -1,7 +1,7 @@
-import { eventos } from "../data/eventos";
-import { mensagens } from "../data/mensagens";
-import { musicas } from "../data/musicas";
-import { surpresas } from "../data/surpresas";
+import { eventos } from "../../data/eventos";
+import { mensagens } from "../../data/mensagens";
+import { musicas } from "../../data/musicas";
+import { surpresas } from "../../data/surpresas";
 
 export function buscarConteudoDia(dia, mes) {
   const mensagensDoDia = mensagens.filter(

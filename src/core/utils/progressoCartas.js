@@ -1,4 +1,4 @@
-import storage from "../lib/storage";
+import storage from "../storage/storage";
 
 export function obterProgresso(categoria) {
   const historico = storage.getOrDefault(

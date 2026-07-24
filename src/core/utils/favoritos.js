@@ -1,6 +1,5 @@
 import STORAGE_KEYS from "../constants/storageKeys";
-import storage from "../lib/storage";
-
+import storage from "../storage/storage";
 export function obterFavoritos() {
   return storage.getOrDefault(STORAGE_KEYS.FAVORITES, []);
 }

@@ -1,4 +1,4 @@
-import storage from "../lib/storage";
+import storage from "../../core/storage/storage";
 
 export function sortearCarta(categoria) {
   const chave = `cartas-${categoria.id}`;
