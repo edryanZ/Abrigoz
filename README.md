@@ -78,3 +78,20 @@ src/
 ## Licença
 
 Projeto em desenvolvimento.
+# 🏡 Abrigo
+
+Uma plataforma para organização da vida pessoal.
+
+## Tecnologias
+
+- React
+- Vite
+- JavaScript
+
+## Status
+
+🚧 Em desenvolvimento.
+
+## Documentação
+
+Veja a pasta docs/.
