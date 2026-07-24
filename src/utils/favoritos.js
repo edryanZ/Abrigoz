@@ -1,7 +1,8 @@
-const CHAVE = "abrigo-favoritos";
+import STORAGE_KEYS from "../constants/storageKeys";
+import storage from "../lib/storage";
 
 export function obterFavoritos() {
-  return JSON.parse(localStorage.getItem(CHAVE)) || [];
+  return storage.getOrDefault(STORAGE_KEYS.FAVORITES, []);
 }
 
 export function favorito(cartaId) {
@@ -19,7 +20,7 @@ export function alternarFavorito(cartaId) {
     favoritos.push(cartaId);
   }
 
-  localStorage.setItem(CHAVE, JSON.stringify(favoritos));
+  storage.set(STORAGE_KEYS.FAVORITES, favoritos);
 
   return favoritos;
 }

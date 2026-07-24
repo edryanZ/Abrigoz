@@ -1,20 +1,15 @@
-import { eventos } from "../../data/eventos";
-import { mensagens } from "../../data/mensagens";
-import { musicas } from "../../data/musicas";
-import { cartasSecretas } from "../../data/cartasSecretas";
-import { surpresas } from "../../data/surpresas";
+import { eventos } from "../data/eventos";
+import { mensagens } from "../data/mensagens";
+import { musicas } from "../data/musicas";
+import { surpresas } from "../data/surpresas";
 
 export function buscarConteudoDia(dia, mes) {
   const mensagensDoDia = mensagens.filter(
-    (mensagem) =>
-      mensagem.dia === dia &&
-      mensagem.mes === mes
+    ({ dia: d, mes: m }) => d === dia && m === mes
   );
 
   const mensagensAleatorias = mensagens.filter(
-    (mensagem) =>
-      mensagem.dia === undefined &&
-      mensagem.mes === undefined
+    ({ dia, mes }) => dia == null && mes == null
   );
 
   const mensagemSelecionada =
@@ -23,9 +18,7 @@ export function buscarConteudoDia(dia, mes) {
       : mensagensAleatorias.length > 0
       ? [
           mensagensAleatorias[
-            Math.floor(
-              Math.random() * mensagensAleatorias.length
-            )
+            Math.floor(Math.random() * mensagensAleatorias.length)
           ],
         ]
       : [];
@@ -36,30 +29,18 @@ export function buscarConteudoDia(dia, mes) {
 
     evento:
       eventos.find(
-        (evento) =>
-          evento.dia === dia &&
-          evento.mes === mes
-      ) || null,
+        ({ dia: d, mes: m }) => d === dia && m === mes
+      ) ?? null,
 
     mensagens: mensagemSelecionada,
 
     musicas: musicas.filter(
-      (musica) =>
-        musica.dia === dia &&
-        musica.mes === mes
-    ),
-
-    cartasSecretas: cartasSecretas.filter(
-      (carta) =>
-        carta.dia === dia &&
-        carta.mes === mes
+      ({ dia: d, mes: m }) => d === dia && m === mes
     ),
 
     surpresa:
       surpresas.find(
-        (surpresa) =>
-          surpresa.dia === dia &&
-          surpresa.mes === mes
-      ) || null,
+        ({ dia: d, mes: m }) => d === dia && m === mes
+      ) ?? null,
   };
 }

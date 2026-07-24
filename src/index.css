@@ -1,75 +1,124 @@
-/* ==========================
-   RESET
-========================== */
+/* ==========================================================
+   RESET GLOBAL
+========================================================== */
 
 *,
 *::before,
-*::after{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* ==========================================================
+   ROOT
+========================================================== */
+
+:root {
+
+  /* Transições */
+
+  --transition: .25s ease;
+
+  /* Bordas */
+
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 25px;
+
+  /* Sombras */
+
+  --shadow-sm: 0 8px 18px rgba(0,0,0,.12);
+  --shadow-md: 0 15px 40px rgba(0,0,0,.18);
+
+  /* Fonte */
+
+  --font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+
+  /* ======================================================
+     VARIÁVEIS DO TEMA
+     (serão alteradas automaticamente pelo ThemeContext)
+  ====================================================== */
+
+  --text-primary: #2f2f2f;
+  --text-secondary: #6a6a6a;
+
+  --background: transparent;
+
+  --surface: rgba(255,255,255,.45);
+  --surface-strong: rgba(255,255,255,.82);
+
+  --card-bg: rgba(255,255,255,.45);
+  --card-hover: rgba(255,255,255,.60);
+
+  --border-color: rgba(0,0,0,.08);
+
+  --accent: #b08968;
+  --accent-hover: #9b7558;
+
+  --divider: rgba(0,0,0,.08);
+
+  --shadow: 0 15px 40px rgba(0,0,0,.18);
+
+}
+
+/* ==========================================================
+   HTML / BODY
+========================================================== */
+
 html{
-    scroll-behavior:smooth;
+  scroll-behavior:smooth;
 }
 
 html,
 body,
 #root{
-    width:100%;
-    min-height:100%;
-}
 
-/* ==========================
-   BODY
-========================== */
+  width:100%;
+  min-height:100%;
+
+}
 
 body{
 
-    font-family:
-    "Segoe UI",
-    Arial,
-    Helvetica,
-    sans-serif;
+  font-family:var(--font-family);
 
-    background:transparent;
+  background:var(--background);
 
-    color:#222;
+  color:var(--text-primary);
 
-    overflow-x:hidden;
+  overflow-x:hidden;
 
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
 
-    text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 
-}
-
-/* ==========================
-   ROOT VARIABLES
-========================== */
-
-:root{
-
-    --transition:.25s ease;
+  transition:
+      background .6s ease,
+      color .4s ease;
 
 }
 
-/* ==========================
-   ELEMENTOS
-========================== */
+/* ==========================================================
+   ELEMENTOS GLOBAIS
+========================================================== */
 
 a{
 
-    color:inherit;
-    text-decoration:none;
+  color:inherit;
+  text-decoration:none;
+
+  transition:var(--transition);
 
 }
 
-button{
+button,
+input,
+textarea,
+select{
 
-    font:inherit;
+  font:inherit;
 
 }
 
@@ -77,62 +126,63 @@ input,
 textarea,
 select{
 
-    font:inherit;
-    outline:none;
+  outline:none;
 
 }
 
 img{
 
-    display:block;
-    max-width:100%;
-    height:auto;
+  display:block;
+  max-width:100%;
+  height:auto;
 
 }
 
 ul,
 ol{
 
-    list-style:none;
+  list-style:none;
 
 }
 
-/* ==========================
+/* ==========================================================
    SELEÇÃO
-========================== */
+========================================================== */
 
 ::selection{
 
-    background:#b08968;
-    color:#fff;
+  background:var(--accent);
+
+  color:white;
 
 }
 
-/* ==========================
+/* ==========================================================
    SCROLLBAR
-========================== */
+========================================================== */
 
 ::-webkit-scrollbar{
 
-    width:10px;
+  width:10px;
 
 }
 
 ::-webkit-scrollbar-track{
 
-    background:rgba(255,255,255,.15);
+  background:var(--surface);
 
 }
 
 ::-webkit-scrollbar-thumb{
 
-    background:#b08968;
-    border-radius:20px;
+  background:var(--accent);
+
+  border-radius:20px;
 
 }
 
 ::-webkit-scrollbar-thumb:hover{
 
-    background:#9b7558;
+  background:var(--accent-hover);
 
 }

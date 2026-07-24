@@ -1,0 +1,46 @@
+.contador-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.counter-card {
+  text-align: center;
+}
+
+.counter-number {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+.counter-label {
+  opacity: .8;
+}
+
+.counter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+  gap: 1rem;
+}
+
+.counter-item {
+  text-align: center;
+}
+
+.counter-item h3 {
+  margin-bottom: .5rem;
+}
+
+.counter-item strong {
+  display: block;
+  font-size: 2rem;
+}
+
+@media (max-width:768px) {
+
+  .counter-grid {
+    grid-template-columns: 1fr;
+  }
+
+}

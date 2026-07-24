@@ -1,0 +1,68 @@
+/* =========================================================
+   ABRIGO 2.0 • Page Header
+========================================================= */
+
+.page-header {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.page-header__greeting {
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.page-header__title {
+    margin: 0;
+
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+
+    color: var(--text-primary);
+}
+
+.page-header__subtitle {
+    max-width: 700px;
+
+    margin: 0;
+
+    font-size: 1rem;
+    line-height: 1.7;
+
+    color: var(--text-secondary);
+}
+
+.page-header__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    margin-top: 8px;
+}
+
+@media (max-width:768px){
+
+    .page-header{
+
+        gap:10px;
+
+    }
+
+    .page-header__title{
+
+        font-size:2rem;
+
+    }
+
+    .page-header__subtitle{
+
+        font-size:.95rem;
+
+    }
+
+}

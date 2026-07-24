@@ -1,0 +1,149 @@
+.loading-container{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(8,10,20,.92);
+
+    backdrop-filter:blur(18px);
+
+    z-index:99999;
+
+}
+
+.loading-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:12px;
+
+    animation:fadeIn .45s ease;
+
+}
+
+.loading-moon{
+
+    font-size:58px;
+
+    color:#f5f2dc;
+
+    animation:moonFloat 2.5s ease-in-out infinite;
+
+}
+
+.loading-title{
+
+    font-size:2.3rem;
+
+    font-weight:700;
+
+    color:white;
+
+    letter-spacing:2px;
+
+}
+
+.loading-version{
+
+    color:rgba(255,255,255,.65);
+
+    margin-bottom:18px;
+
+    letter-spacing:3px;
+
+}
+
+.loading-spinner{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    border:3px solid rgba(255,255,255,.15);
+
+    border-top-color:#f3d38b;
+
+    animation:spin .8s linear infinite;
+
+}
+
+.sr-only{
+
+    position:absolute;
+
+    width:1px;
+
+    height:1px;
+
+    padding:0;
+
+    margin:-1px;
+
+    overflow:hidden;
+
+    clip:rect(0,0,0,0);
+
+    white-space:nowrap;
+
+    border:0;
+
+}
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+@keyframes moonFloat{
+
+    0%,100%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-8px);
+
+    }
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(15px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}

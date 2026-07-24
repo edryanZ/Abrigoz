@@ -1,17 +1,32 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
-const UserContext = createContext();
+import STORAGE_KEYS from "../constants/storageKeys";
 
-const STORAGE_KEY = "abrigo_user";
+import { useTheme } from "./ThemeContext";
+
+const UserContext = createContext(null);
 
 export function UserProvider({ children }) {
+  const { greeting } = useTheme();
+
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem(STORAGE_KEY);
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.USER);
 
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      if (saved) {
+        setUser(JSON.parse(saved));
+      }
+    } catch (error) {
+      console.error(error);
+      localStorage.removeItem(STORAGE_KEYS.USER);
     }
   }, []);
 
@@ -28,29 +43,69 @@ export function UserProvider({ children }) {
       },
     };
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newUser));
+    localStorage.setItem(
+      STORAGE_KEYS.USER,
+      JSON.stringify(newUser)
+    );
+
     setUser(newUser);
   }
 
   function updateUser(data) {
+    if (!user) return;
+
     const updated = {
       ...user,
       ...data,
     };
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    localStorage.setItem(
+      STORAGE_KEYS.USER,
+      JSON.stringify(updated)
+    );
+
     setUser(updated);
   }
 
   function clearUser() {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(STORAGE_KEYS.USER);
     setUser(null);
   }
+
+  const name = user?.name ?? "";
+
+  const initials = useMemo(() => {
+    if (!name) return "";
+
+    return name
+      .split(" ")
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((word) => word[0].toUpperCase())
+      .join("");
+  }, [name]);
+
+  const firstName = useMemo(() => {
+    if (!name) return "";
+
+    return name.split(" ")[0];
+  }, [name]);
+
+  const fullGreeting = useMemo(() => {
+    if (!firstName) return greeting;
+
+    return `${greeting}, ${firstName}`;
+  }, [greeting, firstName]);
 
   return (
     <UserContext.Provider
       value={{
         user,
+        name,
+        firstName,
+        initials,
+        fullGreeting,
+
         createUser,
         updateUser,
         clearUser,

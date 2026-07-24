@@ -1,0 +1,61 @@
+/* ==========================================================
+   ABRIGO 2.0 • Container
+========================================================== */
+
+:root {
+
+    --container-width: 1200px;
+
+    --container-padding-x: clamp(20px, 5vw, 56px);
+
+    --container-padding-y: clamp(20px, 4vw, 48px);
+
+    --section-gap: clamp(28px, 4vw, 40px);
+
+}
+
+.abrigo-container {
+
+    width: 100%;
+    max-width: var(--container-width);
+
+    min-height: 100vh;
+
+    margin: 0 auto;
+
+    padding:
+        var(--container-padding-y)
+        var(--container-padding-x);
+
+    display: flex;
+    flex-direction: column;
+
+    gap: var(--section-gap);
+
+    box-sizing: border-box;
+
+}
+
+@media (max-width: 768px) {
+
+    .abrigo-container {
+
+        --container-padding-x: 22px;
+
+        --container-padding-y: 20px;
+
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .abrigo-container {
+
+        --container-padding-x: 18px;
+
+        --container-padding-y: 18px;
+
+    }
+
+}

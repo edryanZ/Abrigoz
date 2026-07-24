@@ -1,64 +1,142 @@
 export const bomDia = [
   {
-    id: 1,
-    titulo: "Bom dia ☀️",
-    autor: "Abrigo",
-    favorita: false,
-    texto:
-      "Bom dia! Que hoje você encontre paz nas pequenas coisas e motivos sinceros para sorrir."
-  },
-
-  {
-    id: 2,
+    id: "bom-dia-01",
     titulo: "Um novo começo",
-    autor: "Abrigo",
-    favorita: false,
     texto:
-      "Todo amanhecer é uma nova oportunidade para fazer diferente, aprender mais e viver algo bonito."
+      "Hoje é uma nova oportunidade para fazer algo diferente. Não importa como ontem terminou, o importante é o que você escolhe fazer a partir de agora.",
+    assinatura: "Abrigo",
   },
-
   {
-    id: 3,
-    titulo: "Vai dar certo",
-    autor: "Abrigo",
-    favorita: false,
+    id: "bom-dia-02",
+    titulo: "Respire fundo",
     texto:
-      "Antes de começar o dia, quero lembrar você de uma coisa: confie em si mesmo. Você é mais capaz do que imagina."
+      "Antes de começar a correria, respire fundo por alguns segundos. Às vezes, um pequeno momento de calma muda completamente o restante do dia.",
+    assinatura: "Abrigo",
   },
-
   {
-    id: 4,
-    titulo: "Leveza",
-    autor: "Abrigo",
-    favorita: false,
+    id: "bom-dia-03",
+    titulo: "Pequenos passos",
     texto:
-      "Que seu dia seja leve, que as preocupações não roubem sua paz e que a felicidade encontre um jeito de chegar até você."
+      "Nem todo progresso precisa ser enorme. Um pequeno passo dado hoje vale muito mais do que um grande plano que nunca saiu do papel.",
+    assinatura: "Abrigo",
   },
-
   {
-    id: 5,
-    titulo: "Um passo hoje",
-    autor: "Abrigo",
-    favorita: false,
+    id: "bom-dia-04",
+    titulo: "Olhe pela janela",
     texto:
-      "Não precisa correr. Basta dar mais um passo hoje. Aos poucos, você chega onde deseja."
+      "Observe o céu, o vento ou as árvores por alguns instantes. A natureza lembra que cada dia é único e merece ser vivido.",
+    assinatura: "Abrigo",
   },
-
   {
-    id: 6,
-    titulo: "Aproveite o hoje",
-    autor: "Abrigo",
-    favorita: false,
+    id: "bom-dia-05",
+    titulo: "Seu ritmo",
     texto:
-      "O dia de hoje nunca mais vai se repetir. Faça dele um capítulo bonito da sua história."
+      "Não compare o seu começo com o meio da caminhada de outra pessoa. Cada um possui seu próprio tempo para crescer.",
+    assinatura: "Abrigo",
   },
-
   {
-    id: 7,
-    titulo: "Tenha um lindo dia",
-    autor: "Abrigo",
-    favorita: false,
+    id: "bom-dia-06",
+    titulo: "Um motivo para sorrir",
     texto:
-      "Espero que o seu dia seja cheio de boas notícias, pessoas gentis e momentos que façam seu coração ficar em paz."
-  }
+      "Mesmo nos dias comuns existe algum motivo para sorrir. Às vezes ele está escondido nos pequenos detalhes.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "bom-dia-07",
+    titulo: "Faça o melhor possível",
+    texto:
+      "Você não precisa ser perfeito hoje. Apenas faça o melhor que puder com o tempo e os recursos que possui.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "bom-dia-08",
+    titulo: "Acredite no processo",
+    texto:
+      "Grandes conquistas costumam nascer de pequenas atitudes repetidas todos os dias. Continue seguindo em frente.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "bom-dia-09",
+    titulo: "Uma boa escolha",
+    texto:
+      "Começar o dia com pensamentos positivos não resolve todos os problemas, mas torna a caminhada muito mais leve.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "bom-dia-10",
+    titulo: "Hoje importa",
+    texto:
+      "Não espere uma data especial para cuidar de você ou começar algo novo. Hoje já é um excelente momento.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "bom-dia-11",
+    titulo: "Valorize o presente",
+    texto:
+      "O passado já ensinou o que precisava. Agora concentre sua energia no que pode construir durante este dia.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "bom-dia-12",
+    titulo: "Confie em você",
+    texto:
+      "Você já superou desafios que pareciam impossíveis. Lembre-se disso sempre que surgir uma nova dificuldade.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "bom-dia-13",
+    titulo: "Comece leve",
+    texto:
+      "Nem tudo precisa ser resolvido logo pela manhã. Priorize uma tarefa de cada vez e mantenha a tranquilidade.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "bom-dia-14",
+    titulo: "Faça acontecer",
+    texto:
+      "Esperar pela motivação perfeita pode fazer você perder oportunidades. Às vezes ela aparece depois que começamos.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "bom-dia-15",
+    titulo: "Espalhe gentileza",
+    texto:
+      "Uma palavra gentil ou um simples bom dia pode transformar o dia de alguém. Nunca subestime esse gesto.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "bom-dia-16",
+    titulo: "Aprenda algo",
+    texto:
+      "Todo dia oferece uma chance de aprender algo novo, mesmo que seja uma pequena lição para levar pela vida.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "bom-dia-17",
+    titulo: "Faça uma pausa",
+    texto:
+      "Se o dia ficar pesado, pare por alguns minutos. Descansar também faz parte do caminho.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "bom-dia-18",
+    titulo: "Aproveite o caminho",
+    texto:
+      "Nem toda felicidade está na chegada. Muitas vezes ela aparece durante a caminhada.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "bom-dia-19",
+    titulo: "Seja paciente",
+    texto:
+      "Algumas sementes levam tempo para florescer. Continue cuidando dos seus objetivos com dedicação.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "bom-dia-20",
+    titulo: "Que seja um bom dia",
+    texto:
+      "Que o seu dia tenha tranquilidade, boas oportunidades, aprendizado e motivos para terminar com um sorriso no rosto.",
+    assinatura: "Abrigo",
+  },
 ];

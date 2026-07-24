@@ -1,31 +1,5 @@
 export const mensagens = [
 
-  // ==========================
-  // ANIVERSÁRIO ISA
-  // ==========================
-
-  {
-    id: 1,
-    dia: 20,
-    mes: 4,
-    categoria: "aniversario",
-    texto:
-      "Que seu dia seja cheio de alegria, carinho e momentos inesquecíveis. Que esse novo ciclo traga muitas conquistas e felicidade. ❤️"
-  },
-
-
-  // ==========================
-  // ANIVERSÁRIO EDRYÃN
-  // ==========================
-
-  {
-    id: 2,
-    dia: 6,
-    mes: 7,
-    categoria: "aniversario",
-    texto:
-      "Hoje é um dia especial para celebrar sua história, suas conquistas e tudo aquilo que ainda está por vir. 🎂"
-  },
 
 
   // ==========================

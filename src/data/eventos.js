@@ -1,39 +1,4 @@
 export const eventos = [
-  // ANIVERSÁRIOS
-  {
-    id: 1,
-    dia: 20,
-    mes: 5,
-    categoria: "aniversario",
-    emoji: "🎂",
-    titulo: "Aniversário da Isa",
-    descricao: "Hoje é um dia muito especial. Feliz aniversário, Isa! ❤️",
-    cor: "#ff6b81",
-    favorito: true,
-    lembrete: false,
-    mensagem: true,
-    foto: true,
-    carta: true,
-    musica: true,
-    surpresa: "confetes",
-  },
-
-  {
-  id: 2,
-  dia: 6,
-  mes: 8,
-  categoria: "aniversario",
-  emoji: "🎂",
-  titulo: "Aniversário do Edryãn",
-  cor: "#4d96ff",
-  favorito: true,
-  lembrete: true,
-  mensagem: false,
-  foto: false,
-  carta: true,
-  musica: true,
-  surpresa: null
-},
 
   // DATAS COMEMORATIVAS
 

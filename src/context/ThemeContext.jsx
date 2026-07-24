@@ -2,42 +2,96 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
-const ThemeContext = createContext();
+import { getPeriod } from "../utils/timePeriod";
+
+import themes from "../theme";
+import applyTheme from "../theme/applyTheme";
+
+const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
-  const obterPeriodo = () => {
-    const hora = new Date().getHours();
-    return hora >= 18 || hora < 6 ? "night" : "day";
-  };
-
-  const [theme, setTheme] = useState(obterPeriodo);
+  const [period, setPeriod] = useState(getPeriod());
 
   useEffect(() => {
-    const atualizarTema = () => {
-      setTheme(obterPeriodo());
-    };
+    function atualizarPeriodo() {
+      setPeriod(getPeriod());
+    }
 
-    atualizarTema();
+    atualizarPeriodo();
 
-    const intervalo = setInterval(atualizarTema, 60000);
+    const intervalo = setInterval(
+      atualizarPeriodo,
+      60000
+    );
 
     return () => clearInterval(intervalo);
   }, []);
 
+  const theme = themes[period];
+
+  const isNight = period === "noite";
+
+  const greeting = useMemo(() => {
+    switch (period) {
+      case "amanhecer":
+        return "Bom dia";
+
+      case "dia":
+        return "Bom dia";
+
+      case "entardecer":
+        return "Boa tarde";
+
+      case "noite":
+        return "Boa noite";
+
+      default:
+        return "Olá";
+    }
+  }, [period]);
+
   useEffect(() => {
-    document.body.classList.remove("day", "night");
-    document.body.classList.add(theme);
+    applyTheme(theme);
   }, [theme]);
+
+  useEffect(() => {
+    document.body.classList.remove(
+      "dawn",
+      "day",
+      "sunset",
+      "night"
+    );
+
+    switch (period) {
+      case "amanhecer":
+        document.body.classList.add("dawn");
+        break;
+
+      case "dia":
+        document.body.classList.add("day");
+        break;
+
+      case "entardecer":
+        document.body.classList.add("sunset");
+        break;
+
+      default:
+        document.body.classList.add("night");
+    }
+  }, [period]);
 
   return (
     <ThemeContext.Provider
       value={{
+        period,
+        greeting,
         theme,
-        isDay: theme === "day",
-        isNight: theme === "night",
+        isNight,
+        isDay: !isNight,
       }}
     >
       {children}

@@ -1,0 +1,196 @@
+/* ==========================================================
+   ABRIGO 2.0 • Sobre
+========================================================== */
+
+/* ==========================================================
+   Grid dos recursos
+========================================================== */
+
+.sobre-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 24px;
+
+}
+
+.sobre-item {
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+
+    height: 100%;
+
+}
+
+.sobre-item span {
+
+    font-size: 2rem;
+
+}
+
+.sobre-item h3 {
+
+    margin: 0;
+
+    color: var(--text-primary);
+
+    font-size: 1.25rem;
+
+}
+
+.sobre-item p {
+
+    margin: 0;
+
+    color: var(--text-secondary);
+
+    line-height: 1.7;
+
+}
+
+/* ==========================================================
+   Desenvolvimento
+========================================================== */
+
+.sobre-info {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 24px;
+
+}
+
+.sobre-info .glass-card {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    gap: 10px;
+
+    min-height: 150px;
+
+}
+
+.sobre-info strong {
+
+    color: var(--text-primary);
+
+    font-size: 1rem;
+
+}
+
+.sobre-info p {
+
+    margin: 0;
+
+    color: var(--text-secondary);
+
+}
+
+/* ==========================================================
+   Citação
+========================================================== */
+
+.sobre-final {
+
+    text-align: center;
+
+}
+
+.citacao {
+
+    margin: 0;
+
+    color: var(--text-primary);
+
+    font-size: 1.4rem;
+
+    font-style: italic;
+
+    line-height: 1.8;
+
+}
+
+/* ==========================================================
+   Tablet
+========================================================== */
+
+@media (max-width: 1024px) {
+
+    .sobre-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 20px;
+
+    }
+
+    .sobre-info {
+
+        grid-template-columns: 1fr;
+
+        gap: 20px;
+
+    }
+
+}
+
+/* ==========================================================
+   Mobile
+========================================================== */
+
+@media (max-width: 768px) {
+
+    .sobre-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .citacao {
+
+        font-size: 1.2rem;
+
+    }
+
+}
+
+/* ==========================================================
+   Mobile pequeno
+========================================================== */
+
+@media (max-width: 480px) {
+
+    .sobre-item span {
+
+        font-size: 1.8rem;
+
+    }
+
+    .sobre-item h3 {
+
+        font-size: 1.15rem;
+
+    }
+
+    .citacao {
+
+        font-size: 1.05rem;
+
+    }
+
+}

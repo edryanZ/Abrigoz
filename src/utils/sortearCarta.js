@@ -1,40 +1,29 @@
+import storage from "../lib/storage";
+
 export function sortearCarta(categoria) {
+  const chave = `cartas-${categoria.id}`;
 
-    const chave = `cartas-${categoria.id}`;
+  let historico = storage.getOrDefault(chave, []);
 
-    let historico =
-        JSON.parse(localStorage.getItem(chave)) || [];
+  const restantes = categoria.cartas.filter(
+    ({ id }) => !historico.includes(id)
+  );
 
-    const restantes =
-        categoria.cartas.filter(
-            carta =>
-                !historico.includes(carta.id)
-        );
+  if (restantes.length === 0) {
+    historico = [];
+    storage.remove(chave);
 
-    if(restantes.length === 0){
+    return sortearCarta(categoria);
+  }
 
-        historico = [];
+  const carta =
+    restantes[
+      Math.floor(Math.random() * restantes.length)
+    ];
 
-        localStorage.removeItem(chave);
+  historico.push(carta.id);
 
-        return sortearCarta(categoria);
+  storage.set(chave, historico);
 
-    }
-
-    const carta =
-        restantes[
-            Math.floor(
-                Math.random() * restantes.length
-            )
-        ];
-
-    historico.push(carta.id);
-
-    localStorage.setItem(
-        chave,
-        JSON.stringify(historico)
-    );
-
-    return carta;
-
+  return carta;
 }

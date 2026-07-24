@@ -1,0 +1,44 @@
+.configuracoes-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.config-card {
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+}
+
+.config-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.config-card p {
+  margin: 0;
+  opacity: .8;
+  line-height: 1.6;
+}
+
+.config-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+@media (max-width:768px) {
+  .config-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .config-actions {
+    flex-direction: column;
+  }
+}

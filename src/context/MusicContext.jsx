@@ -1,139 +1,168 @@
 import {
   createContext,
   useContext,
+  useEffect,
+  useMemo,
   useRef,
   useState,
-  useEffect,
 } from "react";
 
 import { musicas } from "../data/musicas";
+import STORAGE_KEYS from "../constants/storageKeys";
 
-const MusicContext = createContext();
+const MusicContext = createContext(null);
+
+const STORAGE = {
+  INDEX: STORAGE_KEYS.MUSIC,
+  PLAYING: "abrigo:playing",
+  VOLUME: "abrigo:volume",
+  TIME: "abrigo:time",
+};
 
 export function MusicProvider({ children }) {
   const audioRef = useRef(new Audio());
 
-  const [indice, setIndice] = useState(
-    Number(localStorage.getItem("abrigo-musica")) || 0
-  );
+  const [indice, setIndice] = useState(() => {
+    const value = Number(localStorage.getItem(STORAGE.INDEX));
+    return Number.isFinite(value) ? value : 0;
+  });
 
-  const [tocando, setTocando] = useState(
-    localStorage.getItem("abrigo-tocando") === "true"
-  );
+  const [tocando, setTocando] = useState(() => {
+    return localStorage.getItem(STORAGE.PLAYING) === "true";
+  });
 
-  const [volume, setVolume] = useState(
-    Number(localStorage.getItem("abrigo-volume")) || 0.4
-  );
+  const [volume, setVolume] = useState(() => {
+    const value = Number(localStorage.getItem(STORAGE.VOLUME));
+    return Number.isFinite(value) ? value : 0.4;
+  });
 
-  // Carrega a música quando ela muda
+  const musicaAtual = useMemo(() => {
+    if (!musicas.length) return null;
+
+    return musicas[indice] ?? musicas[0];
+  }, [indice]);
+
   useEffect(() => {
-    const audio = audioRef.current;
+    if (!musicaAtual) return;
 
-    const estavaTocando = tocando;
+    const audio = audioRef.current;
 
     audio.pause();
 
-    audio.src = musicas[indice].arquivo;
+    audio.src = musicaAtual.arquivo;
     audio.load();
 
     audio.volume = volume;
 
-    const tempoSalvo = Number(localStorage.getItem("abrigo-tempo"));
+    const tempo = Number(localStorage.getItem(STORAGE.TIME));
 
-    if (!isNaN(tempoSalvo)) {
-      audio.currentTime = tempoSalvo;
+    if (Number.isFinite(tempo)) {
+      audio.currentTime = tempo;
     }
 
-    if (estavaTocando) {
-      audio.play().catch((erro) => {
-        console.error("Erro ao reproduzir:", erro);
-      });
+    if (tocando) {
+      audio.play().catch(() => {});
     }
-  }, [indice]);
+  }, [musicaAtual]);
 
-  // Atualiza volume
   useEffect(() => {
     audioRef.current.volume = volume;
-    localStorage.setItem("abrigo-volume", volume);
+    localStorage.setItem(STORAGE.VOLUME, volume.toString());
   }, [volume]);
 
-  // Salva música atual
   useEffect(() => {
-    localStorage.setItem("abrigo-musica", indice);
+    localStorage.setItem(STORAGE.INDEX, indice.toString());
   }, [indice]);
 
-  // Salva estado play/pause
   useEffect(() => {
-    localStorage.setItem("abrigo-tocando", tocando);
+    localStorage.setItem(STORAGE.PLAYING, tocando.toString());
   }, [tocando]);
 
-  // Salva posição da música
   useEffect(() => {
     const audio = audioRef.current;
 
-    const salvarTempo = () => {
+    function salvarTempo() {
       localStorage.setItem(
-        "abrigo-tempo",
-        audio.currentTime
+        STORAGE.TIME,
+        audio.currentTime.toString()
       );
-    };
+    }
+
+    function terminou() {
+      proxima();
+    }
 
     audio.addEventListener("timeupdate", salvarTempo);
-
-    audio.onended = () => {
-      proxima();
-    };
+    audio.addEventListener("ended", terminou);
 
     return () => {
       audio.removeEventListener(
         "timeupdate",
         salvarTempo
       );
+
+      audio.removeEventListener(
+        "ended",
+        terminou
+      );
     };
   }, [indice]);
 
-  function playPause() {
-    const audio = audioRef.current;
-
-    if (tocando) {
-      audio.pause();
-      setTocando(false);
-      return;
-    }
-
-    audio
+  function play() {
+    audioRef.current
       .play()
-      .then(() => {
-        setTocando(true);
-      })
-      .catch((erro) => {
-        console.error("Erro Play:", erro);
-      });
+      .then(() => setTocando(true))
+      .catch(() => {});
+  }
+
+  function pause() {
+    audioRef.current.pause();
+    setTocando(false);
+  }
+
+  function playPause() {
+    if (tocando) {
+      pause();
+    } else {
+      play();
+    }
   }
 
   function proxima() {
-    setIndice((i) => (i + 1) % musicas.length);
+    if (!musicas.length) return;
+
+    setIndice((atual) => (atual + 1) % musicas.length);
   }
 
   function anterior() {
-    setIndice((i) =>
-      i === 0 ? musicas.length - 1 : i - 1
+    if (!musicas.length) return;
+
+    setIndice((atual) =>
+      atual === 0 ? musicas.length - 1 : atual - 1
     );
   }
 
   return (
     <MusicContext.Provider
       value={{
+        audioRef,
+
         musicas,
-        musica: musicas[indice],
+        musica: musicaAtual,
+
         indice,
+        setIndice,
+
         tocando,
+        play,
+        pause,
+        playPause,
+
         volume,
         setVolume,
-        playPause,
+
         proxima,
         anterior,
-        audioRef,
       }}
     >
       {children}
@@ -142,5 +171,13 @@ export function MusicProvider({ children }) {
 }
 
 export function useMusic() {
-  return useContext(MusicContext);
+  const context = useContext(MusicContext);
+
+  if (!context) {
+    throw new Error(
+      "useMusic deve ser usado dentro de MusicProvider."
+    );
+  }
+
+  return context;
 }

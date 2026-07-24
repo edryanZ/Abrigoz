@@ -1,64 +1,142 @@
 export const reflexoes = [
   {
-    id: 1,
+    id: "reflexoes-01",
     titulo: "O tempo",
-    autor: "Abrigo",
-    favorita: false,
     texto:
-      "O tempo muda muita coisa, mas também revela quem realmente vale a pena manter por perto."
+      "O tempo continua seguindo seu caminho, independentemente da nossa pressa. Talvez a melhor escolha seja aprender a caminhar junto com ele, sem deixar de aproveitar o presente.",
+    assinatura: "Abrigo",
   },
-
   {
-    id: 2,
-    titulo: "Nem tudo precisa de resposta",
-    autor: "Abrigo",
-    favorita: false,
+    id: "reflexoes-02",
+    titulo: "Mudanças",
     texto:
-      "Algumas perguntas só encontram resposta quando a vida decide seguir em frente. Nem tudo precisa ser entendido imediatamente."
+      "Nada permanece exatamente igual para sempre. Mudar faz parte da vida e, muitas vezes, é justamente isso que nos permite crescer.",
+    assinatura: "Abrigo",
   },
-
   {
-    id: 3,
-    titulo: "Valorize o presente",
-    autor: "Abrigo",
-    favorita: false,
-    texto:
-      "Passamos tanto tempo pensando no ontem ou no amanhã que esquecemos de viver o único momento que realmente temos: o agora."
-  },
-
-  {
-    id: 4,
-    titulo: "As pessoas mudam",
-    autor: "Abrigo",
-    favorita: false,
-    texto:
-      "Mudar faz parte da vida. O importante é continuar levando consigo aquilo que torna você uma boa pessoa."
-  },
-
-  {
-    id: 5,
+    id: "reflexoes-03",
     titulo: "Silêncio",
-    autor: "Abrigo",
-    favorita: false,
     texto:
-      "Às vezes, o silêncio ensina mais do que qualquer conversa. É nele que conseguimos ouvir os nossos próprios pensamentos."
+      "Nem toda resposta chega através de palavras. Às vezes, alguns minutos de silêncio ajudam mais do que longas conversas.",
+    assinatura: "Abrigo",
   },
-
   {
-    id: 6,
-    titulo: "Tudo tem seu momento",
-    autor: "Abrigo",
-    favorita: false,
+    id: "reflexoes-04",
+    titulo: "Valor",
     texto:
-      "Nem tudo acontece no tempo que desejamos, mas isso não significa que nunca vai acontecer. Algumas coisas apenas precisam do momento certo."
+      "O verdadeiro valor das coisas raramente está no preço. Muitas das melhores lembranças são feitas de momentos simples.",
+    assinatura: "Abrigo",
   },
-
   {
-    id: 7,
-    titulo: "Leve apenas o que faz bem",
-    autor: "Abrigo",
-    favorita: false,
+    id: "reflexoes-05",
+    titulo: "Escolhas",
     texto:
-      "A vida fica mais leve quando aprendemos a carregar apenas aquilo que nos ajuda a seguir em frente e deixamos para trás o que só pesa o coração."
-  }
+      "Toda escolha abre novos caminhos e fecha outros. O importante é seguir em frente sem viver preso ao 'e se'.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-06",
+    titulo: "Paciência",
+    texto:
+      "Alguns resultados levam tempo para aparecer. Assim como uma árvore precisa crescer antes de dar frutos, muitos sonhos também precisam de tempo.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-07",
+    titulo: "Aprender",
+    texto:
+      "Cada pessoa que encontramos sabe algo que ainda não sabemos. A vida fica mais rica quando permanecemos dispostos a aprender.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-08",
+    titulo: "Simplicidade",
+    texto:
+      "Quanto mais simples a vida se torna, mais espaço existe para perceber aquilo que realmente importa.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-09",
+    titulo: "Presença",
+    texto:
+      "Estar presente vale mais do que apenas estar por perto. Algumas conversas marcam a vida porque alguém decidiu ouvir de verdade.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-10",
+    titulo: "Esperar",
+    texto:
+      "Nem toda espera é perda de tempo. Algumas delas servem para preparar você para aquilo que ainda está por vir.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-11",
+    titulo: "Recomeços",
+    texto:
+      "Não existe um número limitado de recomeços. Sempre que necessário, você pode escolher um novo caminho.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-12",
+    titulo: "Gentileza",
+    texto:
+      "Uma atitude gentil pode transformar completamente o dia de alguém, mesmo que você nunca descubra isso.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-13",
+    titulo: "Equilíbrio",
+    texto:
+      "Trabalhar é importante. Descansar também. O equilíbrio entre os dois é o que sustenta uma caminhada longa.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-14",
+    titulo: "Crescimento",
+    texto:
+      "Crescer nem sempre significa ir mais longe. Às vezes significa enxergar as mesmas coisas com novos olhos.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-15",
+    titulo: "Gratidão",
+    texto:
+      "Quando aprendemos a agradecer pelas pequenas coisas, percebemos que elas são muito maiores do que imaginávamos.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-16",
+    titulo: "Persistência",
+    texto:
+      "Quem continua caminhando, mesmo devagar, normalmente chega mais longe do que quem nunca começou.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-17",
+    titulo: "Calma",
+    texto:
+      "Nem tudo precisa ser resolvido imediatamente. Algumas decisões ficam melhores depois de uma boa noite de descanso.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-18",
+    titulo: "Caminhos",
+    texto:
+      "Às vezes a vida muda nossos planos apenas para mostrar um caminho que jamais imaginaríamos seguir.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-19",
+    titulo: "Hoje",
+    texto:
+      "O ontem já passou e o amanhã ainda não chegou. O único momento em que realmente podemos agir é agora.",
+    assinatura: "Abrigo",
+  },
+  {
+    id: "reflexoes-20",
+    titulo: "A jornada",
+    texto:
+      "A vida não é feita apenas de grandes conquistas. Ela também é construída pelos pequenos momentos que vivemos todos os dias.",
+    assinatura: "Abrigo",
+  },
 ];

@@ -1,0 +1,365 @@
+/* ==========================================================
+   ABRIGO 2.0 • Navbar
+========================================================== */
+
+.navbar-top {
+
+    position: sticky;
+    top: 0;
+
+    z-index: 1500;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 18px 28px;
+
+    background: var(--surface);
+
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+
+    border-bottom: 1px solid var(--border-color);
+
+    transition:
+        background .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+
+}
+
+.navbar-logo {
+
+    margin: 0;
+
+    font-size: 1.35rem;
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+}
+
+.navbar-icon {
+
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: none;
+    border-radius: 14px;
+
+    background: var(--card-bg);
+
+    color: var(--text-primary);
+
+    cursor: pointer;
+
+    transition:
+        background .25s ease,
+        color .25s ease,
+        transform .25s ease;
+
+}
+
+.navbar-icon:hover {
+
+    transform: translateY(-2px);
+
+    background: var(--accent);
+
+    color: #fff;
+
+}
+
+.menu-backdrop {
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, .35);
+
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+
+    z-index: 1700;
+
+}
+
+.menu-lateral {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 310px;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--surface-strong);
+
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+
+    border-right: 1px solid var(--border-color);
+
+    box-shadow: var(--shadow);
+
+    transform: translateX(-110%);
+
+    transition:
+        transform .35s ease,
+        background .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+
+    z-index: 1800;
+
+    overflow: hidden;
+
+}
+
+.menu-lateral.aberto {
+
+    transform: translateX(0);
+
+}
+
+/* ==========================================================
+   Topo
+========================================================== */
+
+.menu-topo {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 16px;
+
+    padding: 28px;
+
+    border-bottom: 1px solid var(--border-color);
+
+    flex-shrink: 0;
+
+}
+
+.menu-topo h2 {
+
+    margin: 0 0 8px;
+
+    font-size: 28px;
+
+    color: var(--text-primary);
+
+}
+
+.menu-topo p {
+
+    margin: 0;
+
+    color: var(--text-secondary);
+
+    line-height: 1.6;
+
+    font-size: 14px;
+
+}
+
+.fechar-menu {
+
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 14px;
+
+    background: var(--card-bg);
+
+    color: var(--text-primary);
+
+    cursor: pointer;
+
+    transition:
+        background .25s ease,
+        color .25s ease,
+        transform .25s ease;
+
+}
+
+.fechar-menu:hover {
+
+    background: var(--accent);
+
+    color: #fff;
+
+    transform: rotate(90deg);
+
+}
+
+.fechar-menu:focus-visible {
+
+    outline: 2px solid var(--accent);
+
+    outline-offset: 3px;
+
+}
+
+/* ==========================================================
+   Links
+========================================================== */
+
+.menu-links {
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    padding: 24px;
+
+    flex: 1;
+
+    overflow-y: auto;
+
+}
+
+.menu-links a {
+
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 16px 18px;
+
+    border-radius: 16px;
+
+    color: var(--text-primary);
+
+    font-weight: 600;
+
+    transition:
+        background .25s ease,
+        color .25s ease,
+        transform .25s ease;
+
+}
+
+.menu-links a:hover {
+
+    background: var(--card-hover);
+
+    transform: translateX(6px);
+
+}
+
+.menu-links a:focus-visible {
+
+    outline: 2px solid var(--accent);
+
+    outline-offset: 3px;
+
+}
+
+.menu-links a.ativo {
+
+    background: var(--accent);
+
+    color: #fff;
+
+    box-shadow: var(--shadow);
+
+}
+
+.menu-links .icone {
+
+    width: 22px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-shrink: 0;
+
+    font-size: 18px;
+
+    color: inherit;
+
+}
+
+/* ==========================================================
+   Scrollbar
+========================================================== */
+
+.menu-links::-webkit-scrollbar {
+
+    width: 6px;
+
+}
+
+.menu-links::-webkit-scrollbar-track {
+
+    background: transparent;
+
+}
+
+.menu-links::-webkit-scrollbar-thumb {
+
+    background: var(--accent);
+
+    border-radius: 999px;
+
+}
+
+/* ==========================================================
+   Tablet
+========================================================== */
+
+@media (max-width: 768px) {
+
+    .menu-lateral {
+
+        width: 290px;
+
+    }
+
+}
+
+/* ==========================================================
+   Celular
+========================================================== */
+
+@media (max-width: 430px) {
+
+    .navbar-top {
+
+        padding: 16px 18px;
+
+    }
+
+    .navbar-logo {
+
+        font-size: 1.2rem;
+
+    }
+
+    .menu-lateral {
+
+        width: 100%;
+
+    }
+
+}

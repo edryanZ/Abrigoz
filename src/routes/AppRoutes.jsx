@@ -1,26 +1,65 @@
 import { lazy, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
-import Loading from "../components/common/Loading";
+import ROUTES from "../constants/routes";
+
+import Loading from "../components/Loading";
 import NotFound from "../pages/NotFound";
 
-const Welcome = lazy(() => import("../pages/welcome"));
-const Lar = lazy(() => import("../pages/lar"));
-const Calendario = lazy(() => import("../pages/calendario"));
-const Cartas = lazy(() => import("../pages/cartas"));
-const Sobre = lazy(() => import("../pages/sobre"));
+const Welcome = lazy(() => import("../pages/home/Welcome"));
+const Lar = lazy(() => import("../pages/home/Lar"));
+
+const Calendario = lazy(() => import("../pages/Calendario"));
+const Cartas = lazy(() => import("../pages/Cartas"));
+const Sobre = lazy(() => import("../pages/Sobre"));
+
+const Configuracoes = lazy(() =>
+  import("../pages/settings/Configuracoes")
+);
 
 export default function AppRoutes() {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        <Route path="/welcome" element={<Welcome />} />
-        <Route path="/lar" element={<Lar />} />
-        <Route path="/calendario" element={<Calendario />} />
-        <Route path="/cartas" element={<Cartas />} />
-        <Route path="/sobre" element={<Sobre />} />
+        <Route
+          path={ROUTES.WELCOME}
+          element={<Welcome />}
+        />
 
-        <Route path="*" element={<NotFound />} />
+        <Route
+          path={ROUTES.HOME}
+          element={<Lar />}
+        />
+
+        <Route
+          path={ROUTES.CALENDAR}
+          element={<Calendario />}
+        />
+
+        <Route
+          path={ROUTES.LETTERS}
+          element={<Cartas />}
+        />
+
+        <Route
+          path={ROUTES.ABOUT}
+          element={<Sobre />}
+        />
+
+        <Route
+          path="/configuracoes"
+          element={<Configuracoes />}
+        />
+
+        <Route
+          path="/home"
+          element={<Navigate to={ROUTES.HOME} replace />}
+        />
+
+        <Route
+          path={ROUTES.NOT_FOUND}
+          element={<NotFound />}
+        />
       </Routes>
     </Suspense>
   );
