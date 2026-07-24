@@ -6,25 +6,69 @@
 
 .config-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
 }
 
 .config-card {
   display: flex;
   flex-direction: column;
-  gap: .8rem;
+  gap: .9rem;
 }
 
 .config-card h3 {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+
   margin: 0;
+
   font-size: 1.1rem;
 }
 
 .config-card p {
   margin: 0;
-  opacity: .8;
-  line-height: 1.6;
+
+  line-height: 1.7;
+
+  opacity: .85;
+}
+
+.config-button {
+  margin-top: .5rem;
+
+  padding: .85rem 1rem;
+
+  border: none;
+  border-radius: 14px;
+
+  background: var(--accent);
+  color: white;
+
+  font-size: .95rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.config-button:hover {
+  background: var(--accent-hover);
+
+  transform: translateY(-2px);
+}
+
+.config-button:active {
+  transform: translateY(0);
+}
+
+.config-button.danger {
+  background: #d64545;
+}
+
+.config-button.danger:hover {
+  background: #b73333;
 }
 
 .config-actions {
@@ -33,12 +77,39 @@
   gap: 1rem;
 }
 
-@media (max-width:768px) {
+@media (max-width: 768px) {
   .config-grid {
     grid-template-columns: 1fr;
   }
 
   .config-actions {
     flex-direction: column;
+  }
+
+  .config-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .configuracoes-page {
+    gap: 1.5rem;
+  }
+
+  .config-card {
+    gap: .75rem;
+  }
+
+  .config-card h3 {
+    font-size: 1rem;
+  }
+
+  .config-card p {
+    font-size: .92rem;
+  }
+
+  .config-button {
+    padding: .8rem;
+    font-size: .9rem;
   }
 }

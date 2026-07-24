@@ -1,5 +1,6 @@
 export const STORAGE_KEYS = {
   USER: "abrigo:user",
+
   THEME: "abrigo:theme",
   MUSIC: "abrigo:music",
 
@@ -9,6 +10,11 @@ export const STORAGE_KEYS = {
 
   EVENTS: "abrigo:events",
   SETTINGS: "abrigo:settings",
+
+  STREAK: "abrigo:streak",
+  STATISTICS: "abrigo:statistics",
+  MOODS: "abrigo:moods",
+  ACHIEVEMENTS: "abrigo:achievements",
 
   LAST_ACCESS: "abrigo:lastAccess",
 };

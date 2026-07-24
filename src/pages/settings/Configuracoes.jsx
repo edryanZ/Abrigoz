@@ -1,13 +1,11 @@
-import "./ContadorAbrigo.css";
-
-import { differenceInDays } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { format } from "date-fns";
+import "./Configuracoes.css";
 
 import {
-    FaSeedling,
-    FaRocket,
-    FaCalendarAlt,
+  FaUser,
+  FaPalette,
+  FaMusic,
+  FaInfoCircle,
+  FaTrashAlt,
 } from "react-icons/fa";
 
 import Ceu from "../../components/Ceu";
@@ -18,125 +16,138 @@ import Section from "../../components/Section";
 import GlassCard from "../../components/GlassCard";
 
 import { useTheme } from "../../context/ThemeContext";
+import { useUser } from "../../context/UserContext";
 
-export default function ContadorAbrigo() {
+export default function Configuracoes() {
+  const { greeting } = useTheme();
 
-    const { greeting } = useTheme();
+  const {
+    name,
+    updateUser,
+    clearUser,
+  } = useUser();
 
-    const inicio = new Date(2026, 6, 17);
-
-    const hoje = new Date();
-
-    const dias = differenceInDays(
-        hoje,
-        inicio
+  function alterarNome() {
+    const novoNome = prompt(
+      "Como você gostaria de ser chamado?",
+      name
     );
 
-    return (
-        <>
-            <Ceu />
+    if (!novoNome) return;
 
-            <Navbar />
+    if (!novoNome.trim()) return;
 
-            <Container>
+    updateUser({
+      name: novoNome.trim(),
+    });
+  }
 
-                <PageHeader
-                    greeting={greeting}
-                    title="Contador do Abrigo"
-                    subtitle="Cada dia representa um novo passo na história deste projeto."
-                />
-
-                <Section>
-
-                    <GlassCard>
-
-                        <h3>
-                            <FaCalendarAlt />
-                            Data de criação
-                        </h3>
-
-                        <p>
-                            {format(
-                                inicio,
-                                "dd 'de' MMMM 'de' yyyy",
-                                {
-                                    locale: ptBR
-                                }
-                            )}
-                        </p>
-
-                    </GlassCard>
-
-                    <GlassCard>
-
-                        <h3>
-                            <FaSeedling />
-                            Tempo de desenvolvimento
-                        </h3>
-
-                        <h1>{dias} dias</h1>
-
-                        <p>
-                            O Abrigo continua evoluindo a cada atualização.
-                        </p>
-
-                    </GlassCard>
-
-                    <GlassCard>
-
-                        <h3>
-                            <FaRocket />
-                            Versão atual
-                        </h3>
-
-                        <h2>Abrigo 2.0</h2>
-
-                        <p>
-                            Um espaço feito para acolher pessoas.
-                        </p>
-
-                    </GlassCard>
-
-                </Section>
-
-                <Section>
-
-                    <GlassCard>
-
-                        <h3>🌿 Sobre o contador</h3>
-
-                        <p>
-                            Este contador acompanha o tempo desde o início
-                            do desenvolvimento do Abrigo.
-                        </p>
-
-                        <p>
-                            Cada atualização representa um novo capítulo
-                            dessa jornada e aproxima o projeto da ideia
-                            que inspirou sua criação: oferecer um lugar
-                            acolhedor para qualquer pessoa.
-                        </p>
-
-                    </GlassCard>
-
-                </Section>
-
-                <Section>
-
-                    <GlassCard>
-
-                        <blockquote>
-                            "Cada atualização torna este lugar um pouco
-                            mais acolhedor."
-                        </blockquote>
-
-                    </GlassCard>
-
-                </Section>
-
-            </Container>
-
-        </>
+  function redefinirAbrigo() {
+    const confirmar = window.confirm(
+      "Deseja realmente apagar todos os dados do Abrigo?"
     );
 
+    if (!confirmar) return;
+
+    // Remove o usuário
+    clearUser();
+
+    // Remove todos os outros dados do Abrigo
+    localStorage.removeItem("abrigo_streak");
+    localStorage.removeItem("abrigo_statistics");
+    localStorage.removeItem("abrigo_moods");
+    localStorage.removeItem("abrigo_achievements");
+
+    // Recarrega o app
+    window.location.replace("/");
+  }
+
+  return (
+    <>
+      <Ceu />
+
+      <Navbar />
+
+      <Container>
+        <PageHeader
+          greeting={greeting}
+          title="Configurações"
+          subtitle="Personalize sua experiência no Abrigo."
+        />
+
+        <Section>
+          <GlassCard>
+            <h3>
+              <FaUser />
+              Perfil
+            </h3>
+
+            <p>
+              <strong>Nome:</strong> {name || "Visitante"}
+            </p>
+
+            <button
+              className="config-button"
+              onClick={alterarNome}
+            >
+              Alterar nome
+            </button>
+          </GlassCard>
+
+          <GlassCard>
+            <h3>
+              <FaPalette />
+              Aparência
+            </h3>
+
+            <p>
+              O tema muda automaticamente conforme o período do dia.
+            </p>
+          </GlassCard>
+
+          <GlassCard>
+            <h3>
+              <FaMusic />
+              Música
+            </h3>
+
+            <p>
+              Em breve você poderá controlar músicas,
+              sons ambientes e volume.
+            </p>
+          </GlassCard>
+
+          <GlassCard>
+            <h3>
+              <FaInfoCircle />
+              Aplicativo
+            </h3>
+
+            <p>
+              <strong>Versão:</strong> Abrigo 2.0
+            </p>
+          </GlassCard>
+
+          <GlassCard>
+            <h3>
+              <FaTrashAlt />
+              Dados
+            </h3>
+
+            <p>
+              Apaga seu perfil e reinicia o Abrigo como
+              se fosse o primeiro acesso.
+            </p>
+
+            <button
+              className="config-button danger"
+              onClick={redefinirAbrigo}
+            >
+              Redefinir Abrigo
+            </button>
+          </GlassCard>
+        </Section>
+      </Container>
+    </>
+  );
 }
