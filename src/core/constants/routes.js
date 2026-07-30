@@ -15,6 +15,7 @@ export const ROUTES = {
   STATISTICS: "/estatisticas",
   SEARCH: "/pesquisa",
   ACHIEVEMENTS: "/conquistas",
+  ADMIN_ACTIVITY: "/admin/atividade",
 
   // Sistema
   NOT_FOUND: "*",

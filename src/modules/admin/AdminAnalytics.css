@@ -1,0 +1,8 @@
+.admin-analytics { max-width: 900px; margin: 0 auto; padding: 48px 0; display: grid; gap: 18px; }
+.admin-analytics form { display: grid; gap: 12px; }
+.admin-analytics label { display: grid; gap: 6px; }
+.admin-analytics input, .admin-analytics select, .admin-analytics button { min-height: 44px; padding: 9px 12px;
+  border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-primary); background: var(--card-bg); }
+.admin-analytics__summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.admin-analytics__summary article { display: grid; gap: 8px; }
+.admin-analytics__summary strong { font-size: 2rem; color: var(--accent); }

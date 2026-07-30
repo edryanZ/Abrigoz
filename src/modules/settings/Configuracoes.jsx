@@ -21,6 +21,7 @@ import { useUser } from "../../shared/contexts/UserContext";
 import { storage } from "../../core/storage/storage";
 import SyncSettings from "./components/SyncSettings";
 import PrivacyToggle from "../../shared/componentes/PrivacyToggle";
+import AnalyticsSettings from "./components/AnalyticsSettings";
 
 export default function Configuracoes() {
   const { greeting } = useTheme();
@@ -94,6 +95,9 @@ export default function Configuracoes() {
               <h3>🕶️ Privacidade visual</h3>
               <p>Oculta rapidamente textos pessoais na tela. Não substitui o bloqueio do dispositivo e não impede capturas de tela.</p>
               <PrivacyToggle />
+            </GlassCard>
+            <GlassCard className="config-card">
+              <AnalyticsSettings />
             </GlassCard>
             <GlassCard className="config-card">
               <h3>
