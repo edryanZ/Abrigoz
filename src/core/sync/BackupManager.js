@@ -1,10 +1,34 @@
-import { loadBackup, saveBackup } from "../storage/BackupStorage";
+import {
+  decryptJson,
+  encryptJson,
+  ENCRYPTION_PURPOSES,
+  validateEncryptedEnvelope,
+} from "../crypto/CryptoService";
+import { loadBackup } from "../storage/BackupStorage";
 import { storage } from "../storage/storage";
 import {
   SYNC_QUEUE_STORAGE_KEY,
   SYNC_STATE_STORAGE_KEY,
 } from "../storage/SyncStorage";
 
+const BACKUP_VERSION = 1;
+const MAX_BACKUP_BYTES = 6 * 1024 * 1024;
+const MAX_MODULES = 100;
+const MAX_DEPTH = 32;
+const STORAGE_KEY_PATTERN = /^abrigo:[A-Za-z0-9:_-]{1,120}$/;
+const FORBIDDEN_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+const SENSITIVE_FIELDS = new Set([
+  "keyhash",
+  "synckey",
+  "cryptokey",
+  "supabaseurl",
+  "supabaseanonkey",
+  "servicerolekey",
+  "credentials",
+  "deviceid",
+  "syncstate",
+  "syncqueue",
+]);
 const EXCLUDED_KEYS = new Set([
   "abrigo:backup:v1",
   "abrigo:device:v1",
@@ -15,14 +39,12 @@ const EXCLUDED_KEYS = new Set([
 
 function isSensitiveStorageKey(key) {
   if (EXCLUDED_KEYS.has(key)) return true;
-
   const normalizedKey = key.toLowerCase().replace(/[-_:\s]/g, "");
   return [
     "key",
     "chave",
     "hash",
-    "keyhash",
-    "recoverykey",
+    "recovery",
     "syncstate",
     "syncqueue",
     "device",
@@ -32,9 +54,33 @@ function isSensitiveStorageKey(key) {
   ].some((term) => normalizedKey.includes(term));
 }
 
+function assertSafeStructure(value, depth = 0, seen = new Set()) {
+  if (depth > MAX_DEPTH) throw new Error("Backup excede o limite permitido.");
+  if (!value || typeof value !== "object") return;
+  if (seen.has(value)) throw new Error("Backup inválido.");
+  seen.add(value);
+  for (const key of Object.keys(value)) {
+    const normalizedKey = key.toLowerCase().replace(/[-_:\s]/g, "");
+    if (FORBIDDEN_KEYS.has(key) || SENSITIVE_FIELDS.has(normalizedKey)) {
+      throw new Error("Backup inválido.");
+    }
+    assertSafeStructure(value[key], depth + 1, seen);
+  }
+  seen.delete(value);
+}
+
+function serializedSize(value) {
+  try {
+    return new TextEncoder().encode(JSON.stringify(value)).length;
+  } catch {
+    return Number.POSITIVE_INFINITY;
+  }
+}
+
 function collectModules() {
   return storage.keys()
-    .filter((key) => key.startsWith("abrigo:") && !isSensitiveStorageKey(key))
+    .filter((key) =>
+      STORAGE_KEY_PATTERN.test(key) && !isSensitiveStorageKey(key))
     .reduce((modules, key) => {
       modules[key] = storage.get(key);
       return modules;
@@ -42,72 +88,145 @@ function collectModules() {
 }
 
 function buildBackup(modules, metadata) {
-  const backup = { version: 1, createdAt: new Date().toISOString(), metadata, modules };
+  const backup = {
+    version: BACKUP_VERSION,
+    createdAt: new Date().toISOString(),
+    metadata,
+    modules,
+  };
   if (!validateBackup(backup)) throw new Error("Backup inválido.");
   return backup;
 }
 
-function hasSensitiveStructure(value) {
-  if (!value || typeof value !== "object") return false;
+export function validateBackup(value) {
+  if (
+    !value
+    || typeof value !== "object"
+    || Array.isArray(value)
+    || Object.keys(value).some((key) =>
+      !["version", "createdAt", "metadata", "modules"].includes(key))
+    || value.version !== BACKUP_VERSION
+    || typeof value.createdAt !== "string"
+    || Number.isNaN(Date.parse(value.createdAt))
+    || !value.metadata
+    || typeof value.metadata !== "object"
+    || Array.isArray(value.metadata)
+    || !value.modules
+    || typeof value.modules !== "object"
+    || Array.isArray(value.modules)
+    || Object.keys(value.modules).length > MAX_MODULES
+    || serializedSize(value) > MAX_BACKUP_BYTES
+  ) {
+    return false;
+  }
 
-  return Object.entries(value).some(([key, nestedValue]) => {
-    const normalizedKey = key.toLowerCase().replace(/[-_\s]/g, "");
-    if ([
-      "keyhash",
-      "synckey",
-      "syncstate",
-      "supabaseurl",
-      "supabaseanonkey",
-      "servicerolekey",
-      "credentials",
-    ].includes(normalizedKey)) {
-      return true;
-    }
-
-    return hasSensitiveStructure(nestedValue);
-  });
+  try {
+    assertSafeStructure(value);
+    return Object.keys(value.modules).every((key) =>
+      STORAGE_KEY_PATTERN.test(key) && !isSensitiveStorageKey(key));
+  } catch {
+    return false;
+  }
 }
 
 export function createBackup(modules = collectModules(), metadata = {}) {
-  const backup = buildBackup(modules, metadata);
-  saveBackup(backup);
-  return backup;
+  return buildBackup(modules, metadata);
 }
 
 export function createLocalExportBackup() {
-  const backup = buildBackup(
+  return buildBackup(
     collectModules(),
     { exportedAt: new Date().toISOString(), source: "local" }
   );
-
-  if (hasSensitiveStructure(backup)) {
-    throw new Error("O backup contém dados internos e não pode ser exportado.");
-  }
-
-  return backup;
 }
-export function validateBackup(value) {
-  return Boolean(
-    value &&
-    value.version === 1 &&
-    typeof value.createdAt === "string" &&
-    value.metadata &&
-    typeof value.metadata === "object" &&
-    value.modules &&
-    typeof value.modules === "object" &&
-    !Array.isArray(value.modules)
+
+export async function createEncryptedLocalBackup(cryptoKey) {
+  const backup = createLocalExportBackup();
+  return encryptJson(
+    backup,
+    cryptoKey,
+    ENCRYPTION_PURPOSES.BACKUP_EXPORT
   );
 }
-export function loadLocalBackup() { const backup = loadBackup(); return validateBackup(backup) ? backup : null; }
-export function restoreBackup(backup) {
-  if (!validateBackup(backup)) throw new Error("Backup remoto inválido.");
 
-  Object.entries(backup.modules).forEach(([key, value]) => {
-    if (key.startsWith("abrigo:") && !isSensitiveStorageKey(key)) {
-      storage.set(key, value);
+function snapshotLocalModules() {
+  return storage.keys()
+    .filter((key) =>
+      STORAGE_KEY_PATTERN.test(key) && !isSensitiveStorageKey(key))
+    .reduce((snapshot, key) => {
+      snapshot[key] = storage.get(key);
+      return snapshot;
+    }, {});
+}
+
+function replaceLocalModules(modules) {
+  storage.keys()
+    .filter((key) =>
+      STORAGE_KEY_PATTERN.test(key) && !isSensitiveStorageKey(key))
+    .forEach((key) => storage.remove(key));
+
+  for (const [key, value] of Object.entries(modules)) {
+    if (!storage.set(key, value)) {
+      throw new Error("Não foi possível gravar o backup.");
     }
-  });
+    if (JSON.stringify(storage.get(key)) !== JSON.stringify(value)) {
+      throw new Error("Não foi possível confirmar o backup.");
+    }
+  }
+}
 
-  saveBackup(backup);
+export function restoreBackup(backup) {
+  if (!validateBackup(backup)) throw new Error("Backup inválido.");
+  const snapshot = snapshotLocalModules();
+  try {
+    replaceLocalModules(backup.modules);
+    return backup;
+  } catch {
+    try {
+      replaceLocalModules(snapshot);
+    } catch {
+      throw new Error("Não foi possível restaurar os dados com segurança.");
+    }
+    throw new Error("A restauração foi cancelada sem alterar seus dados.");
+  }
+}
+
+export async function decryptBackupEnvelope(envelope, cryptoKey, purpose) {
+  const backup = await decryptJson(envelope, cryptoKey, purpose);
+  if (!validateBackup(backup)) throw new Error("Backup protegido inválido.");
   return backup;
 }
+
+export async function restoreEncryptedBackup(envelope, cryptoKey) {
+  const backup = await decryptBackupEnvelope(
+    envelope,
+    cryptoKey,
+    ENCRYPTION_PURPOSES.BACKUP_EXPORT
+  );
+  return restoreBackup(backup);
+}
+
+export function inspectBackupDocument(document) {
+  if (
+    validateEncryptedEnvelope(
+      document,
+      ENCRYPTION_PURPOSES.BACKUP_EXPORT
+    )
+  ) {
+    return { format: "encrypted", valid: true };
+  }
+  if (validateBackup(document)) {
+    return { format: "legacy", valid: true };
+  }
+  return { format: "invalid", valid: false };
+}
+
+export function loadLocalBackup() {
+  const backup = loadBackup();
+  return validateBackup(backup) ? backup : null;
+}
+
+export {
+  MAX_BACKUP_BYTES,
+  isSensitiveStorageKey,
+};
