@@ -17,6 +17,9 @@ import {
   FaStar,
   FaBullseye,
   FaLeaf,
+  FaChartBar,
+  FaSearch,
+  FaTrophy,
 } from "react-icons/fa";
 
 import MusicPlayer from "./MusicPlayer";
@@ -73,6 +76,9 @@ export default function Navbar() {
       itens: [
         { nome: "Lar", rota: ROUTES.HOME, icone: <FaHome /> },
         { nome: "Cartas", rota: ROUTES.LETTERS, icone: <FaEnvelope /> },
+        { nome: "Pesquisa", rota: ROUTES.SEARCH, icone: <FaSearch /> },
+        { nome: "Estatísticas", rota: ROUTES.STATISTICS, icone: <FaChartBar /> },
+        { nome: "Conquistas", rota: ROUTES.ACHIEVEMENTS, icone: <FaTrophy /> },
       ],
     },
     {
@@ -109,10 +115,10 @@ export default function Navbar() {
         <button
           type="button"
           className="navbar-icon"
-          onClick={abrirPlayer}
-          aria-label="Abrir reprodutor de música"
+          onClick={abrirMenu}
+          aria-label="Abrir menu de navegação"
         >
-          <FaMusic />
+          <FaBars />
         </button>
 
         <h1 className="navbar-logo">
@@ -122,10 +128,10 @@ export default function Navbar() {
         <button
           type="button"
           className="navbar-icon"
-          onClick={abrirMenu}
-          aria-label="Abrir menu de navegação"
+          onClick={abrirPlayer}
+          aria-label="Abrir reprodutor de música"
         >
-          <FaBars />
+          <FaMusic />
         </button>
       </header>
 
