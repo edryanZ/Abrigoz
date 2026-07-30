@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getDevice } from "./DeviceService";
+import { createLocalExportBackup } from "./BackupManager";
+import {
+  createDatedFilename,
+  downloadJsonFile,
+} from "./BrowserDownload";
 import {
   generateAbrigoKey,
   hashAbrigoKey,
@@ -32,6 +37,7 @@ export function useAbrigoSync() {
   const [message, setMessage] = useState(null);
   const [revealedKey, setRevealedKey] = useState("");
   const messageTimer = useRef(null);
+  const revealedKeyRef = useRef("");
   const device = useMemo(() => getDevice(), []);
 
   const clearMessage = useCallback(() => {
@@ -49,10 +55,12 @@ export function useAbrigoSync() {
   }, []);
 
   const clearRevealedKey = useCallback(() => {
+    revealedKeyRef.current = "";
     setRevealedKey("");
   }, []);
 
   const revealKey = useCallback((key) => {
+    revealedKeyRef.current = key;
     setRevealedKey(key);
   }, []);
 
@@ -61,6 +69,7 @@ export function useAbrigoSync() {
     return () => {
       unsubscribe();
       window.clearTimeout(messageTimer.current);
+      revealedKeyRef.current = "";
     };
   }, []);
 
@@ -144,17 +153,86 @@ export function useAbrigoSync() {
   ), [run]);
 
   const copyRevealedKey = useCallback(async () => {
-    if (!revealedKey) return false;
+    const key = revealedKeyRef.current;
+    if (!key) return false;
 
     try {
-      await navigator.clipboard.writeText(revealedKey);
+      await navigator.clipboard.writeText(key);
       showMessage("success", "Chave copiada.");
       return true;
     } catch {
       showMessage("error", "Não foi possível copiar automaticamente.");
       return false;
     }
-  }, [revealedKey, showMessage]);
+  }, [showMessage]);
+
+  const downloadRecoveryFile = useCallback(() => {
+    const key = revealedKeyRef.current;
+    if (!key) {
+      showMessage("error", "A chave não está mais disponível nesta tela.");
+      return null;
+    }
+
+    try {
+      const recoveryDocument = {
+        type: "abrigo-recovery-key",
+        version: 1,
+        createdAt: new Date().toISOString(),
+        key,
+      };
+      const filename = createDatedFilename(
+        "abrigo-chave-recuperacao",
+        "abrigo.json"
+      );
+      downloadJsonFile(recoveryDocument, filename);
+      showMessage("success", "Arquivo de recuperação baixado.");
+      return filename;
+    } catch (error) {
+      showMessage(
+        "error",
+        safeMessage(error, "Não foi possível baixar o arquivo de recuperação.")
+      );
+      return null;
+    }
+  }, [showMessage]);
+
+  const rotateAbrigoKey = useCallback(async () => {
+    if (busy) return null;
+    setBusy(true);
+    clearMessage();
+
+    try {
+      const originalKey = await SyncService.rotateAbrigoKey();
+      revealKey(originalKey);
+      showMessage(
+        "success",
+        "Sua nova chave foi criada. Guarde-a antes de continuar."
+      );
+      return originalKey;
+    } catch (error) {
+      showMessage(
+        "error",
+        safeMessage(error, "Não foi possível gerar uma nova chave.")
+      );
+      return null;
+    } finally {
+      setBusy(false);
+    }
+  }, [busy, clearMessage, revealKey, showMessage]);
+
+  const exportLocalBackup = useCallback(() => run(
+    async () => {
+      const backup = createLocalExportBackup();
+      const filename = createDatedFilename(
+        "abrigo-backup-local",
+        "json"
+      );
+      downloadJsonFile(backup, filename);
+      return filename;
+    },
+    "Backup local exportado.",
+    "Não foi possível exportar o backup local."
+  ), [run]);
 
   return {
     status,
@@ -167,7 +245,10 @@ export function useAbrigoSync() {
     connectByKey: (key) => handleTypedKey(key, false),
     restoreByKey: (key) => handleTypedKey(key, true),
     syncNow,
+    rotateAbrigoKey,
+    exportLocalBackup,
     copyRevealedKey,
+    downloadRecoveryFile,
     clearMessage,
     clearRevealedKey,
   };

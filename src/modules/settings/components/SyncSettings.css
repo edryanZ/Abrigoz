@@ -120,6 +120,25 @@
   background: rgba(255, 255, 255, .06);
 }
 
+.sync-rotate-confirmation {
+  display: grid;
+  gap: .85rem;
+  padding: 1rem;
+  border: 1px solid rgba(245, 202, 120, .42);
+  border-radius: 18px;
+  background: rgba(245, 202, 120, .08);
+}
+
+.sync-rotate-confirmation h4,
+.sync-rotate-confirmation p {
+  margin: 0;
+}
+
+.sync-rotate-confirmation p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
 .sync-key-reveal {
   border-color: rgba(245, 202, 120, .42);
 }

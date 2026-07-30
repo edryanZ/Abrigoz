@@ -1,0 +1,134 @@
+.recovery-key-panel {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(245, 202, 120, .42);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .06);
+}
+
+.recovery-key-panel__heading {
+  display: flex;
+  align-items: flex-start;
+  gap: .85rem;
+}
+
+.recovery-key-panel__heading > svg {
+  flex: 0 0 auto;
+  margin-top: .2rem;
+  color: #f5ca78;
+  font-size: 1.25rem;
+}
+
+.recovery-key-panel__heading h2,
+.recovery-key-panel__heading p {
+  margin: 0;
+}
+
+.recovery-key-panel__heading h2 {
+  font-size: 1.15rem;
+}
+
+.recovery-key-panel__heading p {
+  margin-top: .35rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.recovery-key-panel__warning {
+  padding: .85rem;
+  border-radius: 14px;
+  background: rgba(214, 69, 69, .14);
+  line-height: 1.55;
+}
+
+.recovery-key-panel__value {
+  display: block;
+  padding: .9rem;
+  overflow-wrap: anywhere;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, .18);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: clamp(.82rem, 3vw, 1rem);
+  letter-spacing: .05em;
+  text-align: center;
+  user-select: all;
+}
+
+.recovery-key-panel__actions {
+  display: grid;
+  gap: .75rem;
+}
+
+.recovery-key-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  width: 100%;
+  padding: .85rem 1rem;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  transition: .2s ease;
+}
+
+.recovery-key-button--confirm {
+  background: var(--accent);
+  color: white;
+}
+
+.recovery-key-button--secondary {
+  border: 1px solid rgba(255, 255, 255, .15);
+  background: rgba(255, 255, 255, .08);
+  color: var(--text-primary);
+}
+
+.recovery-key-button--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.recovery-key-button:hover:not(:disabled),
+.recovery-key-button:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.recovery-key-button:focus-visible,
+.recovery-key-confirmation input:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, .45);
+  outline-offset: 3px;
+}
+
+.recovery-key-button:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+  transform: none;
+}
+
+.recovery-key-confirmation {
+  display: flex;
+  align-items: flex-start;
+  gap: .7rem;
+  padding: .85rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .05);
+  cursor: pointer;
+  line-height: 1.45;
+}
+
+.recovery-key-confirmation input {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: .1rem 0 0;
+  accent-color: var(--accent);
+}
+
+@media (min-width: 700px) {
+  .recovery-key-panel__actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

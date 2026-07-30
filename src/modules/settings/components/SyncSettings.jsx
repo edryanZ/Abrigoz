@@ -3,13 +3,15 @@ import "./SyncSettings.css";
 import { useState } from "react";
 import {
   FaCloud,
-  FaCopy,
+  FaDownload,
   FaKey,
   FaMobileAlt,
+  FaRedoAlt,
   FaSyncAlt,
 } from "react-icons/fa";
 
 import { SYNC_STATE_LABELS, useAbrigoSync } from "../../../core/sync/useAbrigoSync";
+import RecoveryKeyPanel from "../../../shared/componentes/RecoveryKeyPanel";
 import GlassCard from "../../../shared/ui/GlassCard";
 
 function formatSyncDate(value) {
@@ -27,6 +29,7 @@ function formatSyncDate(value) {
 export default function SyncSettings() {
   const sync = useAbrigoSync();
   const [typedKey, setTypedKey] = useState("");
+  const [showRotateConfirmation, setShowRotateConfirmation] = useState(false);
 
   async function handleKeyAction(action) {
     const succeeded = action === "restore"
@@ -39,6 +42,11 @@ export default function SyncSettings() {
         window.setTimeout(() => window.location.reload(), 600);
       }
     }
+  }
+
+  async function handleRotateKey() {
+    const newKey = await sync.rotateAbrigoKey();
+    if (newKey) setShowRotateConfirmation(false);
   }
 
   return (
@@ -94,110 +102,144 @@ export default function SyncSettings() {
         </div>
       )}
 
-      {sync.revealedKey && (
-        <div className="sync-key-reveal" role="status">
-          <div>
-            <strong>Sua Chave do Abrigo</strong>
-            <p>
-              Guarde esta chave em um lugar seguro. Ela não poderá ser
-              recuperada depois.
-            </p>
-          </div>
-          <output className="sync-key-reveal__value">
-            {sync.revealedKey}
-          </output>
+      {sync.revealedKey ? (
+        <RecoveryKeyPanel
+          recoveryKey={sync.revealedKey}
+          busy={sync.busy}
+          onCopy={sync.copyRevealedKey}
+          onDownload={sync.downloadRecoveryFile}
+          onConfirm={sync.clearRevealedKey}
+          onCancel={sync.clearRevealedKey}
+        />
+      ) : (
+        <>
+          {showRotateConfirmation && (
+            <section
+              className="sync-rotate-confirmation"
+              aria-labelledby="sync-rotate-title"
+            >
+              <h4 id="sync-rotate-title">Gerar uma nova chave?</h4>
+              <p>
+                A chave anterior deixará de funcionar imediatamente depois da
+                confirmação. Antes da troca, tentaremos sincronizar todas as
+                alterações pendentes.
+              </p>
+              <div className="sync-actions">
+                <button
+                  type="button"
+                  className="config-button secondary"
+                  onClick={() => setShowRotateConfirmation(false)}
+                  disabled={sync.busy}
+                >
+                  Manter chave atual
+                </button>
+                <button
+                  type="button"
+                  className="config-button danger"
+                  onClick={() => void handleRotateKey()}
+                  disabled={sync.busy}
+                >
+                  {sync.busy ? "Trocando chave..." : "Confirmar nova chave"}
+                </button>
+              </div>
+            </section>
+          )}
+
           <div className="sync-actions">
             <button
               type="button"
               className="config-button"
-              onClick={sync.copyRevealedKey}
-              disabled={sync.busy}
+              onClick={sync.syncNow}
+              disabled={sync.busy || !sync.connected}
             >
-              <FaCopy aria-hidden="true" />
-              Copiar chave
+              <FaSyncAlt aria-hidden="true" />
+              {sync.busy ? "Aguarde..." : "Sincronizar agora"}
             </button>
+
+            {!sync.connected && (
+              <button
+                type="button"
+                className="config-button secondary"
+                onClick={sync.createRemoteAbrigo}
+                disabled={sync.busy}
+              >
+                <FaKey aria-hidden="true" />
+                Criar meu Abrigo sincronizado
+              </button>
+            )}
+
+            {sync.connected && (
+              <button
+                type="button"
+                className="config-button secondary"
+                onClick={() => setShowRotateConfirmation(true)}
+                disabled={sync.busy || showRotateConfirmation}
+              >
+                <FaRedoAlt aria-hidden="true" />
+                Gerar nova chave
+              </button>
+            )}
+
             <button
               type="button"
               className="config-button secondary"
-              onClick={sync.clearRevealedKey}
+              onClick={sync.exportLocalBackup}
+              disabled={sync.busy}
             >
-              Já guardei
+              <FaDownload aria-hidden="true" />
+              Exportar backup local
             </button>
           </div>
-        </div>
+
+          <form
+            className="sync-connect"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void handleKeyAction("connect");
+            }}
+          >
+            <div className="sync-connect__heading">
+              <h4>Usar uma Chave do Abrigo</h4>
+              <p>
+                A chave é validada e transformada em SHA-256 neste dispositivo
+                antes de qualquer comunicação remota.
+              </p>
+            </div>
+
+            <label htmlFor="sync-abrigo-key">Chave do Abrigo</label>
+            <input
+              id="sync-abrigo-key"
+              className="sync-key-input"
+              type="password"
+              value={typedKey}
+              onChange={(event) => setTypedKey(event.target.value)}
+              placeholder="ABR-••••-••••-••••-••••"
+              autoComplete="off"
+              autoCapitalize="characters"
+              spellCheck="false"
+              disabled={sync.busy}
+            />
+
+            <div className="sync-actions">
+              <button
+                type="submit"
+                className="config-button secondary"
+                disabled={sync.busy || !typedKey.trim()}
+              >
+                Conectar dispositivo
+              </button>
+              <button
+                type="button"
+                className="config-button secondary"
+                onClick={() => void handleKeyAction("restore")}
+                disabled={sync.busy || !typedKey.trim()}
+              >
+                Restaurar backup
+              </button>
+            </div>
+          </form>
+        </>
       )}
-
-      <div className="sync-actions">
-        <button
-          type="button"
-          className="config-button"
-          onClick={sync.syncNow}
-          disabled={sync.busy || !sync.connected}
-        >
-          <FaSyncAlt aria-hidden="true" />
-          {sync.busy ? "Aguarde..." : "Sincronizar agora"}
-        </button>
-
-        {!sync.connected && (
-          <button
-            type="button"
-            className="config-button secondary"
-            onClick={sync.createRemoteAbrigo}
-            disabled={sync.busy}
-          >
-            <FaKey aria-hidden="true" />
-            Criar meu Abrigo sincronizado
-          </button>
-        )}
-      </div>
-
-      <form
-        className="sync-connect"
-        onSubmit={(event) => {
-          event.preventDefault();
-          void handleKeyAction("connect");
-        }}
-      >
-        <div className="sync-connect__heading">
-          <h4>Usar uma Chave do Abrigo</h4>
-          <p>
-            A chave é validada e transformada em SHA-256 neste dispositivo
-            antes de qualquer comunicação remota.
-          </p>
-        </div>
-
-        <label htmlFor="sync-abrigo-key">Chave do Abrigo</label>
-        <input
-          id="sync-abrigo-key"
-          className="sync-key-input"
-          type="password"
-          value={typedKey}
-          onChange={(event) => setTypedKey(event.target.value)}
-          placeholder="ABR-••••-••••-••••-••••"
-          autoComplete="off"
-          autoCapitalize="characters"
-          spellCheck="false"
-          disabled={sync.busy}
-        />
-
-        <div className="sync-actions">
-          <button
-            type="submit"
-            className="config-button secondary"
-            disabled={sync.busy || !typedKey.trim()}
-          >
-            Conectar dispositivo
-          </button>
-          <button
-            type="button"
-            className="config-button secondary"
-            onClick={() => void handleKeyAction("restore")}
-            disabled={sync.busy || !typedKey.trim()}
-          >
-            Restaurar backup
-          </button>
-        </div>
-      </form>
     </GlassCard>
   );
 }

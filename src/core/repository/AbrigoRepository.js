@@ -108,6 +108,26 @@ export const AbrigoRepository = {
 
     return true;
   },
+
+  async rotateAbrigoKey(currentKeyHash, newKeyHash) {
+    assertKeyHash(currentKeyHash);
+    assertKeyHash(newKeyHash);
+
+    if (currentKeyHash === newKeyHash) {
+      throw new Error("Identificadores do Abrigo inválidos.");
+    }
+
+    const result = await callRpc("rotate_abrigo_key", {
+      p_current_key_hash: currentKeyHash,
+      p_new_key_hash: newKeyHash,
+    });
+
+    if (result !== true) {
+      throw new Error("Não foi possível confirmar a troca da chave.");
+    }
+
+    return true;
+  },
 };
 
 export default AbrigoRepository;

@@ -3,7 +3,11 @@ import { loadSyncState, saveSyncState } from "../storage/SyncStorage";
 import { createBackup, restoreBackup, validateBackup } from "./BackupManager";
 import { getDevice, markDeviceSynced } from "./DeviceService";
 import { enqueue, getQueue, processQueue as processNext } from "./SyncQueue";
-import { isValidKeyHash } from "./AbrigoKey";
+import {
+  generateAbrigoKey,
+  hashAbrigoKey,
+  isValidKeyHash,
+} from "./AbrigoKey";
 
 const VALID_STATES = new Set([
   "idle",
@@ -16,7 +20,8 @@ const VALID_STATES = new Set([
 ]);
 
 let initialized = false;
-let processing = false;
+let processingPromise = null;
+let rotating = false;
 let status = {
   state: "idle",
   lastSyncAt: loadSyncState().lastSyncAt ?? null,
@@ -83,52 +88,57 @@ export const SyncService = {
   },
 
   async processQueue() {
-    if (processing) return this.getStatus();
+    if (processingPromise) return processingPromise;
 
-    const keyHash = getKeyHash();
-    if (!AbrigoRepository.isAvailable()) {
-      setStatus("unavailable");
-      return this.getStatus();
-    }
-    if (isOffline()) {
-      setStatus("offline");
-      return this.getStatus();
-    }
-    if (!keyHash) {
-      setStatus(getQueue().length ? "pending" : "idle");
-      return this.getStatus();
-    }
+    processingPromise = (async () => {
+      const keyHash = getKeyHash();
+      if (!AbrigoRepository.isAvailable()) {
+        setStatus("unavailable");
+        return this.getStatus();
+      }
+      if (isOffline()) {
+        setStatus("offline");
+        return this.getStatus();
+      }
+      if (!keyHash) {
+        setStatus(getQueue().length ? "pending" : "idle");
+        return this.getStatus();
+      }
 
-    processing = true;
-    setStatus("syncing", { error: null });
+      setStatus("syncing", { error: null });
 
-    try {
-      while (getQueue().length > 0) {
-        await processNext(async (operation) => {
-          const backup = createBackup(undefined, {
-            operation: {
-              module: operation.module,
-              action: operation.action,
-              recordId: operation.recordId,
-              timestamp: operation.timestamp,
-            },
-            deviceId: getDevice().id,
+      try {
+        while (getQueue().length > 0) {
+          await processNext(async (operation) => {
+            const backup = createBackup(undefined, {
+              operation: {
+                module: operation.module,
+                action: operation.action,
+                recordId: operation.recordId,
+                timestamp: operation.timestamp,
+              },
+              deviceId: getDevice().id,
+            });
+            const syncedAt = await completeRemoteSync(keyHash, backup);
+            setStatus("syncing", { lastSyncAt: syncedAt });
           });
-          const syncedAt = await completeRemoteSync(keyHash, backup);
-          setStatus("syncing", { lastSyncAt: syncedAt });
+        }
+
+        setStatus("success", { error: null });
+      } catch {
+        setStatus(isOffline() ? "offline" : "error", {
+          error: "Não foi possível sincronizar agora. A alteração foi mantida para nova tentativa.",
         });
       }
 
-      setStatus("success", { error: null });
-    } catch {
-      setStatus(isOffline() ? "offline" : "error", {
-        error: "Não foi possível sincronizar agora. A alteração foi mantida para nova tentativa.",
-      });
-    } finally {
-      processing = false;
-    }
+      return this.getStatus();
+    })();
 
-    return this.getStatus();
+    try {
+      return await processingPromise;
+    } finally {
+      processingPromise = null;
+    }
   },
 
   async syncNow() {
@@ -204,6 +214,63 @@ export const SyncService = {
     } catch {
       setStatus("error", { error: "Não foi possível restaurar o backup." });
       throw new Error("Não foi possível restaurar o backup.");
+    }
+  },
+
+  async rotateAbrigoKey() {
+    if (rotating) {
+      throw new Error("A troca da chave já está em andamento.");
+    }
+    if (!AbrigoRepository.isAvailable()) {
+      setStatus("unavailable");
+      throw new Error("Sincronização remota indisponível.");
+    }
+    if (isOffline()) {
+      setStatus("offline");
+      throw new Error("Conecte-se à internet para trocar a chave.");
+    }
+
+    const currentKeyHash = getKeyHash();
+    if (!currentKeyHash) {
+      throw new Error("Nenhum Abrigo sincronizado está conectado.");
+    }
+
+    rotating = true;
+
+    try {
+      const syncResult = await this.processQueue();
+      if (
+        syncResult.pending > 0 ||
+        ["error", "offline", "unavailable"].includes(syncResult.state)
+      ) {
+        throw new Error(
+          "Não foi possível sincronizar as alterações antes da troca."
+        );
+      }
+
+      const originalKey = generateAbrigoKey();
+      const newKeyHash = await hashAbrigoKey(originalKey);
+
+      setStatus("syncing", { error: null });
+      await AbrigoRepository.rotateAbrigoKey(currentKeyHash, newKeyHash);
+
+      try {
+        persistConnection(newKeyHash, status.lastSyncAt);
+      } catch {
+        await AbrigoRepository.rotateAbrigoKey(newKeyHash, currentKeyHash);
+        persistConnection(currentKeyHash, status.lastSyncAt);
+        throw new Error("Não foi possível salvar a nova chave neste dispositivo.");
+      }
+
+      setStatus("success", { error: null });
+      return originalKey;
+    } catch {
+      setStatus("error", {
+        error: "Não foi possível trocar a Chave do Abrigo.",
+      });
+      throw new Error("Não foi possível trocar a Chave do Abrigo.");
+    } finally {
+      rotating = false;
     }
   },
 

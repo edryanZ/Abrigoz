@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import {
   FaCloud,
-  FaCopy,
   FaKey,
   FaMobileAlt,
   FaShieldAlt,
@@ -14,6 +13,7 @@ import ROUTES from "../../../core/constants/routes";
 import { useAbrigoSync } from "../../../core/sync/useAbrigoSync";
 
 import Ceu from "../../../shared/componentes/Ceu";
+import RecoveryKeyPanel from "../../../shared/componentes/RecoveryKeyPanel";
 import { useTheme } from "../../../shared/contexts/ThemeContext";
 import { useUser } from "../../../shared/contexts/UserContext";
 import Container from "../../../shared/ui/Container";
@@ -230,40 +230,14 @@ export default function Welcome() {
               </form>
             )}
 
-            {step === "created" && sync.revealedKey && (
-              <div className="welcome-created" role="status">
-                <div>
-                  <h2>Guarde sua Chave do Abrigo</h2>
-                  <p>
-                    Esta é a única vez que ela será mostrada. Guarde-a em um
-                    lugar seguro: a chave não poderá ser recuperada depois.
-                  </p>
-                </div>
-
-                <output className="welcome-key-value">
-                  {sync.revealedKey}
-                </output>
-
-                <button
-                  type="button"
-                  className="welcome-button welcome-button--secondary"
-                  onClick={sync.copyRevealedKey}
-                >
-                  <FaCopy aria-hidden="true" />
-                  Copiar chave
-                </button>
-
-                <button
-                  type="button"
-                  className="welcome-button"
-                  onClick={() => void finishCreatedAbrigo()}
-                  disabled={sync.busy}
-                >
-                  {sync.busy
-                    ? "Preparando seu Abrigo..."
-                    : "Guardei minha chave e quero continuar"}
-                </button>
-              </div>
+            {step === "created" && (
+              <RecoveryKeyPanel
+                recoveryKey={sync.revealedKey}
+                busy={sync.busy}
+                onCopy={sync.copyRevealedKey}
+                onDownload={sync.downloadRecoveryFile}
+                onConfirm={() => void finishCreatedAbrigo()}
+              />
             )}
           </GlassCard>
         </main>

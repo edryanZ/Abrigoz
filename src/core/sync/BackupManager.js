@@ -8,6 +8,7 @@ import {
 const EXCLUDED_KEYS = new Set([
   "abrigo:backup:v1",
   "abrigo:device:v1",
+  "abrigo:sync",
   SYNC_QUEUE_STORAGE_KEY,
   SYNC_STATE_STORAGE_KEY,
 ]);
@@ -21,10 +22,49 @@ function collectModules() {
     }, {});
 }
 
-export function createBackup(modules = collectModules(), metadata = {}) {
+function buildBackup(modules, metadata) {
   const backup = { version: 1, createdAt: new Date().toISOString(), metadata, modules };
   if (!validateBackup(backup)) throw new Error("Backup inválido.");
+  return backup;
+}
+
+function hasSensitiveStructure(value) {
+  if (!value || typeof value !== "object") return false;
+
+  return Object.entries(value).some(([key, nestedValue]) => {
+    const normalizedKey = key.toLowerCase().replace(/[-_\s]/g, "");
+    if ([
+      "keyhash",
+      "synckey",
+      "syncstate",
+      "supabaseurl",
+      "supabaseanonkey",
+      "servicerolekey",
+      "credentials",
+    ].includes(normalizedKey)) {
+      return true;
+    }
+
+    return hasSensitiveStructure(nestedValue);
+  });
+}
+
+export function createBackup(modules = collectModules(), metadata = {}) {
+  const backup = buildBackup(modules, metadata);
   saveBackup(backup);
+  return backup;
+}
+
+export function createLocalExportBackup() {
+  const backup = buildBackup(
+    collectModules(),
+    { exportedAt: new Date().toISOString(), source: "local" }
+  );
+
+  if (hasSensitiveStructure(backup)) {
+    throw new Error("O backup contém dados internos e não pode ser exportado.");
+  }
+
   return backup;
 }
 export function validateBackup(value) {
