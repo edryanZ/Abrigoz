@@ -20,6 +20,7 @@ const Configuracoes = lazy(() =>
   import("../../modules/settings/Configuracoes")
 );
 const Diary = lazy(() => import("../../modules/diary/pages/Diary"));
+const Statistics = lazy(() => import("../../modules/statistics/Statistics"));
 
 export default function AppRoutes() {
   return (
@@ -39,6 +40,7 @@ export default function AppRoutes() {
           element={<Configuracoes />}
         />
         <Route path={ROUTES.DIARY} element={<Diary />} />
+        <Route path={ROUTES.STATISTICS} element={<Statistics />} />
 
         <Route
           path="/home"

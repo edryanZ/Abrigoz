@@ -12,6 +12,7 @@ export const ROUTES = {
   ABOUT: "/sobre",
   SETTINGS: "/configuracoes",
   DIARY: "/diario",
+  STATISTICS: "/estatisticas",
 
   // Sistema
   NOT_FOUND: "*",

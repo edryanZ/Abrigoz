@@ -18,6 +18,13 @@ export const STORAGE_KEYS = {
   STATISTICS: "abrigo:statistics",
   MOODS: "abrigo:moods",
   ACHIEVEMENTS: "abrigo:achievements",
+  INTELLIGENCE_SETTINGS: "abrigo:intelligence-settings:v1",
+  DASHBOARD_PREFERENCES: "abrigo:dashboard-preferences:v1",
+  COMPANION: "abrigo:companion:v1",
+  HIDDEN_MEMORIES: "abrigo:hidden-memories:v1",
+  SEARCH_PREFERENCES: "abrigo:search-preferences:v1",
+  PRIVACY_MODE: "abrigo:privacy-mode:v1",
+  ANALYTICS_CONSENT: "abrigo:analytics-consent:v1",
 
   LAST_ACCESS: "abrigo:lastAccess",
   DIARY: "abrigo:diary",
