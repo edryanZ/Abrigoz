@@ -23,6 +23,7 @@ import {
 } from "./BackupManager";
 import { getDevice, markDeviceSynced } from "./DeviceService";
 import { enqueue, getQueue, processQueue as processNext } from "./SyncQueue";
+import { migrateRemoteLegacyBackup } from "./RemoteBackupMigration";
 import {
   generateAbrigoKey,
   hashAbrigoKey,
@@ -38,6 +39,7 @@ const VALID_STATES = new Set([
   "success",
   "key_required",
   "legacy_pending",
+  "migrating",
   "offline",
   "unavailable",
   "secure_unavailable",
@@ -344,17 +346,23 @@ export const SyncService = {
       );
       if (!abrigo?.id) throw new Error("not-found");
       const remote = await AbrigoRepository.getBackup(material.keyHash);
-      const validation = await validateRemotePayload(remote, material);
+      let validation = await validateRemotePayload(remote, material);
+      if (validation.format === "legacy") {
+        setStatus("migrating", { protection: "legacy_pending" });
+        const migration = await migrateRemoteLegacyBackup({
+          keyHash: material.keyHash,
+          remoteSyncKey: material.remoteSync,
+          remoteBackup: remote,
+        });
+        validation = {
+          format: "encrypted",
+          backup: migration.backup,
+        };
+      }
       await AbrigoRepository.registerDevice(material.keyHash, getDevice());
       const persistedProtection = await activateKeyMaterial(material);
       persistConnection(connectionDetails(abrigo, material.keyHash));
-      const protection = validation.format === "legacy"
-        ? "legacy_pending"
-        : persistedProtection;
-      setStatus(
-        validation.format === "legacy" ? "legacy_pending" : "success",
-        { protection, error: null }
-      );
+      setStatus("success", { protection: persistedProtection, error: null });
       return { ...abrigo, backupFormat: validation.format };
     } catch {
       setStatus("error", {
@@ -374,10 +382,20 @@ export const SyncService = {
       );
       if (!abrigo?.id) throw new Error("not-found");
       const remote = await AbrigoRepository.getBackup(material.keyHash);
-      const validation = await validateRemotePayload(remote, material);
-      if (validation.format !== "encrypted" || !validation.backup) {
-        throw new Error("legacy-backup");
+      let validation = await validateRemotePayload(remote, material);
+      if (validation.format === "legacy") {
+        setStatus("migrating", { protection: "legacy_pending" });
+        const migration = await migrateRemoteLegacyBackup({
+          keyHash: material.keyHash,
+          remoteSyncKey: material.remoteSync,
+          remoteBackup: remote,
+        });
+        validation = {
+          format: "encrypted",
+          backup: migration.backup,
+        };
       }
+      if (!validation.backup) throw new Error("empty-backup");
       restoreBackup(validation.backup);
       const protection = await activateKeyMaterial(material);
       const device = getDevice();
