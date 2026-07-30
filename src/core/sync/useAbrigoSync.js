@@ -8,7 +8,6 @@ import {
 } from "./BrowserDownload";
 import {
   generateAbrigoKey,
-  hashAbrigoKey,
   isValidAbrigoKey,
 } from "./AbrigoKey";
 import SyncService from "./SyncService";
@@ -97,8 +96,7 @@ export function useAbrigoSync() {
 
     try {
       const originalKey = generateAbrigoKey();
-      const keyHash = await hashAbrigoKey(originalKey);
-      const abrigo = await SyncService.createRemoteAbrigo(keyHash);
+      const abrigo = await SyncService.createRemoteAbrigo(originalKey);
       revealKey(originalKey);
       showMessage(
         "success",
@@ -124,10 +122,9 @@ export function useAbrigoSync() {
 
     return run(
       async () => {
-        const keyHash = await hashAbrigoKey(key);
         return restore
-          ? SyncService.restoreByKeyHash(keyHash)
-          : SyncService.connectByKeyHash(keyHash);
+          ? SyncService.restoreByKey(key)
+          : SyncService.connectByKey(key);
       },
       restore
         ? "Backup restaurado neste dispositivo."

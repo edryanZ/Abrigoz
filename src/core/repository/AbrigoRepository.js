@@ -2,6 +2,10 @@ import {
   getSupabaseClient,
   isSupabaseConfigured,
 } from "../supabase/supabaseClient";
+import {
+  ENCRYPTION_PURPOSES,
+  validateEncryptedEnvelope,
+} from "../crypto/CryptoService";
 
 const HASH_PATTERN = /^[a-f0-9]{64}$/;
 
@@ -51,8 +55,13 @@ export const AbrigoRepository = {
   async saveBackup(keyHash, backup) {
     assertKeyHash(keyHash);
 
-    if (!backup || !Number.isInteger(backup.version) || backup.version < 1) {
-      throw new Error("Backup inválido.");
+    if (
+      !validateEncryptedEnvelope(
+        backup,
+        ENCRYPTION_PURPOSES.REMOTE_SYNC
+      )
+    ) {
+      throw new Error("Conteúdo protegido inválido.");
     }
 
     const result = await callRpc("save_abrigo_backup", {
@@ -126,6 +135,36 @@ export const AbrigoRepository = {
       throw new Error("Não foi possível confirmar a troca da chave.");
     }
 
+    return true;
+  },
+
+  async rotateAbrigoKeyWithBackup(
+    currentKeyHash,
+    newKeyHash,
+    encryptedBackup
+  ) {
+    assertKeyHash(currentKeyHash);
+    assertKeyHash(newKeyHash);
+    if (
+      currentKeyHash === newKeyHash
+      || !validateEncryptedEnvelope(
+        encryptedBackup,
+        ENCRYPTION_PURPOSES.REMOTE_SYNC
+      )
+    ) {
+      throw new Error("Dados de proteção inválidos.");
+    }
+
+    const result = await callRpc("rotate_abrigo_key_with_backup", {
+      p_current_key_hash: currentKeyHash,
+      p_new_key_hash: newKeyHash,
+      p_version: encryptedBackup.version,
+      p_payload: encryptedBackup,
+    });
+
+    if (result !== true) {
+      throw new Error("Não foi possível confirmar a troca protegida.");
+    }
     return true;
   },
 };

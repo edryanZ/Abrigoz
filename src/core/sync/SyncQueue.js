@@ -7,7 +7,19 @@ saveQueue(queue);
 let processing = false;
 
 export function enqueue(operation) {
-  const item = { ...operation, id: crypto.randomUUID(), status: "pending", attempts: 0 };
+  const item = {
+    id: crypto.randomUUID(),
+    module: String(operation?.module ?? "unknown").slice(0, 60),
+    action: String(operation?.action ?? "updated").slice(0, 30),
+    recordId: operation?.recordId == null
+      ? null
+      : String(operation.recordId).slice(0, 120),
+    timestamp: Number.isNaN(Date.parse(operation?.timestamp))
+      ? new Date().toISOString()
+      : operation.timestamp,
+    status: "pending",
+    attempts: 0,
+  };
   queue = [...queue, item];
   saveQueue(queue);
   return item;
