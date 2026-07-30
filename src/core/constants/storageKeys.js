@@ -8,6 +8,7 @@ export const STORAGE_KEYS = {
   FAVORITES: "abrigo:favorites",
   FAVORITE_ITEMS: "abrigo:personal-favorites:v2",
   GOALS: "abrigo:goals:v1",
+  HABITS: "abrigo:habits:v1",
   PROGRESS: "abrigo:progress",
 
   EVENTS: "abrigo:events",

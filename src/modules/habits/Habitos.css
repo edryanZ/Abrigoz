@@ -1,0 +1,194 @@
+.habit-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: .7rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.habit-toolbar div {
+  display: flex;
+  gap: .35rem;
+}
+
+.habit-toolbar button,
+.habit-form-actions button,
+.habit-card button {
+  border: 1px solid var(--border-color);
+  border-radius: .7rem;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: .65rem .8rem;
+}
+
+.habit-toolbar > button,
+.habit-toolbar .active,
+.habit-form-actions button:last-child,
+.habit-today {
+  background: var(--accent) !important;
+  color: white !important;
+}
+
+.habit-editor {
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.habit-form,
+.habit-list {
+  display: grid;
+  gap: .8rem;
+}
+
+.habit-form label {
+  display: grid;
+  gap: .3rem;
+  color: var(--text-secondary);
+  font-size: .85rem;
+}
+
+.habit-form input,
+.habit-form select,
+.habit-form textarea {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: .75rem;
+  background: var(--surface);
+  color: var(--text-primary);
+  padding: .7rem;
+}
+
+.habit-form-grid {
+  display: grid;
+  gap: .7rem;
+}
+
+.habit-form-grid.compact {
+  grid-template-columns: 1fr 1fr;
+}
+
+.habit-weekdays {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+  border: 1px solid var(--border-color);
+  border-radius: .8rem;
+}
+
+.habit-weekdays label {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+}
+
+.habit-weekdays input {
+  width: auto;
+}
+
+.habit-form-actions,
+.habit-card footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: .4rem;
+}
+
+.habit-form-actions .secondary {
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.habit-card {
+  border: 1px solid var(--border-color);
+  border-top: 4px solid var(--habit-color);
+  border-radius: 1rem;
+  background: var(--card-bg);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+}
+
+.habit-card header {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+}
+
+.habit-icon {
+  display: grid;
+  place-items: center;
+  width: 2.7rem;
+  height: 2.7rem;
+  border-radius: .8rem;
+  background: var(--surface);
+  font-size: 1.4rem;
+}
+
+.habit-card h2,
+.habit-card header p {
+  margin: 0;
+}
+
+.habit-card header p,
+.habit-card small {
+  color: var(--text-secondary);
+}
+
+.habit-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: .25rem;
+  margin: 1rem 0;
+}
+
+.habit-week button {
+  display: grid;
+  padding: .4rem .2rem;
+  font-size: .72rem;
+}
+
+.habit-week button.completed {
+  border-color: var(--habit-color);
+  background: var(--habit-color);
+  color: white;
+}
+
+.habit-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+}
+
+.habit-stats dt {
+  color: var(--text-secondary);
+  font-size: .72rem;
+}
+
+.habit-stats dd {
+  margin: .2rem 0;
+  font-weight: 700;
+}
+
+.habit-today {
+  width: 100%;
+  margin-bottom: .7rem;
+}
+
+.habit-card footer button {
+  padding: .45rem .55rem;
+}
+
+.habit-empty {
+  padding: 2rem;
+  text-align: center;
+}
+
+@media (min-width: 760px) {
+  .habit-form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .habit-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
