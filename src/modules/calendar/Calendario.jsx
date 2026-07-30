@@ -6,6 +6,7 @@ import { FaPlus, FaSearch } from "react-icons/fa";
 import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
+import PrivacyNotice from "../../shared/componentes/PrivacyNotice";
 import { useTheme } from "../../shared/contexts/ThemeContext";
 import Container from "../../shared/ui/Container";
 import GlassCard from "../../shared/ui/GlassCard";
@@ -57,6 +58,7 @@ export default function Calendario() {
           title="Calendário"
           subtitle="Organize compromissos e momentos importantes com tranquilidade."
         />
+        <PrivacyNotice />
         <Section>
           <div className="calendar-layout">
             <GlassCard className="calendario-card" hover={false}>

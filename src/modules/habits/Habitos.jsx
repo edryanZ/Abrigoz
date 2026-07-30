@@ -6,6 +6,7 @@ import { FaPlus } from "react-icons/fa";
 import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
+import PrivacyNotice from "../../shared/componentes/PrivacyNotice";
 import { useTheme } from "../../shared/contexts/ThemeContext";
 import Container from "../../shared/ui/Container";
 import GlassCard from "../../shared/ui/GlassCard";
@@ -26,6 +27,7 @@ export default function Habitos() {
       <Container>
         <PageHeader greeting={`${greeting} 🌿`} title="Hábitos"
           subtitle="Cuide da sua rotina com constância e gentileza." />
+        <PrivacyNotice />
         <GlassCard className="habit-toolbar" hover={false}>
           <div role="group" aria-label="Filtrar hábitos">
             <button type="button" className={habits.filter === "active" ? "active" : ""}

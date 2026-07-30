@@ -129,6 +129,50 @@
   background: rgba(245, 202, 120, .08);
 }
 
+.sync-backup-protection {
+  display: grid;
+  gap: .7rem;
+  margin-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1rem;
+}
+
+.sync-backup-protection > label {
+  color: var(--text-secondary);
+  font-size: .88rem;
+}
+
+.sync-file-input {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: .8rem;
+  background: var(--surface);
+  color: var(--text-primary);
+  padding: .7rem;
+}
+
+.sync-legacy-warning {
+  border: 1px solid #d79b45;
+  border-radius: .8rem;
+  background: rgba(215, 155, 69, .12);
+  padding: .8rem;
+}
+
+.sync-legacy-warning p {
+  margin: .3rem 0 .6rem;
+}
+
+.sync-legacy-warning label {
+  display: flex;
+  align-items: flex-start;
+  gap: .45rem;
+}
+
+.sync-protected-file {
+  color: var(--accent);
+  font-weight: 700;
+}
+
 .sync-rotate-confirmation h4,
 .sync-rotate-confirmation p {
   margin: 0;

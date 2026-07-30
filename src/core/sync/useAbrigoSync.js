@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getDevice } from "./DeviceService";
-import { createLocalExportBackup } from "./BackupManager";
+import { inspectBackupDocument } from "./BackupManager";
+import { readBackupFile } from "./BackupFileService";
 import {
   createDatedFilename,
   downloadJsonFile,
@@ -17,10 +18,15 @@ const MESSAGE_TIMEOUT = 8000;
 export const SYNC_STATE_LABELS = {
   idle: "Pronto",
   pending: "Alterações pendentes",
+  encrypting: "Preparando proteção",
   syncing: "Sincronizando",
   success: "Sincronizado",
+  key_required: "Chave necessária",
+  legacy_pending: "Migração de segurança pendente",
+  migrating: "Protegendo backup antigo",
   offline: "Sem conexão",
   unavailable: "Serviço indisponível",
+  secure_unavailable: "Sincronização segura indisponível",
   error: "Erro de sincronização",
 };
 
@@ -217,23 +223,51 @@ export function useAbrigoSync() {
     }
   }, [busy, clearMessage, revealKey, showMessage]);
 
-  const exportLocalBackup = useCallback(() => run(
+  const exportLocalBackup = useCallback((originalKey = null) => run(
     async () => {
-      const backup = createLocalExportBackup();
+      const backup = await SyncService.createProtectedLocalBackup(
+        originalKey || null
+      );
       const filename = createDatedFilename(
-        "abrigo-backup-local",
-        "json"
+        "abrigo-backup-protegido",
+        "abrigo.json"
       );
       downloadJsonFile(backup, filename);
       return filename;
     },
-    "Backup local exportado.",
-    "Não foi possível exportar o backup local."
+    "Backup protegido exportado.",
+    "Não foi possível exportar o backup protegido."
   ), [run]);
+
+  const inspectBackupFile = useCallback(async (file) => {
+    try {
+      const document = await readBackupFile(file);
+      return inspectBackupDocument(document);
+    } catch (error) {
+      showMessage("error", safeMessage(error, "Arquivo de backup inválido."));
+      return { format: "invalid", valid: false };
+    }
+  }, [showMessage]);
+
+  const restoreLocalBackup = useCallback(
+    (file, originalKey = null, allowLegacy = false) => run(
+      async () => {
+        const document = await readBackupFile(file);
+        return SyncService.restoreLocalBackup(
+          document,
+          originalKey || null,
+          allowLegacy
+        );
+      },
+      "Backup restaurado com segurança.",
+      "Não foi possível restaurar este backup."
+    ),
+    [run]
+  );
 
   return {
     status,
-    busy: busy || status.state === "syncing",
+    busy: busy || ["encrypting", "migrating", "syncing"].includes(status.state),
     message,
     device,
     revealedKey,
@@ -244,6 +278,8 @@ export function useAbrigoSync() {
     syncNow,
     rotateAbrigoKey,
     exportLocalBackup,
+    inspectBackupFile,
+    restoreLocalBackup,
     copyRevealedKey,
     downloadRecoveryFile,
     clearMessage,

@@ -1,0 +1,52 @@
+.privacy-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: .7rem;
+  margin: .8rem 0 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  padding: .85rem 1rem;
+}
+
+.privacy-notice > svg {
+  flex: 0 0 auto;
+  margin-top: .15rem;
+  color: var(--accent);
+}
+
+.privacy-notice p {
+  margin: .25rem 0;
+  color: var(--text-secondary);
+  font-size: .86rem;
+  line-height: 1.5;
+}
+
+.privacy-notice button {
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  padding: .35rem 0;
+  font-weight: 700;
+}
+
+.privacy-notice button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.privacy-notice.is-compact {
+  align-items: center;
+}
+
+.privacy-notice.is-compact strong {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .privacy-notice * {
+    transition: none !important;
+  }
+}

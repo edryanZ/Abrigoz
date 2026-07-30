@@ -6,6 +6,7 @@ import { FaPlus, FaSearch } from "react-icons/fa";
 import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
+import PrivacyNotice from "../../shared/componentes/PrivacyNotice";
 import { useTheme } from "../../shared/contexts/ThemeContext";
 import Container from "../../shared/ui/Container";
 import GlassCard from "../../shared/ui/GlassCard";
@@ -31,6 +32,7 @@ export default function Metas() {
       <Container>
         <PageHeader greeting={`${greeting} 🎯`} title="Metas"
           subtitle="Transforme planos grandes em passos possíveis." />
+        <PrivacyNotice />
         <section className="goal-summary">
           <GlassCard hover={false}><strong>{goals.allItems.length}</strong>
             <span>metas guardadas</span></GlassCard>

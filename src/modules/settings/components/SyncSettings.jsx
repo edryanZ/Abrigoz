@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 
 import { SYNC_STATE_LABELS, useAbrigoSync } from "../../../core/sync/useAbrigoSync";
+import PrivacyNotice from "../../../shared/componentes/PrivacyNotice";
 import RecoveryKeyPanel from "../../../shared/componentes/RecoveryKeyPanel";
 import GlassCard from "../../../shared/ui/GlassCard";
 
@@ -30,14 +31,18 @@ export default function SyncSettings() {
   const sync = useAbrigoSync();
   const [typedKey, setTypedKey] = useState("");
   const [showRotateConfirmation, setShowRotateConfirmation] = useState(false);
+  const [backupKey, setBackupKey] = useState("");
+  const [backupFile, setBackupFile] = useState(null);
+  const [backupInspection, setBackupInspection] = useState(null);
+  const [legacyConfirmed, setLegacyConfirmed] = useState(false);
 
   async function handleKeyAction(action) {
     const succeeded = action === "restore"
       ? await sync.restoreByKey(typedKey)
       : await sync.connectByKey(typedKey);
 
+    setTypedKey("");
     if (succeeded) {
-      setTypedKey("");
       if (action === "restore") {
         window.setTimeout(() => window.location.reload(), 600);
       }
@@ -47,6 +52,37 @@ export default function SyncSettings() {
   async function handleRotateKey() {
     const newKey = await sync.rotateAbrigoKey();
     if (newKey) setShowRotateConfirmation(false);
+  }
+
+  async function handleBackupFile(file) {
+    setBackupFile(file);
+    setLegacyConfirmed(false);
+    if (!file) {
+      setBackupInspection(null);
+      return;
+    }
+    setBackupInspection(await sync.inspectBackupFile(file));
+  }
+
+  async function handleProtectedExport() {
+    await sync.exportLocalBackup(backupKey);
+    setBackupKey("");
+  }
+
+  async function handleLocalRestore() {
+    if (!backupFile) return;
+    const restored = await sync.restoreLocalBackup(
+      backupFile,
+      backupKey,
+      legacyConfirmed
+    );
+    setBackupKey("");
+    if (restored) {
+      setBackupFile(null);
+      setBackupInspection(null);
+      setLegacyConfirmed(false);
+      window.setTimeout(() => window.location.reload(), 600);
+    }
   }
 
   return (
@@ -63,6 +99,7 @@ export default function SyncSettings() {
           </p>
         </div>
       </div>
+      <PrivacyNotice />
 
       <dl className="sync-settings__status">
         <div>
@@ -191,11 +228,11 @@ export default function SyncSettings() {
             <button
               type="button"
               className="config-button secondary"
-              onClick={sync.exportLocalBackup}
+              onClick={() => void handleProtectedExport()}
               disabled={sync.busy}
             >
               <FaDownload aria-hidden="true" />
-              Exportar backup local
+              Exportar backup protegido
             </button>
           </div>
 
@@ -246,6 +283,87 @@ export default function SyncSettings() {
               </button>
             </div>
           </form>
+
+          <section
+            className="sync-backup-protection"
+            aria-labelledby="sync-backup-title"
+          >
+            <div className="sync-connect__heading">
+              <h4 id="sync-backup-title">Backup protegido</h4>
+              <p>
+                O arquivo exportado contém somente um envelope criptografado.
+                Se a proteção não estiver disponível neste navegador, informe
+                sua Chave do Abrigo apenas para esta operação.
+              </p>
+            </div>
+
+            <label htmlFor="sync-backup-key">
+              Chave do Abrigo, quando solicitada
+            </label>
+            <input
+              id="sync-backup-key"
+              className="sync-key-input"
+              type="password"
+              value={backupKey}
+              onChange={(event) => setBackupKey(event.target.value)}
+              autoComplete="off"
+              spellCheck="false"
+              disabled={sync.busy}
+            />
+
+            <label htmlFor="sync-backup-file">Arquivo de backup</label>
+            <input
+              id="sync-backup-file"
+              className="sync-file-input"
+              type="file"
+              accept=".json,.abrigo.json,application/json"
+              onChange={(event) =>
+                void handleBackupFile(event.target.files?.[0] ?? null)}
+              disabled={sync.busy}
+            />
+
+            {backupInspection?.format === "legacy" && (
+              <div className="sync-legacy-warning" role="alert">
+                <strong>Backup antigo sem criptografia</strong>
+                <p>
+                  O arquivo será validado e restaurado somente após sua
+                  confirmação. Novas exportações usarão sempre proteção.
+                </p>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={legacyConfirmed}
+                    onChange={(event) =>
+                      setLegacyConfirmed(event.target.checked)}
+                  />
+                  Confirmo que desejo restaurar este backup antigo
+                </label>
+              </div>
+            )}
+
+            {backupInspection?.format === "encrypted" && (
+              <p className="sync-protected-file" role="status">
+                Backup protegido reconhecido.
+              </p>
+            )}
+
+            <button
+              type="button"
+              className="config-button secondary"
+              onClick={() => void handleLocalRestore()}
+              disabled={
+                sync.busy
+                || !backupFile
+                || !backupInspection?.valid
+                || (
+                  backupInspection.format === "legacy"
+                  && !legacyConfirmed
+                )
+              }
+            >
+              Restaurar arquivo selecionado
+            </button>
+          </section>
         </>
       )}
     </GlassCard>
