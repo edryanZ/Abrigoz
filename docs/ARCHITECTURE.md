@@ -34,3 +34,21 @@ contém somente módulo, ação, ID do registro, horário, estado e tentativas.
 Componentes não acessam `localStorage`, IndexedDB, Supabase ou `CryptoKey`
 diretamente. O aviso compartilhado `PrivacyNotice` traduz o estado seguro
 publicado por `SyncService` sem expor detalhes internos.
+
+## Inteligência local
+
+`src/core/intelligence` oferece funções puras de períodos, estatísticas, mapa
+de momentos, Hoje, memórias e resumos. A pesquisa usa adaptadores e índice
+reconstruível em memória. Conquistas e Companheiro usam regras versionadas e
+fatos locais. Não existe IA externa nesta Sprint.
+
+Preferências pessoais elegíveis entram no backup protegido. Índice de
+pesquisa, consentimento de métricas e tokens temporários não entram. O modo
+privacidade apenas oculta conteúdo na interface.
+
+## Métricas separadas
+
+`AnalyticsService` aceita eventos enumerados e usa `AnalyticsRepository` sem
+passar por `SyncService`, fila, backup ou Chave do Abrigo. O endpoint em `api/`
+consulta agregados com credenciais server-side e fica desativado sem
+configuração.

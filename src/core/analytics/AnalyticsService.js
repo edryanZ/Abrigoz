@@ -1,17 +1,10 @@
-import STORAGE_KEYS from "../constants/storageKeys";
-import { bytesToBase64Url } from "../crypto/Base64Url";
-import { storage } from "../storage/storage";
-import { AnalyticsRepository } from "../repository/AnalyticsRepository";
-
-const EVENTS = new Set([
-  "app_open", "page_view", "pwa_installed", "sync_success", "sync_failure",
-  "backup_export_started", "backup_export_completed", "app_error_safe",
-]);
-const PAGES = new Set([
-  "home", "diary", "calendar", "letters", "favorites", "goals", "habits",
-  "statistics", "achievements", "search", "settings",
-]);
-const SAFE_ERRORS = new Set(["render_failed", "storage_unavailable", "network_unavailable"]);
+import STORAGE_KEYS from "../constants/storageKeys.js";
+import { encodeBase64Url } from "../crypto/Base64Url.js";
+import { storage } from "../storage/storage.js";
+import {
+  ALLOWED_ANALYTICS_EVENTS,
+  validateAnalyticsEvent,
+} from "./AnalyticsPolicy.js";
 const APP_VERSION = "2.0";
 const HEARTBEAT_MS = 60_000;
 const EVENT_INTERVAL_MS = 1_000;
@@ -30,7 +23,7 @@ async function createSessionHash() {
   const token = crypto.getRandomValues(new Uint8Array(32));
   const digest = await crypto.subtle.digest("SHA-256", token);
   token.fill(0);
-  sessionTokenHash = bytesToBase64Url(new Uint8Array(digest));
+  sessionTokenHash = encodeBase64Url(new Uint8Array(digest));
   return sessionTokenHash;
 }
 
@@ -43,6 +36,7 @@ async function safePresence() {
   if (!getAnalyticsConsent() || document.visibilityState === "hidden") return;
   const hash = await createSessionHash();
   if (!hash) return;
+  const { AnalyticsRepository } = await import("../repository/AnalyticsRepository.js");
   await AnalyticsRepository.heartbeat({
     sessionTokenHash: hash,
     deviceCategory: deviceCategory(),
@@ -68,16 +62,12 @@ export async function setAnalyticsConsent(enabled) {
 }
 
 export async function trackAnonymousEvent(name, fields = {}) {
-  if (!getAnalyticsConsent() || !EVENTS.has(name)) return false;
-  const allowedKeys = name === "page_view" ? ["page"]
-    : name === "app_error_safe" ? ["errorCode"] : [];
-  if (Object.keys(fields).some((key) => !allowedKeys.includes(key))) return false;
-  if (name === "page_view" && !PAGES.has(fields.page)) return false;
-  if (name === "app_error_safe" && !SAFE_ERRORS.has(fields.errorCode)) return false;
+  if (!getAnalyticsConsent() || !validateAnalyticsEvent(name, fields)) return false;
   if (Date.now() - lastEventAt < EVENT_INTERVAL_MS) return false;
   lastEventAt = Date.now();
   const hash = await createSessionHash();
   if (!hash) return false;
+  const { AnalyticsRepository } = await import("../repository/AnalyticsRepository.js");
   const result = await AnalyticsRepository.recordEvent({
     name,
     page: fields.page,
@@ -96,4 +86,4 @@ export function startAnalytics() {
   heartbeatTimer = window.setInterval(() => { void safePresence(); }, HEARTBEAT_MS);
 }
 
-export const ALLOWED_ANALYTICS_EVENTS = Object.freeze([...EVENTS]);
+export { ALLOWED_ANALYTICS_EVENTS };

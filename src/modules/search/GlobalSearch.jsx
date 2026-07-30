@@ -40,6 +40,9 @@ export default function GlobalSearch() {
   const [query, setQuery] = useState("");
   const [module, setModule] = useState("all");
   const [order, setOrder] = useState("relevance");
+  const [filters, setFilters] = useState({
+    start: "", end: "", category: "", tag: "", status: "",
+  });
   const [result, setResult] = useState({ total: 0, groups: {} });
   const [preferences, setPreferences] = useState(loadSearchPreferences);
   const [privacy] = useState(isPrivacyModeEnabled);
@@ -49,12 +52,14 @@ export default function GlobalSearch() {
     let current = true;
     const timer = window.setTimeout(() => {
       if (!current) return;
-      const next = searchLocal(index, query, { module, order });
+      const next = searchLocal(index, query, { module, order, ...filters });
       setResult(next);
       if (next.total) setPreferences(rememberSearch(query));
     }, 250);
     return () => { current = false; window.clearTimeout(timer); };
-  }, [index, module, order, query]);
+  }, [filters, index, module, order, query]);
+  const updateFilter = (key, value) =>
+    setFilters((current) => ({ ...current, [key]: value }));
 
   const groups = useMemo(() => Object.entries(result.groups), [result.groups]);
   const toggleHistory = () => {
@@ -86,6 +91,16 @@ export default function GlobalSearch() {
               <label>Ordem<select value={order} onChange={(event) => setOrder(event.target.value)}>
                 <option value="relevance">Relevância</option><option value="date">Data</option>
               </select></label>
+              <label>Data inicial<input type="date" value={filters.start}
+                onChange={(event) => updateFilter("start", event.target.value)} /></label>
+              <label>Data final<input type="date" value={filters.end}
+                onChange={(event) => updateFilter("end", event.target.value)} /></label>
+              <label>Categoria<input value={filters.category} maxLength={80}
+                onChange={(event) => updateFilter("category", event.target.value)} /></label>
+              <label>Tag<input value={filters.tag} maxLength={40}
+                onChange={(event) => updateFilter("tag", event.target.value)} /></label>
+              <label>Status<input value={filters.status} maxLength={40}
+                onChange={(event) => updateFilter("status", event.target.value)} /></label>
             </div>
             <label className="global-search__check">
               <input type="checkbox" checked={preferences.historyEnabled} onChange={toggleHistory} />

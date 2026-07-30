@@ -1,7 +1,7 @@
-import STORAGE_KEYS from "../constants/storageKeys";
-import { localDateKey } from "../intelligence/localDates";
-import { storage } from "../storage/storage";
-import { emitSync } from "../sync";
+import STORAGE_KEYS from "../constants/storageKeys.js";
+import { localDateKey } from "../intelligence/localDates.js";
+import { storage } from "../storage/storage.js";
+import { emitSync } from "../sync/emitSync.js";
 
 export const MOOD_VERSION = 2;
 export const MOODS = {

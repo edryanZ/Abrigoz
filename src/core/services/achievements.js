@@ -1,7 +1,7 @@
-import STORAGE_KEYS from "../constants/storageKeys";
-import { readLocalData } from "../intelligence/LocalDataSource";
-import { storage } from "../storage/storage";
-import { emitSync } from "../sync";
+import STORAGE_KEYS from "../constants/storageKeys.js";
+import { readLocalData } from "../intelligence/LocalDataSource.js";
+import { storage } from "../storage/storage.js";
+import { emitSync } from "../sync/emitSync.js";
 
 export const ACHIEVEMENTS_VERSION = 2;
 const LEGACY_KEY = "abrigo_achievements";

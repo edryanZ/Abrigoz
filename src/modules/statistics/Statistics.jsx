@@ -28,9 +28,10 @@ export default function Statistics() {
   const [data, setData] = useState(readLocalData);
   const [year, setYear] = useState(new Date().getFullYear());
   const [mapModule, setMapModule] = useState("all");
+  const [custom, setCustom] = useState({ start: "", end: "" });
 
   useEffect(() => subscribe(SYNC_EVENT, () => setData(readLocalData())), []);
-  const period = useMemo(() => resolvePeriod(periodKind), [periodKind]);
+  const period = useMemo(() => resolvePeriod(periodKind, new Date(), custom), [custom, periodKind]);
   const stats = useMemo(() => calculateStatistics(data, period), [data, period]);
   const moments = useMemo(() => buildMomentMap(data, year, mapModule), [data, year, mapModule]);
 
@@ -46,8 +47,15 @@ export default function Statistics() {
             <select value={periodKind} onChange={(event) => setPeriodKind(event.target.value)}>
               {Object.entries(PERIODS).map(([value, label]) =>
                 <option key={value} value={value}>{label}</option>)}
+              <option value="custom">Intervalo personalizado</option>
             </select>
           </label>
+          {periodKind === "custom" && <div className="statistics-custom">
+            <label>Início<input type="date" value={custom.start}
+              onChange={(event) => setCustom((value) => ({ ...value, start: event.target.value }))} /></label>
+            <label>Fim<input type="date" value={custom.end}
+              onChange={(event) => setCustom((value) => ({ ...value, end: event.target.value }))} /></label>
+          </div>}
 
           <section className="statistics-grid" aria-label="Resumo do período">
             <GlassCard><span>Dias ativos</span><strong>{stats.general.activeDays}</strong>
@@ -70,6 +78,16 @@ export default function Statistics() {
               ? <p>Quando houver pelo menos três dias ativos em cada período, mostramos uma comparação cuidadosa.</p>
               : <p>Foram {Math.abs(stats.general.comparison)} dia(s) ativo(s) {
                 stats.general.comparison >= 0 ? "a mais" : "a menos"} que no período anterior. Descanso também faz parte.</p>}
+          </GlassCard>
+
+          <GlassCard className="statistics-bars">
+            <h2>Regularidade por dia da semana</h2>
+            {stats.habits.planned ? stats.habits.regularDays.map((item, index) =>
+              <div key={item.day}>
+                <span>{["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"][index]}</span>
+                <div><i style={{ width: `${item.rate}%` }} /></div><strong>{item.rate}%</strong>
+              </div>) : <p>Ainda não há hábitos previstos neste período.</p>}
+            <p className="sr-only">As barras mostram a porcentagem de hábitos previstos que foram concluídos em cada dia da semana.</p>
           </GlassCard>
 
           <ActivityMap moments={moments} year={year} setYear={setYear}

@@ -197,3 +197,4 @@
 .dashboard-customizer label { display: flex; gap: 8px; align-items: center; }
 .dashboard-customizer button { min-height: 38px; border: 1px solid var(--border-color);
   border-radius: 10px; background: var(--card-bg); color: var(--text-primary); }
+.smart-dashboard { display: flex; flex-direction: column; }

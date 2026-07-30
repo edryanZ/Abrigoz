@@ -36,6 +36,7 @@ const EXCLUDED_KEYS = new Set([
   SYNC_QUEUE_STORAGE_KEY,
   SYNC_STATE_STORAGE_KEY,
   "abrigo:analytics-consent:v1",
+  "abrigo:search-preferences:v1",
 ]);
 
 function isSensitiveStorageKey(key) {

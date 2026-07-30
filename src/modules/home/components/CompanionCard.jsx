@@ -20,7 +20,11 @@ export default function CompanionCard() {
       <div className="companion-card__actions">
         <Link to={suggestion.route}>Começar</Link>
         <button type="button" onClick={() =>
+          setState(respondToSuggestion(suggestion.id, "liked"))}>Gostei</button>
+        <button type="button" onClick={() =>
           setState(respondToSuggestion(suggestion.id, "later"))}>Não agora</button>
+        <button type="button" onClick={() =>
+          setState(respondToSuggestion(suggestion.id, "change"))}>Trocar sugestão</button>
         <button type="button" onClick={() =>
           setState(respondToSuggestion(suggestion.id, "never"))}>Não recomendar novamente</button>
       </div>

@@ -1,5 +1,6 @@
 import "./Lar.css";
 
+import { useEffect, useState } from "react";
 import { useTheme } from "../../shared/contexts/ThemeContext";
 
 import Ceu from "../../shared/componentes/Ceu";
@@ -20,8 +21,17 @@ import CompanionCard from "./components/CompanionCard";
 import TodayCenter from "./components/TodayCenter";
 import PrivacyToggle from "../../shared/componentes/PrivacyToggle";
 import DashboardCustomizer from "./components/DashboardCustomizer";
+import { loadDashboardPreferences } from "../../core/intelligence/DashboardIntelligence";
 export default function Lar() {
   const { greeting } = useTheme();
+  const [dashboard, setDashboard] = useState(loadDashboardPreferences);
+  useEffect(() => {
+    const update = (event) => setDashboard(event.detail);
+    window.addEventListener("abrigo:dashboard-preferences", update);
+    return () => window.removeEventListener("abrigo:dashboard-preferences", update);
+  }, []);
+  const visible = (id) => !dashboard.hidden.includes(id);
+  const order = (id) => dashboard.order.indexOf(id);
 
   return (
     <>
@@ -39,17 +49,21 @@ export default function Lar() {
         <PrivacyToggle compact />
         <DashboardCustomizer />
 
-        <TodayCenter />
+        <div className="smart-dashboard">
+          {visible("today") && <div style={{ order: order("today") }}><TodayCenter /></div>}
 
-        <Section>
-          <MoodSelector />
-        </Section>
+          <div style={{ order: order("today") }}>
+            <Section><MoodSelector /></Section>
+          </div>
 
-        <DashboardGrid />
+          {visible("organization") && <div style={{ order: order("organization") }}>
+            <DashboardGrid />
+          </div>}
 
-        <Section>
-          <CompanionCard />
-        </Section>
+          {visible("companion") && <div style={{ order: order("companion") }}>
+            <Section><CompanionCard /></Section>
+          </div>}
+        </div>
 
         <Section>
           <DailyLetter />

@@ -73,3 +73,14 @@ liberadas ao cliente.
 Diário, calendário, favoritos, metas, hábitos e demais módulos continuam
 armazenados localmente. O servidor recebe um único backup consolidado e
 criptografado, sem estrutura individual de tabelas para esses módulos.
+
+## Métricas anônimas
+
+A migration `20260801120000_anonymous_analytics.sql`, não aplicada
+automaticamente, cria `analytics_presence`, `analytics_daily` e as funções
+`analytics_heartbeat`, `record_analytics_event`,
+`cleanup_analytics_presence` e `get_analytics_admin_summary`.
+
+As tabelas têm RLS, nenhum `SELECT` público e nenhuma relação com `abrigos`.
+Somente as RPCs de escrita mínima são concedidas a `anon`; a consulta
+administrativa é restrita a `service_role`. Consulte `ANALYTICS.md`.

@@ -11,6 +11,12 @@ const moods = [
     emoji: <FaGrinStars />,
     label: "Muito feliz",
   },
+  { id: "excited", emoji: <FaGrinStars />, label: "Animado" },
+  { id: "unmotivated", emoji: <FaMeh />, label: "Sem motivação" },
+  { id: "anxious", emoji: <FaTired />, label: "Ansioso" },
+  { id: "irritated", emoji: <FaFrown />, label: "Irritado" },
+  { id: "confused", emoji: <FaMeh />, label: "Confuso" },
+  { id: "prefer_not", emoji: <FaSmile />, label: "Prefiro não dizer" },
   {
     id: "happy",
     emoji: <FaLaughBeam />,

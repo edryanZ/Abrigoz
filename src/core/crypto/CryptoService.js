@@ -1,8 +1,8 @@
 import {
   isValidAbrigoKey,
   normalizeAbrigoKey,
-} from "../sync/AbrigoKey";
-import { decodeBase64Url, encodeBase64Url } from "./Base64Url";
+} from "../sync/AbrigoKey.js";
+import { decodeBase64Url, encodeBase64Url } from "./Base64Url.js";
 
 export const ENCRYPTED_FORMAT = "abrigo-encrypted";
 export const ENCRYPTED_VERSION = 1;

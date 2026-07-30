@@ -1,7 +1,7 @@
-import ROUTES from "../constants/routes";
-import STORAGE_KEYS from "../constants/storageKeys";
-import { readLocalData } from "../intelligence/LocalDataSource";
-import { storage } from "../storage/storage";
+import ROUTES from "../constants/routes.js";
+import STORAGE_KEYS from "../constants/storageKeys.js";
+import { readLocalData } from "../intelligence/LocalDataSource.js";
+import { storage } from "../storage/storage.js";
 
 const GROUP_LIMIT = 8;
 const ALLOWED_MODULES = new Set([

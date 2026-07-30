@@ -105,3 +105,18 @@ antiga permanece por compatibilidade.
 - Dados locais normais ainda não são criptografados.
 - Quem possuir a Chave do Abrigo e acesso ao serviço poderá abrir o conteúdo
   protegido; a chave deve ser guardada com cuidado.
+
+## Inteligência e métricas
+
+Estatísticas, pesquisa, humor, memórias, conquistas e recomendações são
+processados localmente. A pesquisa não cria índice remoto plaintext e o
+histórico é opcional. Recomendações explicam a regra local, podem ser
+dispensadas e não oferecem diagnóstico.
+
+O modo privacidade é visual: não criptografa o armazenamento local, não bloqueia
+o dispositivo e não impede screenshots.
+
+Métricas anônimas exigem consentimento explícito e usam infraestrutura
+separada. Eventos têm esquema fechado e token temporário sem ligação com
+Abrigo, chave ou conteúdo. Não há publicidade, fingerprinting, rastreamento
+entre sites ou perfil individual. O painel depende de autenticação server-side.

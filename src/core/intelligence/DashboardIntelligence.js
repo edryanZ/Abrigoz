@@ -29,6 +29,9 @@ export function saveDashboardPreferences(input) {
   safe.order = [...new Set(safe.order)].filter((item) => DEFAULT_DASHBOARD_CARDS.includes(item));
   safe.hidden = [...new Set(safe.hidden)].filter((item) => DEFAULT_DASHBOARD_CARDS.includes(item));
   storage.set(STORAGE_KEYS.DASHBOARD_PREFERENCES, safe);
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("abrigo:dashboard-preferences", { detail: safe }));
+  }
   return safe;
 }
 

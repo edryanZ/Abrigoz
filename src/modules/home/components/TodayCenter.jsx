@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -9,12 +9,20 @@ import {
 } from "../../../core/intelligence/DashboardIntelligence";
 import usePrivacyMode from "../../../core/privacy/usePrivacyMode";
 import GlassCard from "../../../shared/ui/GlassCard";
+import { subscribe } from "../../../core/sync/EventBus";
+import { SYNC_EVENT } from "../../../core/sync/emitSync";
 
 export default function TodayCenter() {
-  const [today] = useState(getTodayOverview);
-  const [summary] = useState(() => getLocalSummary("week"));
+  const [today, setToday] = useState(getTodayOverview);
+  const [summary, setSummary] = useState(() => getLocalSummary("week"));
+  const [summaryKind, setSummaryKind] = useState("week");
   const [memories, setMemories] = useState(getMemories);
   const { enabled: privacy } = usePrivacyMode();
+  useEffect(() => subscribe(SYNC_EVENT, () => {
+    setToday(getTodayOverview());
+    setSummary(getLocalSummary(summaryKind));
+    setMemories(getMemories());
+  }), [summaryKind]);
   const hide = (id) => {
     hideMemory(id);
     setMemories((items) => items.filter((item) => item.id !== id));
@@ -39,13 +47,18 @@ export default function TodayCenter() {
         </div>
       </GlassCard>
       <GlassCard>
-        <p className="dashboard-card__eyebrow">Resumo semanal</p>
+        <p className="dashboard-card__eyebrow">Resumo {summaryKind === "week" ? "semanal" : "mensal"}</p>
         <h2>Seu ritmo recente</h2>
         <p>{summary.message}</p>
         <ul><li>{summary.habitsCompleted} hábitos concluídos</li>
           <li>{summary.goalsCompleted} metas concluídas</li>
           <li>{summary.diaryDays} dias com Diário</li></ul>
         <Link to="/estatisticas">Ver estatísticas</Link>
+        <button type="button" onClick={() => {
+          const next = summaryKind === "week" ? "month" : "week";
+          setSummaryKind(next);
+          setSummary(getLocalSummary(next));
+        }}>Ver resumo {summaryKind === "week" ? "mensal" : "semanal"}</button>
       </GlassCard>
       <GlassCard>
         <p className="dashboard-card__eyebrow">Memórias deste dia</p>

@@ -4,7 +4,7 @@ import {
   localDateKey,
   parseLocalDate,
   previousPeriod,
-} from "./localDates";
+} from "./localDates.js";
 
 const dateOf = (item) => String(
   item.date ?? item.createdAt ?? item.updatedAt ?? ""

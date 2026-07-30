@@ -1,5 +1,5 @@
-import STORAGE_KEYS from "../constants/storageKeys";
-import { storage } from "../storage/storage";
+import STORAGE_KEYS from "../constants/storageKeys.js";
+import { storage } from "../storage/storage.js";
 
 function items(key) {
   const value = storage.get(key);

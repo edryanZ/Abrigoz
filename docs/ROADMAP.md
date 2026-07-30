@@ -23,10 +23,13 @@ O roadmap oficial do Abrigo e organizado por Sprints. Os principios e limites do
 - [x] Estados e avisos de privacidade
 
 ## Sprint 4 - Inteligencia do produto
-- Estatisticas avancadas
-- Pesquisa global
-- Conquistas
-- Dashboard inteligente
+- [x] Estatisticas avancadas e mapa de momentos
+- [x] Pesquisa global local
+- [x] Conquistas pessoais
+- [x] Dashboard inteligente, Hoje, memorias e resumos
+- [x] Humor, recomendacoes locais e Companheiro do Dia
+- [x] Modo privacidade
+- [x] Metricas anonimas opcionais e infraestrutura do painel privado
 
 ## Sprint 5 - Expansao
 - Inteligencia artificial

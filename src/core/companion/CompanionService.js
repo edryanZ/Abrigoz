@@ -1,8 +1,8 @@
-import STORAGE_KEYS from "../constants/storageKeys";
-import { readLocalData } from "../intelligence/LocalDataSource";
-import { getTodayMood } from "../services/mood";
-import { storage } from "../storage/storage";
-import { emitSync } from "../sync";
+import STORAGE_KEYS from "../constants/storageKeys.js";
+import { readLocalData } from "../intelligence/LocalDataSource.js";
+import { getTodayMood } from "../services/mood.js";
+import { storage } from "../storage/storage.js";
+import { emitSync } from "../sync/emitSync.js";
 
 export const COMPANION_RULES_VERSION = 1;
 const DEFAULTS = {

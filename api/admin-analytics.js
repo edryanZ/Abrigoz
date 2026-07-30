@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { timingSafeEqual } from "node:crypto";
 
 const MAX_RANGE_DAYS = 366;
+let lastRequestAt = 0;
 
 function json(response, status, body) {
   response.status(status).setHeader("Content-Type", "application/json");
@@ -12,6 +13,10 @@ function json(response, status, body) {
 
 export default async function handler(request, response) {
   if (request.method !== "POST") return json(response, 405, { error: "method_not_allowed" });
+  if (Date.now() - lastRequestAt < 500) {
+    return json(response, 429, { error: "rate_limited" });
+  }
+  lastRequestAt = Date.now();
   const configuredToken = process.env.ADMIN_ANALYTICS_TOKEN;
   const url = process.env.SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;

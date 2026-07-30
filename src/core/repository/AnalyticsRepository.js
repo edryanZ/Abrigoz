@@ -1,13 +1,16 @@
-import { getSupabaseClient, isSupabaseAvailable } from "../supabase/supabaseClient";
+import {
+  getSupabaseClient,
+  isSupabaseConfigured,
+} from "../supabase/supabaseClient.js";
 
 function available() {
-  return isSupabaseAvailable();
+  return isSupabaseConfigured;
 }
 
 async function rpc(name, params) {
-  const client = getSupabaseClient();
-  if (!client) return { ok: false, reason: "unavailable" };
   try {
+    if (!available()) return { ok: false, reason: "unavailable" };
+    const client = getSupabaseClient();
     const { data, error } = await client.rpc(name, params);
     if (error) return { ok: false, reason: "remote_error" };
     return { ok: true, data };
