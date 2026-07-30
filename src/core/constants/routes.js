@@ -13,6 +13,8 @@ export const ROUTES = {
   SETTINGS: "/configuracoes",
   DIARY: "/diario",
   STATISTICS: "/estatisticas",
+  SEARCH: "/pesquisa",
+  ACHIEVEMENTS: "/conquistas",
 
   // Sistema
   NOT_FOUND: "*",
