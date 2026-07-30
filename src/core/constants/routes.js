@@ -5,6 +5,9 @@ export const ROUTES = {
 
   // Páginas principais
   CALENDAR: "/calendario",
+  FAVORITES: "/favoritos",
+  GOALS: "/metas",
+  HABITS: "/habitos",
   LETTERS: "/cartas",
   ABOUT: "/sobre",
   SETTINGS: "/configuracoes",

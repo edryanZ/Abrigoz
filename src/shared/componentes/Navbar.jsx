@@ -14,6 +14,9 @@ import {
   FaHeart,
   FaMusic,
   FaCog,
+  FaStar,
+  FaBullseye,
+  FaLeaf,
 } from "react-icons/fa";
 
 import MusicPlayer from "./MusicPlayer";
@@ -64,35 +67,37 @@ export default function Navbar() {
     };
   }, [menuAberto]);
 
-  const itens = [
+  const grupos = [
     {
-      nome: "Lar",
-      rota: ROUTES.HOME,
-      icone: <FaHome />,
+      nome: "Abrigo",
+      itens: [
+        { nome: "Lar", rota: ROUTES.HOME, icone: <FaHome /> },
+        { nome: "Cartas", rota: ROUTES.LETTERS, icone: <FaEnvelope /> },
+      ],
     },
-
     {
-      nome: "Calendário",
-      rota: ROUTES.CALENDAR,
-      icone: <FaCalendarAlt />,
+      nome: "Organização pessoal",
+      itens: [
+        {
+          nome: "Calendário",
+          rota: ROUTES.CALENDAR,
+          icone: <FaCalendarAlt />,
+        },
+        { nome: "Favoritos", rota: ROUTES.FAVORITES, icone: <FaStar /> },
+        { nome: "Metas", rota: ROUTES.GOALS, icone: <FaBullseye /> },
+        { nome: "Hábitos", rota: ROUTES.HABITS, icone: <FaLeaf /> },
+      ],
     },
-
     {
-      nome: "Cartas",
-      rota: ROUTES.LETTERS,
-      icone: <FaEnvelope />,
-    },
-
-    {
-      nome: "Sobre",
-      rota: ROUTES.ABOUT,
-      icone: <FaHeart />,
-    },
-
-    {
-      nome: "Configurações",
-      rota: ROUTES.SETTINGS,
-      icone: <FaCog />,
+      nome: "Aplicativo",
+      itens: [
+        { nome: "Sobre", rota: ROUTES.ABOUT, icone: <FaHeart /> },
+        {
+          nome: "Configurações",
+          rota: ROUTES.SETTINGS,
+          icone: <FaCog />,
+        },
+      ],
     },
   ];
 
@@ -158,24 +163,25 @@ export default function Navbar() {
         </div>
 
         <nav className="menu-links">
-          {itens.map((item) => {
-            const ativo = pathname === item.rota;
-
-            return (
-              <Link
-                key={item.rota}
-                to={item.rota}
-                className={ativo ? "ativo" : ""}
-                onClick={fecharMenu}
-              >
-                <span className="icone">
-                  {item.icone}
-                </span>
-
-                {item.nome}
-              </Link>
-            );
-          })}
+          {grupos.map((grupo) => (
+            <section className="menu-group" key={grupo.nome}>
+              <h3>{grupo.nome}</h3>
+              {grupo.itens.map((item) => {
+                const ativo = pathname === item.rota;
+                return (
+                  <Link
+                    key={item.rota}
+                    to={item.rota}
+                    className={ativo ? "ativo" : ""}
+                    onClick={fecharMenu}
+                  >
+                    <span className="icone">{item.icone}</span>
+                    {item.nome}
+                  </Link>
+                );
+              })}
+            </section>
+          ))}
         </nav>
       </aside>
 

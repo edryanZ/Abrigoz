@@ -238,6 +238,19 @@
 
 }
 
+.menu-group {
+    display: grid;
+    gap: 6px;
+}
+
+.menu-group h3 {
+    margin: 10px 12px 2px;
+    color: var(--text-secondary);
+    font-size: 11px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+}
+
 .menu-links a {
 
     display: flex;
