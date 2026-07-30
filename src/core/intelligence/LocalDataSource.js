@@ -17,7 +17,7 @@ export function readLocalData() {
     goals: items(STORAGE_KEYS.GOALS),
     habits: items(STORAGE_KEYS.HABITS),
     diary: items(STORAGE_KEYS.DIARY),
-    moods: Array.isArray(moods) ? moods : (moods?.moods ?? []),
+    moods: Array.isArray(moods) ? moods : (moods?.items ?? moods?.moods ?? []),
     letters: storage.get(STORAGE_KEYS.LETTERS),
     achievements: storage.get(STORAGE_KEYS.ACHIEVEMENTS)
       ?? storage.get("abrigo_achievements"),

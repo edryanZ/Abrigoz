@@ -2,7 +2,7 @@ import STORAGE_KEYS from "../../../core/constants/storageKeys";
 import { storage } from "../../../core/storage/storage";
 import { emitSync } from "../../../core/sync";
 
-export const FAVORITES_VERSION = 2;
+export const FAVORITES_VERSION = 3;
 export const FAVORITE_TYPES = {
   text: "Texto",
   link: "Link",
@@ -45,6 +45,16 @@ function normalizeFavorite(item) {
     tags: normalizeTags(item.tags),
     pinned: Boolean(item.pinned ?? item.fixado),
     primary: Boolean(item.primary ?? item.principal),
+    moodTags: Array.isArray(item.moodTags) ? normalizeTags(item.moodTags) : [],
+    atmosphere: String(item.atmosphere ?? ""),
+    intensity: ["light", "medium", "intense"].includes(item.intensity)
+      ? item.intensity : "light",
+    approximateDuration: String(item.approximateDuration ?? "").slice(0, 40),
+    qualities: Array.isArray(item.qualities)
+      ? [...new Set(item.qualities.map(String))].slice(0, 10) : [],
+    avoidWhenTired: Boolean(item.avoidWhenTired),
+    recommendationNote: String(item.recommendationNote ?? "").slice(0, 240),
+    doNotRecommend: Boolean(item.doNotRecommend),
     createdAt: item.createdAt ?? item.dataCriacao ?? now,
     updatedAt: item.updatedAt ?? now,
   };

@@ -11,6 +11,10 @@ const EMPTY = {
   tags: [],
   pinned: false,
   primary: false,
+  moodTags: [],
+  approximateDuration: "",
+  qualities: [],
+  avoidWhenTired: false,
 };
 
 export default function FavoriteForm({ item, onSave, onCancel }) {
@@ -95,7 +99,23 @@ export default function FavoriteForm({ item, onSave, onCancel }) {
           />
           Favorito principal
         </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={form.avoidWhenTired}
+            onChange={(event) => update("avoidWhenTired", event.target.checked)}
+          />
+          Evitar quando eu estiver cansado
+        </label>
       </div>
+      <label htmlFor="favorite-moods">Combina com estes momentos</label>
+      <input id="favorite-moods"
+        placeholder="tranquilo, animado"
+        value={Array.isArray(form.moodTags) ? form.moodTags.join(", ") : form.moodTags}
+        onChange={(event) => update("moodTags", event.target.value.split(","))} />
+      <label htmlFor="favorite-duration">Duração aproximada</label>
+      <input id="favorite-duration" maxLength={40} value={form.approximateDuration}
+        onChange={(event) => update("approximateDuration", event.target.value)} />
       {error && <p className="organizer-error" role="alert">{error}</p>}
       <div className="organizer-form-actions">
         <button type="button" className="secondary" onClick={onCancel}>

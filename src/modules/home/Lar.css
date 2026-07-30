@@ -171,3 +171,12 @@
     }
 
 }
+.companion-card { display: grid; gap: 10px; }
+.companion-card h2, .companion-card p { margin: 0; }
+.companion-card small { color: var(--text-secondary); }
+.companion-card__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.companion-card__actions a, .companion-card__actions button {
+  min-height: 42px; padding: 9px 13px; border-radius: 12px;
+  border: 1px solid var(--border-color); color: var(--text-primary);
+  background: var(--card-bg); cursor: pointer;
+}

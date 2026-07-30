@@ -16,6 +16,7 @@ import PrivacyNotice from "../../shared/componentes/PrivacyNotice";
 import MoodSelector from "./components/MoodSelector";
 import DailyLetter from "./components/DailyLetter";
 import DashboardGrid from "./components/DashboardGrid";
+import CompanionCard from "./components/CompanionCard";
 export default function Lar() {
   const { greeting } = useTheme();
 
@@ -38,6 +39,10 @@ export default function Lar() {
         </Section>
 
         <DashboardGrid />
+
+        <Section>
+          <CompanionCard />
+        </Section>
 
         <Section>
           <DailyLetter />
