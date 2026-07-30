@@ -12,7 +12,11 @@ import {
   validateEncryptedEnvelope,
 } from "../crypto/CryptoService";
 import AbrigoRepository from "../repository/AbrigoRepository";
-import { loadSyncState, saveSyncState } from "../storage/SyncStorage";
+import {
+  clearSyncState,
+  loadSyncState,
+  saveSyncState,
+} from "../storage/SyncStorage";
 import {
   createBackup,
   createEncryptedLocalBackup,
@@ -539,6 +543,19 @@ export const SyncService = {
       backup: await restoreEncryptedBackup(document, cryptoKey),
       legacy: false,
     };
+  },
+
+  async disconnect() {
+    const keyHash = getKeyHash();
+    if (keyHash) await deleteCryptoKeys(keyHash);
+    activeMaterial = null;
+    clearSyncState();
+    setStatus(getQueue().length ? "pending" : "idle", {
+      protection: "local",
+      lastSyncAt: null,
+      error: null,
+    });
+    return this.getStatus();
   },
 
   getStatus() {

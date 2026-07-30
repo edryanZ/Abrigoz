@@ -265,6 +265,12 @@ export function useAbrigoSync() {
     [run]
   );
 
+  const disconnect = useCallback(() => run(
+    () => SyncService.disconnect(),
+    "Sincronização desconectada deste dispositivo.",
+    "Não foi possível desconectar a sincronização."
+  ), [run]);
+
   return {
     status,
     busy: busy || ["encrypting", "migrating", "syncing"].includes(status.state),
@@ -280,6 +286,7 @@ export function useAbrigoSync() {
     exportLocalBackup,
     inspectBackupFile,
     restoreLocalBackup,
+    disconnect,
     copyRevealedKey,
     downloadRecoveryFile,
     clearMessage,

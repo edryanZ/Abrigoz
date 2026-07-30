@@ -16,9 +16,11 @@ O roadmap oficial do Abrigo e organizado por Sprints. Os principios e limites do
 - Habitos
 
 ## Sprint 3 - Protecao de dados
-- Infraestrutura de criptografia
-- Backup seguro
-- Sincronizacao criptografada
+- [x] Infraestrutura de criptografia
+- [x] Backup seguro
+- [x] Sincronizacao criptografada
+- [x] Migração de backups legados
+- [x] Estados e avisos de privacidade
 
 ## Sprint 4 - Inteligencia do produto
 - Estatisticas avancadas

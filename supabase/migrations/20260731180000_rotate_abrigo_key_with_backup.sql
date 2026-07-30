@@ -16,19 +16,21 @@ begin
     raise exception 'invalid request';
   end if;
 
-  if p_current_key_hash !~ '^[a-f0-9]{64}$'
+  if p_current_key_hash is null
+    or p_new_key_hash is null
+    or p_current_key_hash !~ '^[a-f0-9]{64}$'
     or p_new_key_hash !~ '^[a-f0-9]{64}$'
     or p_current_key_hash = p_new_key_hash
-    or p_version <> 1
+    or p_version is distinct from 1
     or (
       select count(*)
         from pg_catalog.jsonb_object_keys(p_payload)
     ) <> 8
-    or p_payload ->> 'format' <> 'abrigo-encrypted'
-    or (p_payload ->> 'version')::integer <> 1
-    or p_payload ->> 'purpose' <> 'remote-sync'
-    or p_payload ->> 'algorithm' <> 'AES-GCM'
-    or p_payload ->> 'keyDerivation' <> 'HKDF-SHA-256'
+    or p_payload ->> 'format' is distinct from 'abrigo-encrypted'
+    or (p_payload ->> 'version')::integer is distinct from 1
+    or p_payload ->> 'purpose' is distinct from 'remote-sync'
+    or p_payload ->> 'algorithm' is distinct from 'AES-GCM'
+    or p_payload ->> 'keyDerivation' is distinct from 'HKDF-SHA-256'
     or coalesce(length(p_payload ->> 'iv'), 0) < 16
     or coalesce(length(p_payload ->> 'ciphertext'), 0) < 17
     or (p_payload ->> 'createdAt')::timestamptz is null
@@ -79,7 +81,8 @@ begin
   return true;
 exception
   when unique_violation or invalid_text_representation
-    or datetime_field_overflow then
+    or invalid_datetime_format or datetime_field_overflow
+    or numeric_value_out_of_range then
     raise exception 'invalid request';
 end;
 $$;

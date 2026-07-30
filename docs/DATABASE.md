@@ -1,514 +1,75 @@
-# 🗄 Database
+# Banco de dados
 
-> Estrutura planejada para o banco de dados do Abrigo.
+O Supabase é usado somente para armazenamento e sincronização opcional. Não
+existe Supabase Auth, usuário por e-mail ou senha.
 
----
+## Tabelas
 
-# Objetivo
+### `public.abrigos`
 
-Atualize apenas o arquivo docs/DATABASE.md.
+- `id uuid`, chave primária;
+- `key_hash text`, único, SHA-256 hexadecimal da Chave do Abrigo;
+- `created_at`, `updated_at`, `last_sync_at`.
 
-Objetivo:
+A Chave original e chaves AES nunca são armazenadas.
 
-Alinhar a estrutura de dados do Abrigo 2.0 à especificação oficial (ABRIGO_2_SPEC.md).
+### `public.abrigo_backups`
 
-Requisitos obrigatórios:
+- `id uuid`, chave primária;
+- `abrigo_id uuid`, referência para `public.abrigos`;
+- `version integer`;
+- `payload jsonb`;
+- `created_at`, `updated_at`.
 
-- Remover a dependência de autenticação tradicional.
-- Remover a tabela users baseada em e-mail/senha.
-- Remover campos como:
-  - email
-  - password_hash
-  - provider
-  - last_login
-- Não utilizar user_id como identidade principal.
+Após a Sprint 3, novos payloads são envelopes AES-GCM versionados. Payloads
+plaintext versão 1 anteriores permanecem legíveis apenas até uma migração
+confirmada pelo dispositivo.
 
-Adicionar uma nova abordagem baseada na Chave do Abrigo.
+### `public.abrigo_devices`
 
-Documentar que:
+- `id uuid`, chave primária;
+- `abrigo_id uuid`, referência para `public.abrigos`;
+- `device_id text`;
+- `device_name text`;
+- `created_at`, `last_sync_at`.
 
-- Cada Abrigo possui uma Chave do Abrigo única.
-- Apenas o hash SHA-256 da chave é armazenado no banco.
-- A chave original nunca é armazenada.
-- O hash identifica o backup do usuário.
-- O Supabase é utilizado apenas para armazenamento e sincronização.
-- A criptografia AES-GCM será integrada futuramente.
+## RPCs
 
-Atualizar o modelo lógico para utilizar uma entidade semelhante a:
+O cliente não acessa tabelas diretamente:
 
-Abrigo
-- id
-- key_hash
-- created_at
-- updated_at
-- last_sync_at
+- `create_abrigo`;
+- `find_abrigo_by_key_hash`;
+- `save_abrigo_backup`;
+- `get_abrigo_backup`;
+- `register_abrigo_device`;
+- `update_abrigo_last_sync`;
+- `rotate_abrigo_key`, mantida por compatibilidade;
+- `rotate_abrigo_key_with_backup`, adicionada na Sprint 3.
 
-Dispositivos
-- id
-- abrigo_id
-- device_name
-- created_at
-- last_sync_at
+## Rotação protegida
 
-Os demais módulos (diário, metas, hábitos, calendário etc.) devem se relacionar ao Abrigo, e não a um usuário autenticado.
+`rotate_abrigo_key_with_backup` recebe os hashes atual e novo e um envelope
+`remote-sync`. Na mesma transação, bloqueia o Abrigo atual, valida conflito,
+atualiza ou cria o backup e troca apenas o `key_hash`. IDs, dispositivos e
+relacionamentos são preservados.
 
-Manter a organização e o estilo do documento.
+A migration fica em:
 
-Não modificar nenhum outro arquivo.
-
-Ao final, informar:
-
-- tabelas removidas;
-- tabelas criadas;
-- relacionamentos alterados;
-- possíveis impactos futuros.
-
-# Banco de Dados
-
-O banco deverá ser relacional ou NoSQL dependendo da arquitetura escolhida futuramente.
-
-A estrutura abaixo representa o modelo lógico do sistema.
-
----
-
-# Usuários
-
-Tabela
-
-```
-users
-```
-
-Campos
-
-```
-id
-name
-email
-photo
-password_hash
-provider
-created_at
-updated_at
-last_login
-```
-
----
-
-# Perfil
-
-Tabela
-
-```
-profiles
-```
-
-Campos
-
-```
-id
-user_id
-birth_date
-bio
-theme
-language
-timezone
-avatar
-```
-
-Relacionamento
-
-```
-1 usuário
-
-↓
-
-1 perfil
-```
-
----
-
-# Diário
-
-Tabela
-
-```
-diary_entries
-```
-
-Campos
-
-```
-id
-user_id
-title
-content
-created_at
-updated_at
-mood_id
-location
-favorite
-```
-
----
-
-# Humor
-
-Tabela
-
-```
-moods
-```
-
-Campos
-
-```
-id
-user_id
-mood
-note
-created_at
-```
-
----
-
-# Hábitos
-
-Tabela
-
-```
-habits
-```
-
-Campos
-
-```
-id
-user_id
-title
-description
-color
-icon
-created_at
-```
-
----
-
-# Registro dos Hábitos
-
-Tabela
-
-```
-habit_logs
-```
-
-Campos
-
-```
-id
-habit_id
-date
-completed
-```
-
----
-
-# Metas
-
-Tabela
-
-```
-goals
-```
-
-Campos
-
-```
-id
-user_id
-title
-description
-progress
-deadline
-status
-```
-
----
-
-# Cartas
-
-Tabela
-
-```
-letters
-```
-
-Campos
-
-```
-id
-title
-content
-category
-created_at
-```
-
----
-
-# Carta do Dia
-
-Tabela
-
-```
-daily_letters
-```
-
-Campos
-
-```
-id
-user_id
-letter_id
-opened_at
-```
-
----
-
-# Eventos
-
-Tabela
-
-```
-events
-```
-
-Campos
-
-```
-id
-user_id
-title
-description
-date
-color
-reminder
-```
-
----
-
-# Conquistas
-
-Tabela
-
-```
-achievements
-```
-
-Campos
-
-```
-id
-title
-description
-icon
-points
-```
-
----
-
-# Conquistas do Usuário
-
-Tabela
-
-```
-user_achievements
-```
-
-Campos
-
-```
-id
-user_id
-achievement_id
-unlocked_at
-```
-
----
-
-# Estatísticas
-
-Tabela
-
-```
-statistics
-```
-
-Campos
-
-```
-id
-user_id
-streak
-days_using
-letters_read
-habits_completed
-goals_completed
-```
-
----
-
-# Notificações
-
-Tabela
-
-```
-notifications
-```
-
-Campos
-
-```
-id
-user_id
-title
-message
-read
-created_at
-```
-
----
-
-# Arquivos
-
-Tabela
-
-```
-files
-```
-
-Campos
-
-```
-id
-user_id
-name
-url
-type
-size
-created_at
-```
-
----
-
-# Sessões
-
-Tabela
-
-```
-sessions
-```
-
-Campos
-
-```
-id
-user_id
-device
-ip
-last_access
-created_at
-```
-
----
-
-# Configurações
-
-Tabela
-
-```
-settings
-```
-
-Campos
-
-```
-id
-user_id
-theme
-language
-notifications
-privacy
-backup
+```text
+supabase/migrations/20260731180000_rotate_abrigo_key_with_backup.sql
 ```
-
----
-
-# Relacionamentos
-
-```
-Usuário
-
-├── Perfil
-
-├── Diário
-
-├── Humor
-
-├── Hábitos
-
-├── Metas
-
-├── Eventos
-
-├── Estatísticas
-
-├── Configurações
-
-├── Arquivos
-
-├── Sessões
-
-└── Conquistas
-```
-
----
-
-# Futuras Coleções
-
-Planejadas para versões futuras
-
-- Time Capsules
-- Memory Map
-- Shared Spaces
-- Family
-- AI Conversations
-- Voice Notes
-- Timeline
-- Journal Images
-- Tags
-- Categories
-
----
-
-# Backup
-
-Todos os registros deverão permitir:
-
-- Exportação
-- Importação
-- Sincronização
-- Recuperação
-
----
-
-# Versionamento
 
-Alterações no banco deverão manter compatibilidade sempre que possível.
+Ela não é aplicada automaticamente pelos patches. Deve ser revisada e aplicada
+manualmente antes de liberar a rotação protegida.
 
-Migrações deverão ser documentadas.
+## Permissões
 
----
+As funções usam `security definer`, `search_path` controlado e acesso concedido
+somente ao papel `anon` necessário ao modelo sem autenticação. Tabelas não são
+liberadas ao cliente.
 
-# Objetivo Final
+## Conteúdo local
 
-O banco de dados do Abrigo deve ser escalável, seguro e preparado para armazenar toda a jornada do usuário durante muitos anos, garantindo integridade, desempenho e facilidade de manutenção.
+Diário, calendário, favoritos, metas, hábitos e demais módulos continuam
+armazenados localmente. O servidor recebe um único backup consolidado e
+criptografado, sem estrutura individual de tabelas para esses módulos.

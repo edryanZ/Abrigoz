@@ -1,13 +1,107 @@
-# Seguranca
+# Segurança
 
-As regras normativas estao em ../ABRIGO_2_SPEC.md.
+As regras normativas estão em `../ABRIGO_2_SPEC.md`.
+
+## Modelo de ameaça
+
+A Sprint 3 reduz a exposição do conteúdo armazenado fora do dispositivo. O
+servidor recebe somente envelopes criptografados nos backups remotos. Arquivos
+de backup novos também são criptografados. HTTPS, validação de entrada,
+proteção do dispositivo e guarda responsável da Chave do Abrigo continuam
+necessários; criptografia não elimina todos os riscos.
+
+Os dados normais dos módulos continuam legíveis no armazenamento local do
+navegador nesta Sprint. O objetivo não é criptografar indiscriminadamente o
+estado local.
 
 ## Chave do Abrigo
 
-A Chave do Abrigo e o unico mecanismo de conexao e sincronizacao entre dispositivos. Nao existem login tradicional, senha, cadastro por e-mail, recuperacao por e-mail, login social ou Supabase Auth.
+A chave original:
 
-A chave original e exibida somente ao usuario e nunca e armazenada no banco, registrada em logs, incluída em URLs ou retornada em mensagens de erro. O SHA-256 da chave e usado somente para identificacao. HTTPS, validacao de entrada e mensagens de erro seguras continuam obrigatorios.
+- aparece temporariamente no fluxo de criação ou rotação;
+- nunca é enviada ao Supabase;
+- nunca é salva em `localStorage`, `sessionStorage`, IndexedDB como texto,
+  URLs, logs ou backups;
+- gera um SHA-256 usado somente como `keyHash` de identificação.
 
-## Dados e futuro
+O conteúdo não usa o `keyHash` como chave AES.
 
-A sincronizacao e opcional; o Abrigo funciona localmente sem ela. AES-GCM e o padrao planejado para dados sincronizados e sera preparado na infraestrutura antes de ser integrado aos modulos. Backup, dispositivos e conflito de sincronizacao serao detalhados quando entrarem no roadmap ativo.
+## Derivação e criptografia
+
+A Web Crypto API deriva chaves AES-GCM de 256 bits com HKDF-SHA-256. O salt e
+os contextos são públicos e versionados:
+
+- `abrigo:data-encryption:v1`, para sincronização remota;
+- `abrigo:backup-export:v1`, para arquivos de backup.
+
+Cada operação usa um IV aleatório novo de 96 bits. O cabeçalho do envelope é
+autenticado como `additionalData`. As chaves AES são não extraíveis e têm
+somente os usos `encrypt` e `decrypt`.
+
+## Envelope
+
+O formato atual é:
+
+```json
+{
+  "format": "abrigo-encrypted",
+  "version": 1,
+  "purpose": "remote-sync",
+  "algorithm": "AES-GCM",
+  "keyDerivation": "HKDF-SHA-256",
+  "iv": "Base64URL",
+  "ciphertext": "Base64URL",
+  "createdAt": "ISO-8601"
+}
+```
+
+`purpose` também pode ser `backup-export`. O envelope não contém nomes de
+módulos, conteúdo pessoal, chave, hash, dispositivo ou configuração do
+Supabase. Versões, finalidades, IVs, Base64URL e tamanhos inválidos são
+rejeitados.
+
+## Persistência criptográfica
+
+As duas `CryptoKey` não extraíveis são associadas ao `keyHash` e persistidas em
+IndexedDB por uma camada isolada do core. Componentes não acessam IndexedDB nem
+recebem `CryptoKey`.
+
+Se o navegador não puder persistir com segurança, as chaves ficam disponíveis
+somente durante a sessão atual. Após recarregar, o aplicativo mantém os dados
+locais e solicita novamente a Chave do Abrigo antes de sincronizar. Não existe
+fallback para chave bruta ou sincronização plaintext.
+
+Ao desconectar, o material associado é removido. Na rotação, o material antigo
+só é removido depois da confirmação remota e local.
+
+## Backup e recuperação
+
+Novas exportações contêm somente o envelope `backup-export`. A restauração
+descriptografa e valida tudo antes de alterar dados. A aplicação cria um
+snapshot em memória e executa rollback se alguma gravação falhar.
+
+Backups plaintext versão 1 continuam aceitos após identificação e confirmação
+explícitas. Eles nunca são reenviados ao servidor sem criptografia, e novas
+exportações nunca usam o formato plaintext.
+
+## Migração remota
+
+Um backup remoto versão 1 é migrado somente depois que a Chave localizar o
+Abrigo, a derivação funcionar e o conteúdo legado passar na validação rígida.
+Depois do envio criptografado, o payload é lido novamente, descriptografado e
+comparado. Um envelope já protegido não é criptografado novamente.
+
+## Rotação
+
+A RPC `rotate_abrigo_key_with_backup` atualiza `key_hash` e backup
+recriptografado na mesma transação. Em falha local após a confirmação, o
+cliente chama a mesma RPC no sentido inverso com o envelope anterior. A RPC
+antiga permanece por compatibilidade.
+
+## Limitações
+
+- IndexedDB e persistência de `CryptoKey` variam entre navegadores e modos
+  privados.
+- Dados locais normais ainda não são criptografados.
+- Quem possuir a Chave do Abrigo e acesso ao serviço poderá abrir o conteúdo
+  protegido; a chave deve ser guardada com cuidado.

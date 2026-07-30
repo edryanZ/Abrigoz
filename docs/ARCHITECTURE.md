@@ -1,9 +1,36 @@
 # Arquitetura
 
-ABRIGO_2_SPEC.md e a fonte normativa desta arquitetura.
+`ABRIGO_2_SPEC.md` é a fonte normativa.
 
-O projeto e organizado em app, shared, modules, core e assets. Shared contem elementos reutilizaveis; Core contem infraestrutura global; cada funcionalidade pertence a um modulo.
+O projeto é organizado em `app`, `shared`, `modules`, `core` e `assets`.
+Módulos não dependem diretamente de outros módulos. Persistência e regras de
+negócio ficam em Storage, Services ou Repository; componentes React coordenam
+somente a interface.
 
-Modulos nao dependem diretamente de outros modulos. Persistencia e regras de negocio ficam em Storage, Services ou Repository; componentes React ficam restritos a interface e coordenacao local.
+## Proteção de dados
 
-Cada modulo cria somente as pastas necessarias. Consulte a especificacao para a estrutura permitida e CONTRIBUTING para o fluxo de contribuicao.
+`src/core/crypto` concentra:
+
+- Base64URL;
+- derivação HKDF-SHA-256;
+- AES-GCM e envelopes versionados;
+- persistência isolada de `CryptoKey` não extraível em IndexedDB.
+
+`BackupManager` coleta, valida, criptografa e restaura backups de forma
+transacional. `RemoteBackupMigration` converte payloads remotos legados de
+forma idempotente. `SyncService` é o único coordenador que pode obter material
+criptográfico, gerar envelopes e entregá-los ao Repository.
+
+O fluxo remoto é:
+
+```text
+emitSync → EventBus → SyncQueue → SyncService
+→ BackupManager → CryptoService → AbrigoRepository → RPC
+```
+
+O Repository recebe apenas hashes de identificação e envelopes opacos. A fila
+contém somente módulo, ação, ID do registro, horário, estado e tentativas.
+
+Componentes não acessam `localStorage`, IndexedDB, Supabase ou `CryptoKey`
+diretamente. O aviso compartilhado `PrivacyNotice` traduz o estado seguro
+publicado por `SyncService` sem expor detalhes internos.

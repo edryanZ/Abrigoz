@@ -85,6 +85,13 @@ export default function SyncSettings() {
     }
   }
 
+  async function handleDisconnect() {
+    if (!window.confirm(
+      "Desconectar este dispositivo? Seus dados locais continuarão aqui."
+    )) return;
+    await sync.disconnect();
+  }
+
   return (
     <GlassCard className="sync-settings" hover={false}>
       <div className="sync-settings__heading">
@@ -214,15 +221,25 @@ export default function SyncSettings() {
             )}
 
             {sync.connected && (
-              <button
-                type="button"
-                className="config-button secondary"
-                onClick={() => setShowRotateConfirmation(true)}
-                disabled={sync.busy || showRotateConfirmation}
-              >
-                <FaRedoAlt aria-hidden="true" />
-                Gerar nova chave
-              </button>
+              <>
+                <button
+                  type="button"
+                  className="config-button secondary"
+                  onClick={() => setShowRotateConfirmation(true)}
+                  disabled={sync.busy || showRotateConfirmation}
+                >
+                  <FaRedoAlt aria-hidden="true" />
+                  Gerar nova chave
+                </button>
+                <button
+                  type="button"
+                  className="config-button secondary"
+                  onClick={() => void handleDisconnect()}
+                  disabled={sync.busy}
+                >
+                  Desconectar este dispositivo
+                </button>
+              </>
             )}
 
             <button

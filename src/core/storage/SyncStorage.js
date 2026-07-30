@@ -68,5 +68,9 @@ export function saveSyncState(state) {
 
   return saved;
 }
+
+export function clearSyncState() {
+  getLocalStorage()?.removeItem(STATE_KEY);
+}
 export { KEY as SYNC_QUEUE_STORAGE_KEY };
 export { STATE_KEY as SYNC_STATE_STORAGE_KEY };
