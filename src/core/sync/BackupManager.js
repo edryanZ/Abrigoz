@@ -13,9 +13,28 @@ const EXCLUDED_KEYS = new Set([
   SYNC_STATE_STORAGE_KEY,
 ]);
 
+function isSensitiveStorageKey(key) {
+  if (EXCLUDED_KEYS.has(key)) return true;
+
+  const normalizedKey = key.toLowerCase().replace(/[-_:\s]/g, "");
+  return [
+    "key",
+    "chave",
+    "hash",
+    "keyhash",
+    "recoverykey",
+    "syncstate",
+    "syncqueue",
+    "device",
+    "supabase",
+    "credential",
+    "secret",
+  ].some((term) => normalizedKey.includes(term));
+}
+
 function collectModules() {
   return storage.keys()
-    .filter((key) => key.startsWith("abrigo:") && !EXCLUDED_KEYS.has(key))
+    .filter((key) => key.startsWith("abrigo:") && !isSensitiveStorageKey(key))
     .reduce((modules, key) => {
       modules[key] = storage.get(key);
       return modules;
@@ -84,7 +103,7 @@ export function restoreBackup(backup) {
   if (!validateBackup(backup)) throw new Error("Backup remoto inválido.");
 
   Object.entries(backup.modules).forEach(([key, value]) => {
-    if (key.startsWith("abrigo:") && !EXCLUDED_KEYS.has(key)) {
+    if (key.startsWith("abrigo:") && !isSensitiveStorageKey(key)) {
       storage.set(key, value);
     }
   });

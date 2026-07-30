@@ -66,6 +66,14 @@ export default function SyncSettings() {
 
       <dl className="sync-settings__status">
         <div>
+          <dt>Conexão do Abrigo</dt>
+          <dd>
+            {sync.status.connection === "connected"
+              ? "Abrigo sincronizado conectado"
+              : "Somente neste dispositivo"}
+          </dd>
+        </div>
+        <div>
           <dt>Estado</dt>
           <dd>
             <span

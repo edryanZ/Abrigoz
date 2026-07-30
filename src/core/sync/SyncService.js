@@ -22,13 +22,24 @@ const VALID_STATES = new Set([
 let initialized = false;
 let processingPromise = null;
 let rotating = false;
+const initialSyncState = loadSyncState();
 let status = {
   state: "idle",
-  lastSyncAt: loadSyncState().lastSyncAt ?? null,
+  lastSyncAt: initialSyncState.lastSyncAt ?? null,
   pending: getQueue().length,
   error: null,
 };
 const listeners = new Set();
+
+function getPublicStatus() {
+  const connected = Boolean(getKeyHash());
+  return {
+    ...status,
+    connection: connected ? "connected" : "disconnected",
+    connected,
+    pending: getQueue().length,
+  };
+}
 
 function setStatus(nextState, details = {}) {
   status = {
@@ -38,7 +49,7 @@ function setStatus(nextState, details = {}) {
     pending: getQueue().length,
   };
   listeners.forEach((listener) => {
-    try { listener({ ...status }); } catch { /* Observers do not control sync. */ }
+    try { listener(getPublicStatus()); } catch { /* Observers do not control sync. */ }
   });
 }
 
@@ -47,8 +58,17 @@ function getKeyHash() {
   return isValidKeyHash(keyHash) ? keyHash : null;
 }
 
-function persistConnection(keyHash, lastSyncAt = status.lastSyncAt) {
-  saveSyncState({ keyHash, lastSyncAt });
+function persistConnection({
+  keyHash,
+  abrigoId,
+  lastSyncAt = status.lastSyncAt,
+}) {
+  const current = loadSyncState();
+  return saveSyncState({
+    keyHash,
+    abrigoId: abrigoId ?? current.abrigoId ?? null,
+    lastSyncAt,
+  });
 }
 
 function isOffline() {
@@ -64,7 +84,7 @@ async function completeRemoteSync(keyHash, backup) {
   await AbrigoRepository.updateLastSync(keyHash, device.id, syncedAt);
 
   markDeviceSynced();
-  persistConnection(keyHash, syncedAt);
+  persistConnection({ keyHash, lastSyncAt: syncedAt });
   return syncedAt;
 }
 
@@ -72,6 +92,11 @@ export const SyncService = {
   initialize() {
     if (initialized) return this.getStatus();
     initialized = true;
+    const storedState = loadSyncState();
+    status = {
+      ...status,
+      lastSyncAt: storedState.lastSyncAt ?? null,
+    };
 
     if (!AbrigoRepository.isAvailable()) {
       setStatus("unavailable");
@@ -162,8 +187,9 @@ export const SyncService = {
     setStatus("syncing", { error: null });
     try {
       const abrigo = await AbrigoRepository.createAbrigo(keyHash);
+      if (!abrigo?.id) throw new Error("invalid-remote-abrigo");
       await AbrigoRepository.registerDevice(keyHash, getDevice());
-      persistConnection(keyHash);
+      persistConnection({ keyHash, abrigoId: abrigo.id });
       setStatus("success");
       return abrigo;
     } catch {
@@ -182,9 +208,13 @@ export const SyncService = {
     setStatus("syncing", { error: null });
     try {
       const abrigo = await AbrigoRepository.findAbrigoByKeyHash(keyHash);
-      if (!abrigo) throw new Error("not-found");
+      if (!abrigo?.id) throw new Error("not-found");
       await AbrigoRepository.registerDevice(keyHash, getDevice());
-      persistConnection(keyHash, abrigo.last_sync_at ?? null);
+      persistConnection({
+        keyHash,
+        abrigoId: abrigo.id,
+        lastSyncAt: abrigo.last_sync_at ?? null,
+      });
       setStatus("success", { lastSyncAt: abrigo.last_sync_at ?? null });
       return abrigo;
     } catch {
@@ -208,7 +238,7 @@ export const SyncService = {
       const syncedAt = new Date().toISOString();
       await AbrigoRepository.updateLastSync(keyHash, device.id, syncedAt);
       markDeviceSynced();
-      persistConnection(keyHash, syncedAt);
+      persistConnection({ keyHash, lastSyncAt: syncedAt });
       setStatus("success", { lastSyncAt: syncedAt });
       return backup;
     } catch {
@@ -234,6 +264,7 @@ export const SyncService = {
     if (!currentKeyHash) {
       throw new Error("Nenhum Abrigo sincronizado está conectado.");
     }
+    const currentConnection = loadSyncState();
 
     rotating = true;
 
@@ -255,10 +286,18 @@ export const SyncService = {
       await AbrigoRepository.rotateAbrigoKey(currentKeyHash, newKeyHash);
 
       try {
-        persistConnection(newKeyHash, status.lastSyncAt);
+        persistConnection({
+          keyHash: newKeyHash,
+          abrigoId: currentConnection.abrigoId,
+          lastSyncAt: status.lastSyncAt,
+        });
       } catch {
         await AbrigoRepository.rotateAbrigoKey(newKeyHash, currentKeyHash);
-        persistConnection(currentKeyHash, status.lastSyncAt);
+        persistConnection({
+          keyHash: currentKeyHash,
+          abrigoId: currentConnection.abrigoId,
+          lastSyncAt: status.lastSyncAt,
+        });
         throw new Error("Não foi possível salvar a nova chave neste dispositivo.");
       }
 
@@ -275,11 +314,7 @@ export const SyncService = {
   },
 
   getStatus() {
-    return {
-      ...status,
-      connected: Boolean(getKeyHash()),
-      pending: getQueue().length,
-    };
+    return getPublicStatus();
   },
 
   subscribe(listener) {

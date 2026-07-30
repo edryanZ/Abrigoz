@@ -1,14 +1,12 @@
 const storage = {
   get(key) {
-    try {
-      const value = localStorage.getItem(key);
+    const value = localStorage.getItem(key);
+    if (value === null) return null;
 
-      return value !== null
-        ? JSON.parse(value)
-        : null;
-    } catch (error) {
-      console.error(`Erro ao ler "${key}".`, error);
-      return null;
+    try {
+      return JSON.parse(value);
+    } catch {
+      return value;
     }
   },
 
