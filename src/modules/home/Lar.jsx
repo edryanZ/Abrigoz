@@ -17,6 +17,9 @@ import MoodSelector from "./components/MoodSelector";
 import DailyLetter from "./components/DailyLetter";
 import DashboardGrid from "./components/DashboardGrid";
 import CompanionCard from "./components/CompanionCard";
+import TodayCenter from "./components/TodayCenter";
+import PrivacyToggle from "../../shared/componentes/PrivacyToggle";
+import DashboardCustomizer from "./components/DashboardCustomizer";
 export default function Lar() {
   const { greeting } = useTheme();
 
@@ -33,6 +36,10 @@ export default function Lar() {
           subtitle="Um lugar para desacelerar, guardar lembranças e encontrar um pouco de paz."
         />
         <PrivacyNotice compact />
+        <PrivacyToggle compact />
+        <DashboardCustomizer />
+
+        <TodayCenter />
 
         <Section>
           <MoodSelector />

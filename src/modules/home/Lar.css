@@ -180,3 +180,20 @@
   border: 1px solid var(--border-color); color: var(--text-primary);
   background: var(--card-bg); cursor: pointer;
 }
+.today-center { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 22px 0; }
+.today-center article { display: grid; align-content: start; gap: 10px; }
+.today-center h2, .today-center p { margin: 0; }
+.today-center__counts, .quick-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.today-center__counts span { padding: 6px 9px; border-radius: 999px; background: var(--card-bg); }
+.quick-actions a { min-height: 42px; display: inline-flex; align-items: center; padding: 8px 12px;
+  border-radius: 12px; background: var(--card-bg); color: var(--text-primary); }
+.today-center li { margin: 7px 0; }
+.today-center li button { margin-left: 8px; border: 0; background: transparent; color: var(--accent); cursor: pointer; }
+.dashboard-customizer { margin: 12px 0; padding: 12px 14px; border: 1px solid var(--border-color);
+  border-radius: 14px; background: var(--card-bg); }
+.dashboard-customizer summary { cursor: pointer; font-weight: 700; }
+.dashboard-customizer > div { display: grid; grid-template-columns: 1fr 42px 42px; gap: 6px;
+  align-items: center; margin: 7px 0; }
+.dashboard-customizer label { display: flex; gap: 8px; align-items: center; }
+.dashboard-customizer button { min-height: 38px; border: 1px solid var(--border-color);
+  border-radius: 10px; background: var(--card-bg); color: var(--text-primary); }

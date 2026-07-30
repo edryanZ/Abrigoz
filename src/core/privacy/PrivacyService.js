@@ -12,3 +12,8 @@ export function setPrivacyMode(enabled) {
   window.dispatchEvent(new CustomEvent("abrigo:privacy-change", { detail: value.enabled }));
   return value.enabled;
 }
+
+export function applyPrivacyMode(enabled = isPrivacyModeEnabled()) {
+  document.body.classList.toggle("abrigo-privacy", enabled);
+  return enabled;
+}
