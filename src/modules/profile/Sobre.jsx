@@ -7,6 +7,7 @@ import PageHeader from "../../shared/componentes/PageHeader";
 import Container from "../../shared/ui/Container";
 import Section from "../../shared/ui/Section";
 import GlassCard from "../../shared/ui/GlassCard";
+import { APP } from "../../core/constants/app";
 
 const recursos = [
   {
@@ -42,7 +43,7 @@ const informacoes = [
   },
   {
     titulo: "Versão",
-    valor: "2.0",
+    valor: APP.VERSION,
   },
   {
     titulo: "Tecnologias",
@@ -80,6 +81,43 @@ export default function Sobre() {
               onde seja possível revisitar histórias, celebrar datas especiais
               e manter memórias sempre por perto.
             </p>
+          </GlassCard>
+        </Section>
+
+        <Section title="Quem criou o Abrigo">
+          <GlassCard className="sobre-criador">
+            <div>
+              <span className="sobre-criador__selo" aria-hidden="true">🌿</span>
+              <div>
+                <p className="sobre-criador__destaque">
+                  Criado por {APP.AUTHOR}
+                </p>
+                <h2>Uma ideia feita para acolher</h2>
+              </div>
+            </div>
+
+            <p>
+              O Abrigo foi criado por Edryan Lopes com a ideia de oferecer um
+              lugar pessoal para guardar momentos, organizar a rotina,
+              acompanhar objetivos e cuidar da própria jornada. O projeto busca
+              unir simplicidade, privacidade e acolhimento em uma experiência
+              que respeita o tempo e as escolhas de cada pessoa.
+            </p>
+
+            <dl className="sobre-criador__detalhes">
+              <div>
+                <dt>Criador</dt>
+                <dd>{APP.AUTHOR}</dd>
+              </div>
+              <div>
+                <dt>Função</dt>
+                <dd>idealizador e desenvolvedor</dd>
+              </div>
+              <div>
+                <dt>Projeto</dt>
+                <dd>{APP.NAME}</dd>
+              </div>
+            </dl>
           </GlassCard>
         </Section>
 
@@ -138,7 +176,7 @@ export default function Sobre() {
         </Section>
 
         <footer className="page-footer">
-          <p>✨ Abrigo 2.0 • Um lugar para guardar o que realmente importa.</p>
+          <p>✨ {APP.NAME} {APP.VERSION} • Um lugar para guardar o que realmente importa.</p>
         </footer>
       </Container>
     </>

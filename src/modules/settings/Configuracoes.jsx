@@ -22,6 +22,7 @@ import { storage } from "../../core/storage/storage";
 import SyncSettings from "./components/SyncSettings";
 import PrivacyToggle from "../../shared/componentes/PrivacyToggle";
 import AnalyticsSettings from "./components/AnalyticsSettings";
+import { APP } from "../../core/constants/app";
 
 export default function Configuracoes() {
   const { greeting } = useTheme();
@@ -147,7 +148,11 @@ export default function Configuracoes() {
               </h3>
 
               <p>
-                <strong>Versão:</strong> Abrigo 2.0
+                <strong>{APP.NAME} — criado por {APP.AUTHOR}</strong>
+              </p>
+
+              <p>
+                <strong>Versão:</strong> {APP.VERSION}
               </p>
             </GlassCard>
 

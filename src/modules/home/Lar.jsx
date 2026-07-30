@@ -22,6 +22,7 @@ import TodayCenter from "./components/TodayCenter";
 import PrivacyToggle from "../../shared/componentes/PrivacyToggle";
 import DashboardCustomizer from "./components/DashboardCustomizer";
 import { loadDashboardPreferences } from "../../core/intelligence/DashboardIntelligence";
+import { APP } from "../../core/constants/app";
 export default function Lar() {
   const { greeting } = useTheme();
   const [dashboard, setDashboard] = useState(loadDashboardPreferences);
@@ -79,7 +80,7 @@ export default function Lar() {
         <Divider />
 
         <footer className="page-footer">
-          <p>✨ Abrigo 2.0 • Feito para acolher.</p>
+          <p>{APP.NAME} — criado por {APP.AUTHOR}</p>
         </footer>
       </Container>
     </>

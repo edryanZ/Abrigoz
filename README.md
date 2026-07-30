@@ -8,6 +8,12 @@ O Abrigo é um aplicativo desenvolvido para ajudar pessoas a registrar cartas, m
 
 O projeto surgiu como uma aplicação pessoal e agora evolui para uma plataforma de uso geral, preservando sua essência enquanto amplia suas funcionalidades.
 
+## Criador
+
+O Abrigo foi criado por **Edryan Lopes**, idealizador e desenvolvedor do projeto.
+
+Seu propósito é oferecer um lugar pessoal e acolhedor para guardar momentos, organizar a rotina, acompanhar objetivos e cuidar da própria jornada, unindo simplicidade e privacidade.
+
 ---
 
 ## Tecnologias

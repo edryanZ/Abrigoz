@@ -3,7 +3,7 @@ export const APP = {
   VERSION: "2.0.0",
   DESCRIPTION: "Um lugar para guardar o que realmente importa.",
 
-  AUTHOR: "Edryãn Lopes",
+  AUTHOR: "Edryan Lopes",
   YEAR: new Date().getFullYear(),
 
   STORAGE_PREFIX: "abrigo",

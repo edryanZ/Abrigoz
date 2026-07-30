@@ -101,6 +101,65 @@
 
 }
 
+.sobre-criador {
+    display: grid;
+    gap: 22px;
+}
+
+.sobre-criador > div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.sobre-criador__selo {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    flex: 0 0 54px;
+    border-radius: 18px;
+    background: var(--card-bg);
+    font-size: 1.65rem;
+}
+
+.sobre-criador h2,
+.sobre-criador p {
+    margin: 0;
+}
+
+.sobre-criador__destaque {
+    margin-bottom: 5px !important;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.sobre-criador__detalhes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0;
+}
+
+.sobre-criador__detalhes div {
+    padding: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    background: var(--card-bg);
+}
+
+.sobre-criador__detalhes dt {
+    margin-bottom: 5px;
+    color: var(--text-secondary);
+    font-size: .8rem;
+}
+
+.sobre-criador__detalhes dd {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
 /* ==========================================================
    Citação
 ========================================================== */
@@ -165,6 +224,10 @@
 
         font-size: 1.2rem;
 
+    }
+
+    .sobre-criador__detalhes {
+        grid-template-columns: 1fr;
     }
 
 }
