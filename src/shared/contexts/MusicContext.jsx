@@ -8,6 +8,7 @@ import {
 } from "react";
 import { musicas } from "../../data/musicas";
 import STORAGE_KEYS from "../../core/constants/storageKeys";
+import { storage } from "../../core/storage/storage";
 
 const MusicContext = createContext(null);
 
@@ -23,16 +24,16 @@ export function MusicProvider({ children }) {
   const isPlayingRef = useRef(false);
 
   const [indice, setIndice] = useState(() => {
-    const value = Number(localStorage.getItem(STORAGE.INDEX));
+    const value = Number(storage.get(STORAGE.INDEX));
     return Number.isFinite(value) ? value : 0;
   });
 
   const [tocando, setTocando] = useState(() => {
-    return localStorage.getItem(STORAGE.PLAYING) === "true";
+    return storage.get(STORAGE.PLAYING) === true;
   });
 
   const [volume, setVolume] = useState(() => {
-    const value = Number(localStorage.getItem(STORAGE.VOLUME));
+    const value = Number(storage.get(STORAGE.VOLUME));
     return Number.isFinite(value) ? value : 0.4;
   });
 
@@ -56,7 +57,7 @@ export function MusicProvider({ children }) {
     audio.src = musicaAtual.arquivo;
     audio.load();
 
-    const tempo = Number(localStorage.getItem(STORAGE.TIME));
+    const tempo = Number(storage.get(STORAGE.TIME));
 
     if (Number.isFinite(tempo)) {
       audio.currentTime = tempo;
@@ -69,25 +70,22 @@ export function MusicProvider({ children }) {
 
   useEffect(() => {
     audioRef.current.volume = volume;
-    localStorage.setItem(STORAGE.VOLUME, volume.toString());
+    storage.set(STORAGE.VOLUME, volume);
   }, [volume]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE.INDEX, indice.toString());
+    storage.set(STORAGE.INDEX, indice);
   }, [indice]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE.PLAYING, tocando.toString());
+    storage.set(STORAGE.PLAYING, tocando);
   }, [tocando]);
 
   useEffect(() => {
     const audio = audioRef.current;
 
     function salvarTempo() {
-      localStorage.setItem(
-        STORAGE.TIME,
-        audio.currentTime.toString()
-      );
+      storage.set(STORAGE.TIME, audio.currentTime);
     }
 
     function terminou() {

@@ -18,6 +18,7 @@ import GlassCard from "../../shared/ui/GlassCard";
 
 import { useTheme } from "../../shared/contexts/ThemeContext";
 import { useUser } from "../../shared/contexts/UserContext";
+import { storage } from "../../core/storage/storage";
 export default function Configuracoes() {
   const { greeting } = useTheme();
 
@@ -53,10 +54,12 @@ export default function Configuracoes() {
     clearUser();
 
     // Remove todos os outros dados do Abrigo
-    localStorage.removeItem("abrigo_streak");
-    localStorage.removeItem("abrigo_statistics");
-    localStorage.removeItem("abrigo_moods");
-    localStorage.removeItem("abrigo_achievements");
+    storage.removeMany([
+      "abrigo_streak",
+      "abrigo_statistics",
+      "abrigo_moods",
+      "abrigo_achievements",
+    ]);
 
     // Recarrega o app
     window.location.replace("/");

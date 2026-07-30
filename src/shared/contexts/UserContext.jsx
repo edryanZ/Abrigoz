@@ -6,20 +6,14 @@ import {
 } from "react";
 
 import STORAGE_KEYS from "../../core/constants/storageKeys";
+import { storage } from "../../core/storage/storage";
 
 import { useTheme } from "./ThemeContext";
 
 const UserContext = createContext(null);
 
 function loadUser() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEYS.USER);
-    return saved ? JSON.parse(saved) : null;
-  } catch (error) {
-    console.error(error);
-    localStorage.removeItem(STORAGE_KEYS.USER);
-    return null;
-  }
+  return storage.get(STORAGE_KEYS.USER);
 }
 
 export function UserProvider({ children }) {
@@ -40,10 +34,7 @@ export function UserProvider({ children }) {
       },
     };
 
-    localStorage.setItem(
-      STORAGE_KEYS.USER,
-      JSON.stringify(newUser)
-    );
+    storage.set(STORAGE_KEYS.USER, newUser);
 
     setUser(newUser);
   }
@@ -56,16 +47,13 @@ export function UserProvider({ children }) {
       ...data,
     };
 
-    localStorage.setItem(
-      STORAGE_KEYS.USER,
-      JSON.stringify(updated)
-    );
+    storage.set(STORAGE_KEYS.USER, updated);
 
     setUser(updated);
   }
 
   function clearUser() {
-    localStorage.removeItem(STORAGE_KEYS.USER);
+    storage.remove(STORAGE_KEYS.USER);
     setUser(null);
   }
 
