@@ -4,12 +4,6 @@
   gap: 2rem;
 }
 
-.config-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
-}
-
 .config-card {
   display: flex;
   flex-direction: column;
@@ -63,6 +57,11 @@
   transform: translateY(0);
 }
 
+.config-button:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, .45);
+  outline-offset: 3px;
+}
+
 .config-button.danger {
   background: #d64545;
 }
@@ -78,10 +77,6 @@
 }
 
 @media (max-width: 768px) {
-  .config-grid {
-    grid-template-columns: 1fr;
-  }
-
   .config-actions {
     flex-direction: column;
   }

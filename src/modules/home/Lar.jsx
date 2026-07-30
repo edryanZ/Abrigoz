@@ -12,7 +12,6 @@ import Divider from "../../shared/ui/Divider";
 
 import FraseDoDia from "../../shared/componentes/FraseDoDia";
 
-import Welcome from "./components/Welcome";
 import MoodSelector from "./components/MoodSelector";
 import DailyLetter from "./components/DailyLetter";
 import DashboardGrid from "./components/DashboardGrid";
@@ -31,10 +30,6 @@ export default function Lar() {
           title="Bem-vindo ao Abrigo"
           subtitle="Um lugar para desacelerar, guardar lembranças e encontrar um pouco de paz."
         />
-
-        <Section>
-          <Welcome />
-        </Section>
 
         <Section>
           <MoodSelector />

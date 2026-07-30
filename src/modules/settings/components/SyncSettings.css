@@ -1,0 +1,198 @@
+.sync-settings {
+  gap: 1.25rem;
+}
+
+.sync-settings__heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.sync-settings__heading h3,
+.sync-settings__heading p,
+.sync-connect h4,
+.sync-connect p,
+.sync-key-reveal p {
+  margin: 0;
+}
+
+.sync-settings__heading p,
+.sync-connect p,
+.sync-key-reveal p {
+  margin-top: .35rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.sync-settings__icon {
+  display: grid;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .1);
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+.sync-settings__status {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .75rem;
+  margin: 0;
+}
+
+.sync-settings__status > div {
+  padding: .85rem;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .05);
+}
+
+.sync-settings__status dt {
+  margin-bottom: .35rem;
+  color: var(--text-secondary);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.sync-settings__status dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.sync-settings__device,
+.sync-state,
+.sync-actions .config-button {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.sync-state::before {
+  width: .6rem;
+  height: .6rem;
+  border-radius: 50%;
+  background: currentColor;
+  content: "";
+}
+
+.sync-state--success {
+  color: #79d6a3;
+}
+
+.sync-state--syncing,
+.sync-state--pending {
+  color: #f5ca78;
+}
+
+.sync-state--offline,
+.sync-state--unavailable,
+.sync-state--error {
+  color: #ff9999;
+}
+
+.sync-message {
+  padding: .85rem 1rem;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 14px;
+  line-height: 1.5;
+}
+
+.sync-message--success {
+  background: rgba(68, 169, 112, .14);
+}
+
+.sync-message--error {
+  background: rgba(214, 69, 69, .14);
+}
+
+.sync-key-reveal,
+.sync-connect {
+  display: grid;
+  gap: .85rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .06);
+}
+
+.sync-key-reveal {
+  border-color: rgba(245, 202, 120, .42);
+}
+
+.sync-key-reveal__value {
+  display: block;
+  padding: .85rem;
+  overflow-wrap: anywhere;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, .18);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: clamp(.82rem, 3vw, 1rem);
+  letter-spacing: .05em;
+  text-align: center;
+  user-select: all;
+}
+
+.sync-connect label {
+  font-size: .9rem;
+  font-weight: 700;
+}
+
+.sync-key-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: .85rem 1rem;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 14px;
+  outline: none;
+  background: rgba(255, 255, 255, .08);
+  color: var(--text-primary);
+  font: inherit;
+  letter-spacing: .04em;
+}
+
+.sync-key-input:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .1);
+}
+
+.config-button.secondary {
+  border: 1px solid rgba(255, 255, 255, .15);
+  background: rgba(255, 255, 255, .08);
+  color: var(--text-primary);
+}
+
+.config-button.secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, .14);
+}
+
+.config-button:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+  transform: none;
+}
+
+@media (min-width: 700px) {
+  .sync-settings__status {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .sync-settings__heading {
+    align-items: center;
+  }
+
+  .sync-settings__heading p {
+    font-size: .9rem;
+  }
+
+  .sync-key-reveal,
+  .sync-connect {
+    padding: .85rem;
+  }
+}

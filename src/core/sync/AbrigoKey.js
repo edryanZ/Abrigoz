@@ -1,5 +1,21 @@
 const KEY_PATTERN = /^[A-Z0-9]{16,128}$/;
 const HASH_PATTERN = /^[a-f0-9]{64}$/;
+const KEY_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+export function generateAbrigoKey() {
+  if (!globalThis.crypto?.getRandomValues) {
+    throw new Error("Geração segura de chave indisponível neste dispositivo.");
+  }
+
+  const bytes = new Uint8Array(16);
+  globalThis.crypto.getRandomValues(bytes);
+  const characters = Array.from(
+    bytes,
+    (byte) => KEY_ALPHABET[byte % KEY_ALPHABET.length]
+  ).join("");
+
+  return `ABR-${characters.match(/.{1,4}/g).join("-")}`;
+}
 
 export function normalizeAbrigoKey(value) {
   if (typeof value !== "string") return "";

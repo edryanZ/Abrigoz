@@ -19,6 +19,8 @@ import GlassCard from "../../shared/ui/GlassCard";
 import { useTheme } from "../../shared/contexts/ThemeContext";
 import { useUser } from "../../shared/contexts/UserContext";
 import { storage } from "../../core/storage/storage";
+import SyncSettings from "./components/SyncSettings";
+
 export default function Configuracoes() {
   const { greeting } = useTheme();
 
@@ -72,84 +74,93 @@ export default function Configuracoes() {
       <Navbar />
 
       <Container>
-        <PageHeader
-          greeting={greeting}
-          title="Configurações"
-          subtitle="Personalize sua experiência no Abrigo."
-        />
+        <main className="configuracoes-page">
+          <PageHeader
+            greeting={greeting}
+            title="Configurações"
+            subtitle="Personalize sua experiência no Abrigo."
+          />
 
-        <Section>
-          <GlassCard>
-            <h3>
-              <FaUser />
-              Perfil
-            </h3>
+          <Section
+            title="Sincronização"
+            subtitle="Proteja e leve seu Abrigo para outros dispositivos quando quiser."
+          >
+            <SyncSettings />
+          </Section>
 
-            <p>
-              <strong>Nome:</strong> {name || "Visitante"}
-            </p>
+          <Section layout="grid">
+            <GlassCard className="config-card">
+              <h3>
+                <FaUser />
+                Perfil
+              </h3>
 
-            <button
-              className="config-button"
-              onClick={alterarNome}
-            >
-              Alterar nome
-            </button>
-          </GlassCard>
+              <p>
+                <strong>Nome:</strong> {name || "Visitante"}
+              </p>
 
-          <GlassCard>
-            <h3>
-              <FaPalette />
-              Aparência
-            </h3>
+              <button
+                className="config-button"
+                onClick={alterarNome}
+              >
+                Alterar nome
+              </button>
+            </GlassCard>
 
-            <p>
-              O tema muda automaticamente conforme o período do dia.
-            </p>
-          </GlassCard>
+            <GlassCard className="config-card">
+              <h3>
+                <FaPalette />
+                Aparência
+              </h3>
 
-          <GlassCard>
-            <h3>
-              <FaMusic />
-              Música
-            </h3>
+              <p>
+                O tema muda automaticamente conforme o período do dia.
+              </p>
+            </GlassCard>
 
-            <p>
-              Em breve você poderá controlar músicas,
-              sons ambientes e volume.
-            </p>
-          </GlassCard>
+            <GlassCard className="config-card">
+              <h3>
+                <FaMusic />
+                Música
+              </h3>
 
-          <GlassCard>
-            <h3>
-              <FaInfoCircle />
-              Aplicativo
-            </h3>
+              <p>
+                Em breve você poderá controlar músicas,
+                sons ambientes e volume.
+              </p>
+            </GlassCard>
 
-            <p>
-              <strong>Versão:</strong> Abrigo 2.0
-            </p>
-          </GlassCard>
+            <GlassCard className="config-card">
+              <h3>
+                <FaInfoCircle />
+                Aplicativo
+              </h3>
 
-          <GlassCard>
-            <h3>
-              <FaTrashAlt />
-              Dados
-            </h3>
+              <p>
+                <strong>Versão:</strong> Abrigo 2.0
+              </p>
+            </GlassCard>
 
-            <p>
-              Apaga seu perfil e reinicia o Abrigo como
-              se fosse o primeiro acesso.
-            </p>
+            <GlassCard className="config-card">
+              <h3>
+                <FaTrashAlt />
+                Dados
+              </h3>
 
-            <button
-              className="config-button danger"
-              onClick={redefinirAbrigo}
-            >
-              Redefinir Abrigo
-            </button>
-          </GlassCard>
-        </Section>
+              <p>
+                Apaga seu perfil e reinicia o Abrigo como
+                se fosse o primeiro acesso.
+              </p>
+
+              <button
+                className="config-button danger"
+                onClick={redefinirAbrigo}
+              >
+                Redefinir Abrigo
+              </button>
+            </GlassCard>
+          </Section>
+        </main>
       </Container>
     </>
   );

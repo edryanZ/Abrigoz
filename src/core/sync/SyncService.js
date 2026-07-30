@@ -208,7 +208,11 @@ export const SyncService = {
   },
 
   getStatus() {
-    return { ...status, pending: getQueue().length };
+    return {
+      ...status,
+      connected: Boolean(getKeyHash()),
+      pending: getQueue().length,
+    };
   },
 
   subscribe(listener) {

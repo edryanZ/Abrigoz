@@ -12,8 +12,10 @@ SyncService.initialize();
 
 export { emitSync, SyncService };
 export {
+  generateAbrigoKey,
   hashAbrigoKey,
   isValidAbrigoKey,
   isValidKeyHash,
   normalizeAbrigoKey,
 } from "./AbrigoKey";
+export { useAbrigoSync } from "./useAbrigoSync";
