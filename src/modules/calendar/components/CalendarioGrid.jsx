@@ -1,161 +1,112 @@
 import "./CalendarioGrid.css";
 
-import {
-  FaChevronLeft,
-  FaChevronRight,
-  FaCalendarDay,
-} from "react-icons/fa";
+import { FaCalendarDay, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-import ModalEvento from "./ModalEvento";
-import useCalendario from "../hooks/useCalendario";
+import { EVENT_CATEGORIES } from "../services/calendarService";
+import { toLocalDateKey } from "../utils/calendarDates";
 
-export default function CalendarioGrid() {
+const WEEKDAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
-  const {
+export default function CalendarioGrid({
+  month,
+  selectedDate,
+  occurrences,
+  onSelect,
+  onChangeMonth,
+  onToday,
+}) {
+  const firstWeekday = new Date(
+    month.getFullYear(),
+    month.getMonth(),
+    1
+  ).getDay();
+  const daysInMonth = new Date(
+    month.getFullYear(),
+    month.getMonth() + 1,
+    0
+  ).getDate();
+  const todayKey = toLocalDateKey(new Date());
+  const monthLabel = new Intl.DateTimeFormat("pt-BR", {
+    month: "long",
+    year: "numeric",
+  }).format(month);
 
-    meses,
-    diasSemana,
-    dias,
-
-    mesAtual,
-    anoAtual,
-
-    modalAberto,
-    conteudoDia,
-
-    mudarMes,
-    abrirDia,
-    fecharModal,
-    irParaHoje,
-
-  } = useCalendario();
+  const days = [
+    ...Array.from({ length: firstWeekday }, (_, index) => ({
+      empty: true,
+      key: `empty-${index}`,
+    })),
+    ...Array.from({ length: daysInMonth }, (_, index) => {
+      const date = new Date(month.getFullYear(), month.getMonth(), index + 1);
+      const key = toLocalDateKey(date);
+      return {
+        key,
+        day: index + 1,
+        events: occurrences.filter((event) => event.occurrenceDate === key),
+      };
+    }),
+  ];
 
   return (
-    <>
+    <div className="calendario-grid-container">
+      <header className="calendario-header">
+        <button
+          type="button"
+          className="btn-mes"
+          onClick={() => onChangeMonth(-1)}
+          aria-label="Mês anterior"
+        >
+          <FaChevronLeft />
+        </button>
+        <h2>{monthLabel}</h2>
+        <button
+          type="button"
+          className="btn-mes"
+          onClick={() => onChangeMonth(1)}
+          aria-label="Próximo mês"
+        >
+          <FaChevronRight />
+        </button>
+      </header>
 
-      <div className="calendario-grid-container">
+      <button type="button" className="btn-hoje" onClick={onToday}>
+        <FaCalendarDay aria-hidden="true" /> Hoje
+      </button>
 
-        <header className="calendario-header">
-
-          <button
-            type="button"
-            className="btn-mes"
-            onClick={() => mudarMes(-1)}
-            aria-label="Mês anterior"
-          >
-            <FaChevronLeft />
-          </button>
-
-          <div className="titulo-calendario">
-
-            <span className="subtitulo">
-              Calendário do Abrigo
-            </span>
-
-            <h2>
-              {meses[mesAtual]} {anoAtual}
-            </h2>
-
-          </div>
-
-          <button
-            type="button"
-            className="btn-mes"
-            onClick={() => mudarMes(1)}
-            aria-label="Próximo mês"
-          >
-            <FaChevronRight />
-          </button>
-
-        </header>
-
-        <div className="toolbar-calendario">
-
-          <button
-            type="button"
-            className="btn-hoje"
-            onClick={irParaHoje}
-          >
-            <FaCalendarDay />
-
-            <span>Hoje</span>
-
-          </button>
-
-        </div>
-
-        <div className="dias-semana">
-
-          {diasSemana.map((dia) => (
-
-            <span key={dia}>
-              {dia}
-            </span>
-
-          ))}
-
-        </div>
-
-        <div className="grade-calendario">
-
-          {dias.map((item) => {
-
-            if (item.vazio) {
-
-              return (
-                <div
-                  key={item.key}
-                  className="dia vazio"
-                />
-              );
-
-            }
-
-            return (
-
-              <button
-                key={item.key}
-                type="button"
-                onClick={() => abrirDia(item.dia)}
-                className={`dia
-                  ${item.hoje ? "hoje" : ""}
-                  ${item.ativo ? "ativo" : ""}
-                  ${item.possuiConteudo ? "evento" : ""}
-                `}
-              >
-
-                <span className="numero-dia">
-                  {item.dia}
-                </span>
-
-                {item.possuiConteudo && (
-
-                  <span
-                    className="emoji-evento"
-                    title="Existe conteúdo neste dia"
-                  >
-                    ✨
-                  </span>
-
-                )}
-
-              </button>
-
-            );
-
-          })}
-
-        </div>
-
+      <div className="dias-semana">
+        {WEEKDAYS.map((weekday) => <span key={weekday}>{weekday}</span>)}
       </div>
 
-      <ModalEvento
-        aberto={modalAberto}
-        conteudo={conteudoDia}
-        onClose={fecharModal}
-      />
-
-    </>
+      <div className="grade-calendario">
+        {days.map((item) => item.empty ? (
+          <span className="dia vazio" key={item.key} aria-hidden="true" />
+        ) : (
+          <button
+            key={item.key}
+            type="button"
+            className={[
+              "dia",
+              item.key === todayKey ? "hoje" : "",
+              item.key === selectedDate ? "ativo" : "",
+              item.events.length ? "evento" : "",
+            ].join(" ")}
+            onClick={() => onSelect(item.key)}
+            aria-label={`${item.day}, ${item.events.length} evento(s)`}
+          >
+            <span className="numero-dia">{item.day}</span>
+            <span className="calendar-dots" aria-hidden="true">
+              {item.events.slice(0, 3).map((event) => (
+                <i
+                  key={`${event.id}-${event.occurrenceDate}`}
+                  style={{
+                    background: EVENT_CATEGORIES[event.category]?.color,
+                  }}
+                />
+              ))}
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
   );
-
 }
