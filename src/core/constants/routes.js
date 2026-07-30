@@ -7,6 +7,8 @@ export const ROUTES = {
   CALENDAR: "/calendario",
   LETTERS: "/cartas",
   ABOUT: "/sobre",
+  SETTINGS: "/configuracoes",
+  DIARY: "/diario",
 
   // Sistema
   NOT_FOUND: "*",

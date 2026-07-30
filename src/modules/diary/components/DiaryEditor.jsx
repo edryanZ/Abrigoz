@@ -1,0 +1,8 @@
+import { useState } from "react";
+import GlassCard from "../../../shared/ui/GlassCard";
+export default function DiaryEditor({ onSave }) {
+ const [title, setTitle] = useState(""); const [content, setContent] = useState(""); const [mood, setMood] = useState("Tranquilo"); const [tags, setTags] = useState(""); const [favorite, setFavorite] = useState(false);
+ const words = content.trim() ? content.trim().split(/\s+/).length : 0;
+ function submit(event) { event.preventDefault(); if (!title.trim() && !content.trim()) return; onSave({ title, content, mood, tags, favorite }); setTitle(""); setContent(""); setTags(""); setFavorite(false); }
+ return <GlassCard as="form" className="diary-editor" onSubmit={submit}><input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Título" aria-label="Título" /><textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Como foi seu dia?" aria-label="Texto do diário" rows="7" /><div className="diary-fields"><select value={mood} onChange={(e) => setMood(e.target.value)} aria-label="Humor"><option>Tranquilo</option><option>Feliz</option><option>Reflexivo</option><option>Cansado</option></select><input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="Tags separadas por vírgula" aria-label="Tags" /></div><label><input type="checkbox" checked={favorite} onChange={(e) => setFavorite(e.target.checked)} /> Favoritar</label><p>{words} palavras · cerca de {Math.max(1, Math.ceil(words / 200))} min de leitura</p><button type="submit" className="config-button">Salvar entrada</button></GlassCard>;
+}

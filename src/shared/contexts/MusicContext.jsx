@@ -20,6 +20,7 @@ const STORAGE = {
 
 export function MusicProvider({ children }) {
   const audioRef = useRef(new Audio());
+  const isPlayingRef = useRef(false);
 
   const [indice, setIndice] = useState(() => {
     const value = Number(localStorage.getItem(STORAGE.INDEX));
@@ -34,6 +35,10 @@ export function MusicProvider({ children }) {
     const value = Number(localStorage.getItem(STORAGE.VOLUME));
     return Number.isFinite(value) ? value : 0.4;
   });
+
+  useEffect(() => {
+    isPlayingRef.current = tocando;
+  }, [tocando]);
 
   const musicaAtual = useMemo(() => {
     if (!musicas.length) return null;
@@ -51,15 +56,13 @@ export function MusicProvider({ children }) {
     audio.src = musicaAtual.arquivo;
     audio.load();
 
-    audio.volume = volume;
-
     const tempo = Number(localStorage.getItem(STORAGE.TIME));
 
     if (Number.isFinite(tempo)) {
       audio.currentTime = tempo;
     }
 
-    if (tocando) {
+    if (isPlayingRef.current) {
       audio.play().catch(() => {});
     }
   }, [musicaAtual]);

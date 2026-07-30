@@ -1,144 +1,165 @@
-# 📌 Technical Decisions
+Atualize apenas o arquivo docs/DECISIONS.md.
 
-> Registro oficial das decisões arquiteturais e técnicas do Abrigo.
+Objetivo:
 
----
+Registrar as novas decisões arquiteturais oficiais do Abrigo 2.0.
 
-# Objetivo
+Não modificar código.
 
-Este documento registra as decisões importantes tomadas durante o desenvolvimento do Abrigo.
+Não alterar nenhum outro arquivo.
 
-Cada decisão deve conter:
+Manter todas as ADRs existentes.
 
-- Contexto
-- Motivo
-- Alternativas avaliadas
-- Consequências
+Adicionar as seguintes ADRs ao final do documento.
 
 ---
 
-# ADR-001
-
-## Arquitetura baseada em módulos
-
-Status
-
-Aceita
-
----
-
-### Contexto
-
-O projeto cresceria continuamente ao longo dos anos.
-
-A organização tradicional por tipo de arquivo (components, services, hooks, etc.) poderia dificultar a manutenção.
-
----
-
-### Decisão
-
-Adotar arquitetura baseada em módulos.
-
-Cada funcionalidade possui sua própria estrutura interna.
-
----
-
-### Consequências
-
-✔ Organização
-
-✔ Escalabilidade
-
-✔ Facilidade para localizar arquivos
-
-✔ Menor acoplamento
-
----
-
-# ADR-002
-
-## Shared Components
-
-Status
-
-Aceita
-
----
-
-### Decisão
-
-Todo componente reutilizado por dois ou mais módulos pertence ao Shared.
-
----
-
-# ADR-003
-
-## Mobile First
-
-Status
-
-Aceita
-
----
-
-### Decisão
-
-Todo desenvolvimento deve começar pela versão Mobile.
-
-Tablet e Desktop serão adaptações.
-
----
-
-# ADR-004
-
-## Design System
-
-Status
-
-Aceita
-
----
-
-### Decisão
-
-Todo componente deve seguir o Design System oficial.
-
-Nenhuma tela poderá criar padrões próprios.
-
----
-
-# ADR-005
-
-## Segurança
-
-Status
-
-Aceita
-
----
-
-### Decisão
-
-Toda funcionalidade deve considerar segurança desde sua concepção.
-
-Segurança nunca será tratada apenas ao final do desenvolvimento.
-
----
-
-# Como registrar novas decisões
-
-Sempre utilizar:
-
-```
 ADR-006
 
 Título
 
+Chave do Abrigo como Identidade Principal
+
 Status
+
+Aceita
 
 Contexto
 
+O Abrigo não utilizará autenticação tradicional.
+
 Decisão
 
+A sincronização entre dispositivos será baseada exclusivamente na Chave do Abrigo.
+
+A chave original nunca será armazenada.
+
+Apenas seu hash SHA-256 será utilizado para identificação no banco.
+
 Consequências
-```
+
+- maior privacidade
+- menor dependência de autenticação
+- sincronização simplificada
+- usuário controla sua identidade
+
+---
+
+ADR-007
+
+Título
+
+Comunicação Desacoplada entre Módulos
+
+Status
+
+Aceita
+
+Contexto
+
+O crescimento do projeto exige baixo acoplamento.
+
+Decisão
+
+Nenhum módulo poderá importar diretamente outro módulo.
+
+Toda comunicação ocorrerá através de:
+
+- Services
+- Hooks
+- Contexts
+- EventBus
+
+Consequências
+
+- módulos independentes
+- manutenção facilitada
+- maior escalabilidade
+
+---
+
+ADR-008
+
+Título
+
+Sincronização Baseada em Eventos
+
+Status
+
+Aceita
+
+Contexto
+
+Os módulos precisam permanecer independentes.
+
+Decisão
+
+Nenhum módulo chamará syncData() diretamente.
+
+Todos utilizarão emitSync().
+
+O fluxo oficial será:
+
+emitSync()
+
+↓
+
+EventBus
+
+↓
+
+SyncQueue
+
+↓
+
+BackupManager
+
+↓
+
+Repository
+
+↓
+
+Supabase
+
+Consequências
+
+- desacoplamento
+- filas de sincronização
+- melhor tratamento de conflitos
+
+---
+
+ADR-009
+
+Título
+
+Infraestrutura de Criptografia
+
+Status
+
+Aceita
+
+Contexto
+
+A criptografia será implementada futuramente.
+
+Decisão
+
+A infraestrutura será preparada antes da integração aos módulos.
+
+Será utilizado AES-GCM.
+
+A chave será derivada da Chave do Abrigo.
+
+Consequências
+
+- menor impacto futuro
+- integração gradual
+- maior segurança
+
+Ao final informar:
+
+- ADRs adicionadas;
+- impacto arquitetural;
+- possíveis documentos que ainda precisam ser atualizados.

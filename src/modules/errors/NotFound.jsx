@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./NotFound.css";
+import ROUTES from "../../core/constants/routes";
 
 export default function NotFound() {
   return (
@@ -20,7 +21,7 @@ export default function NotFound() {
         </p>
 
         <Link
-          to="/lar"
+          to={ROUTES.HOME}
           className="notfound-button"
         >
           Voltar ao Lar

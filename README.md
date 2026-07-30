@@ -23,13 +23,34 @@ O projeto surgiu como uma aplicação pessoal e agora evolui para uma plataforma
 
 ## Objetivos
 
-- Guardar cartas
-- Organizar eventos
-- Registrar memórias
-- Criar um ambiente acolhedor
-- Permitir personalização do usuário
+Atualize apenas o README.md do projeto.
 
----
+Objetivo:
+
+Reconhecer o arquivo ABRIGO_2_SPEC.md como a especificação oficial do Abrigo 2.0.
+
+Requisitos:
+
+- Não alterar funcionalidades.
+- Não modificar código.
+- Não alterar outros arquivos.
+- Apenas atualizar a documentação.
+
+Adicionar uma nova seção chamada:
+
+## Especificação Oficial
+
+Informar que:
+
+- O arquivo ABRIGO_2_SPEC.md é a principal fonte de verdade do projeto.
+- Toda implementação deve consultá-lo antes da documentação complementar.
+- Em caso de conflito entre documentos, ABRIGO_2_SPEC.md prevalece até que a documentação seja atualizada.
+
+Também atualizar a seção de documentação para incluir:
+
+ABRIGO_2_SPEC.md
+
+Manter o restante do README intacto.
 
 ## Estrutura
 

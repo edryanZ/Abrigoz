@@ -6,9 +6,127 @@
 
 # Objetivo
 
-O Design System reúne todas as regras de interface do Abrigo.
+Atualize apenas o arquivo docs/DESIGN_SYSTEM.md.
 
-Seu objetivo é manter consistência visual, melhorar a experiência do usuário e facilitar o desenvolvimento de novas funcionalidades.
+Objetivo:
+
+Alinhar o Design System à especificação oficial do ABRIGO_2_SPEC.md.
+
+Não modificar código.
+
+Não alterar nenhum outro arquivo.
+
+Preservar toda a documentação existente e apenas complementar ou atualizar onde houver conflito.
+
+Adicionar as seguintes diretrizes:
+
+## Componentes oficiais reutilizáveis
+
+Os componentes abaixo são a base da interface e devem ser reutilizados sempre que possível:
+
+- GlassCard
+- Container
+- Section
+- Divider
+- PageHeader
+- Navbar
+- Ceu
+
+Nunca duplicar esses componentes.
+
+Antes de criar um novo componente, verificar se um existente pode ser reutilizado.
+
+---
+
+## Princípios da Interface
+
+Toda nova tela deve seguir:
+
+- Mobile First
+- Glassmorphism
+- Interface limpa
+- Pouco ruído visual
+- Componentes pequenos
+- Espaçamentos consistentes
+- Navegação simples
+- Acessibilidade
+
+---
+
+## Dashboard
+
+O Dashboard (Lar) deve utilizar GlassCards para organizar informações.
+
+Os widgets devem seguir o mesmo padrão visual.
+
+Evitar cartões com estilos diferentes.
+
+---
+
+## Navbar
+
+Padronizar a Navbar com a estrutura:
+
+🎵        Abrigo        ☰
+
+Onde:
+
+- botão da música à esquerda;
+- nome Abrigo centralizado;
+- menu à direita.
+
+---
+
+## Responsividade
+
+Toda tela nova deve ser validada em:
+
+- Mobile
+- Tablet
+- Desktop
+
+Nenhum layout deve ser desenvolvido pensando primeiro em Desktop.
+
+---
+
+## Componentes
+
+Cada componente deve possuir apenas uma responsabilidade.
+
+Evitar componentes muito grandes.
+
+Sempre dividir quando necessário.
+
+---
+
+## Animações
+
+As animações devem ser discretas.
+
+Priorizar:
+
+- Fade
+- Scale
+- Slide suave
+
+Evitar animações excessivas.
+
+---
+
+## Acessibilidade
+
+Todo componente novo deve possuir:
+
+- aria-label quando necessário;
+- foco visível;
+- contraste adequado;
+- navegação por teclado.
+
+Ao final informar:
+
+- seções adicionadas;
+- seções atualizadas;
+- conflitos resolvidos.
 
 ---
 

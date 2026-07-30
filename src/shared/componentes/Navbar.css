@@ -9,8 +9,8 @@
 
     z-index: 1500;
 
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr) 46px;
     align-items: center;
 
     padding: 18px 28px;
@@ -37,6 +37,8 @@
     font-weight: 700;
 
     color: var(--text-primary);
+
+    text-align: center;
 
 }
 
@@ -361,5 +363,12 @@
         width: 100%;
 
     }
+
+}
+
+.navbar-icon:focus-visible {
+
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 
 }

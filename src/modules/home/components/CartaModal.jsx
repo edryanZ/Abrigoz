@@ -1,6 +1,6 @@
 import "./CartaModal.css";
 
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 
 import GlassCard from "../../../shared/ui/GlassCard";
 import GlassButton from "../../../shared/ui/GlassButton";
@@ -16,13 +16,8 @@ export default function CartaModal({
   categoria,
   onClose,
 }) {
-  const [favoritado, setFavoritado] = useState(false);
-
-  useEffect(() => {
-    if (!carta) return;
-
-    setFavoritado(favorito(carta.id));
-  }, [carta]);
+  const [, refresh] = useReducer((value) => value + 1, 0);
+  const favoritado = carta ? favorito(carta.id) : false;
 
   useEffect(() => {
     if (!aberto) return;
@@ -57,9 +52,7 @@ export default function CartaModal({
   function handleFavorito() {
     alternarFavorito(carta.id);
 
-    setFavoritado(
-      favorito(carta.id)
-    );
+    refresh();
   }
 
   function handleOverlayClick(e) {

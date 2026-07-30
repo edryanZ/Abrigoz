@@ -1,0 +1,1 @@
+export { emitSync } from "../sync";

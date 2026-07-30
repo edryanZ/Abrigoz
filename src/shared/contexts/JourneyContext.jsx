@@ -1,5 +1,6 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -43,7 +44,7 @@ export function JourneyProvider({ children }) {
     getUnlockedAchievementObjects()
   );
 
-  function refresh() {
+  const refresh = useCallback(() => {
     const streakData = getStreakData();
     const stats = getStatistics();
     const moodHistory = getMoodHistory();
@@ -60,7 +61,7 @@ export function JourneyProvider({ children }) {
     setStatistics(stats);
     setMoods(moodHistory);
     setAchievements(getUnlockedAchievementObjects());
-  }
+  }, [user]);
 
   useEffect(() => {
     registerVisit();
@@ -68,8 +69,9 @@ export function JourneyProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    refresh();
-  }, [user]);
+    const timer = window.setTimeout(refresh, 0);
+    return () => window.clearTimeout(timer);
+  }, [refresh]);
 
   function saveMood(mood, note = "") {
     saveMoodService(mood, note);

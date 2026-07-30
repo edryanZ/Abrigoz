@@ -6,11 +6,62 @@
 
 # Objetivo
 
-Este documento descreve como os dados do Abrigo serão organizados futuramente.
+Atualize apenas o arquivo docs/DATABASE.md.
 
-Mesmo durante o desenvolvimento local utilizando localStorage, toda nova funcionalidade deve ser pensada considerando esta estrutura.
+Objetivo:
 
----
+Alinhar a estrutura de dados do Abrigo 2.0 à especificação oficial (ABRIGO_2_SPEC.md).
+
+Requisitos obrigatórios:
+
+- Remover a dependência de autenticação tradicional.
+- Remover a tabela users baseada em e-mail/senha.
+- Remover campos como:
+  - email
+  - password_hash
+  - provider
+  - last_login
+- Não utilizar user_id como identidade principal.
+
+Adicionar uma nova abordagem baseada na Chave do Abrigo.
+
+Documentar que:
+
+- Cada Abrigo possui uma Chave do Abrigo única.
+- Apenas o hash SHA-256 da chave é armazenado no banco.
+- A chave original nunca é armazenada.
+- O hash identifica o backup do usuário.
+- O Supabase é utilizado apenas para armazenamento e sincronização.
+- A criptografia AES-GCM será integrada futuramente.
+
+Atualizar o modelo lógico para utilizar uma entidade semelhante a:
+
+Abrigo
+- id
+- key_hash
+- created_at
+- updated_at
+- last_sync_at
+
+Dispositivos
+- id
+- abrigo_id
+- device_name
+- created_at
+- last_sync_at
+
+Os demais módulos (diário, metas, hábitos, calendário etc.) devem se relacionar ao Abrigo, e não a um usuário autenticado.
+
+Manter a organização e o estilo do documento.
+
+Não modificar nenhum outro arquivo.
+
+Ao final, informar:
+
+- tabelas removidas;
+- tabelas criadas;
+- relacionamentos alterados;
+- possíveis impactos futuros.
 
 # Banco de Dados
 

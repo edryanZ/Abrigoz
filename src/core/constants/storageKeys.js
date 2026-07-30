@@ -17,6 +17,8 @@ export const STORAGE_KEYS = {
   ACHIEVEMENTS: "abrigo:achievements",
 
   LAST_ACCESS: "abrigo:lastAccess",
+  DIARY: "abrigo:diary",
+  SYNC: "abrigo:sync",
 };
 
 export default STORAGE_KEYS;

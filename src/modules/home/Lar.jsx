@@ -15,7 +15,7 @@ import FraseDoDia from "../../shared/componentes/FraseDoDia";
 import Welcome from "./components/Welcome";
 import MoodSelector from "./components/MoodSelector";
 import DailyLetter from "./components/DailyLetter";
-import StreakCard from "./components/StreakCard";
+import DashboardGrid from "./components/DashboardGrid";
 export default function Lar() {
   const { greeting } = useTheme();
 
@@ -40,6 +40,8 @@ export default function Lar() {
           <MoodSelector />
         </Section>
 
+        <DashboardGrid />
+
         <Section>
           <DailyLetter />
         </Section>
@@ -52,13 +54,6 @@ export default function Lar() {
         </Section>
 
         <Divider />
-
-        <Section
-          title="Sua Jornada"
-          subtitle="Cada visita deixa uma pequena marca no seu Abrigo."
-        >
-          <StreakCard />
-        </Section>
 
         <footer className="page-footer">
           <p>✨ Abrigo 2.0 • Feito para acolher.</p>

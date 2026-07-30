@@ -16,6 +16,7 @@ const Sobre = lazy(() => import("../../modules/profile/Sobre"));
 const Configuracoes = lazy(() =>
   import("../../modules/settings/Configuracoes")
 );
+const Diary = lazy(() => import("../../modules/diary/pages/Diary"));
 
 export default function AppRoutes() {
   return (
@@ -28,9 +29,10 @@ export default function AppRoutes() {
         <Route path={ROUTES.ABOUT} element={<Sobre />} />
 
         <Route
-          path="/configuracoes"
+          path={ROUTES.SETTINGS}
           element={<Configuracoes />}
         />
+        <Route path={ROUTES.DIARY} element={<Diary />} />
 
         <Route
           path="/home"

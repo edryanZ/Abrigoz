@@ -4,37 +4,25 @@ import { useEffect, useMemo, useState } from "react";
 
 import { getPeriod } from "../../core/utils/timePeriod";
 
+function createStars(length, size, delay, duration) {
+  return Array.from({ length }, (_, id) => ({
+    id,
+    top: Math.random() * 100,
+    left: Math.random() * 100,
+    size: Math.random() * size + 1,
+    delay: Math.random() * delay,
+    duration: Math.random() * duration + 3,
+  }));
+}
+
+const SMALL_STARS = createStars(120, 2, 8, 4);
+const LARGE_STARS = createStars(40, 3, 6, 5);
+
 export default function Ceu() {
   const [shootingStars, setShootingStars] = useState([]);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
 
- const periodo = useMemo(() => getPeriod(), []);
-
-  const estrelasPequenas = useMemo(
-    () =>
-      Array.from({ length: 120 }, (_, i) => ({
-        id: i,
-        top: Math.random() * 100,
-        left: Math.random() * 100,
-        size: Math.random() * 2 + 1,
-        delay: Math.random() * 8,
-        duration: Math.random() * 4 + 3,
-      })),
-    []
-  );
-
-  const estrelasGrandes = useMemo(
-    () =>
-      Array.from({ length: 40 }, (_, i) => ({
-        id: i,
-        top: Math.random() * 100,
-        left: Math.random() * 100,
-        size: Math.random() * 3 + 2,
-        delay: Math.random() * 6,
-        duration: Math.random() * 5 + 4,
-      })),
-    []
-  );
+  const periodo = useMemo(() => getPeriod(), []);
 
   useEffect(() => {
     function mover(e) {
@@ -89,7 +77,7 @@ export default function Ceu() {
         <div className="nevoa nevoa2" />
 
         <div className="estrelas pequenas">
-          {estrelasPequenas.map((e) => (
+          {SMALL_STARS.map((e) => (
             <span
               key={e.id}
               className="estrela"
@@ -106,7 +94,7 @@ export default function Ceu() {
         </div>
 
         <div className="estrelas grandes">
-          {estrelasGrandes.map((e) => (
+          {LARGE_STARS.map((e) => (
             <span
               key={e.id}
               className="estrela grande"

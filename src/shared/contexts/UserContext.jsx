@@ -1,7 +1,6 @@
 import {
   createContext,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -12,23 +11,21 @@ import { useTheme } from "./ThemeContext";
 
 const UserContext = createContext(null);
 
+function loadUser() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEYS.USER);
+    return saved ? JSON.parse(saved) : null;
+  } catch (error) {
+    console.error(error);
+    localStorage.removeItem(STORAGE_KEYS.USER);
+    return null;
+  }
+}
+
 export function UserProvider({ children }) {
   const { greeting } = useTheme();
 
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEYS.USER);
-
-      if (saved) {
-        setUser(JSON.parse(saved));
-      }
-    } catch (error) {
-      console.error(error);
-      localStorage.removeItem(STORAGE_KEYS.USER);
-    }
-  }, []);
+  const [user, setUser] = useState(loadUser);
 
   function createUser(name) {
     const newUser = {

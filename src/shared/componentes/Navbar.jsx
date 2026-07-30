@@ -17,6 +17,7 @@ import {
 } from "react-icons/fa";
 
 import MusicPlayer from "./MusicPlayer";
+import ROUTES from "../../core/constants/routes";
 
 export default function Navbar() {
   const { pathname } = useLocation();
@@ -66,31 +67,31 @@ export default function Navbar() {
   const itens = [
     {
       nome: "Lar",
-      rota: "/lar",
+      rota: ROUTES.HOME,
       icone: <FaHome />,
     },
 
     {
       nome: "Calendário",
-      rota: "/calendario",
+      rota: ROUTES.CALENDAR,
       icone: <FaCalendarAlt />,
     },
 
     {
       nome: "Cartas",
-      rota: "/cartas",
+      rota: ROUTES.LETTERS,
       icone: <FaEnvelope />,
     },
 
     {
       nome: "Sobre",
-      rota: "/sobre",
+      rota: ROUTES.ABOUT,
       icone: <FaHeart />,
     },
 
     {
       nome: "Configurações",
-      rota: "/configuracoes",
+      rota: ROUTES.SETTINGS,
       icone: <FaCog />,
     },
   ];
@@ -101,10 +102,12 @@ export default function Navbar() {
 
       <header className="navbar-top">
         <button
+          type="button"
           className="navbar-icon"
-          onClick={abrirMenu}
+          onClick={abrirPlayer}
+          aria-label="Abrir reprodutor de música"
         >
-          <FaBars />
+          <FaMusic />
         </button>
 
         <h1 className="navbar-logo">
@@ -112,10 +115,12 @@ export default function Navbar() {
         </h1>
 
         <button
+          type="button"
           className="navbar-icon"
-          onClick={abrirPlayer}
+          onClick={abrirMenu}
+          aria-label="Abrir menu de navegação"
         >
-          <FaMusic />
+          <FaBars />
         </button>
       </header>
 
@@ -143,8 +148,10 @@ export default function Navbar() {
           </div>
 
           <button
+            type="button"
             className="fechar-menu"
             onClick={fecharMenu}
+            aria-label="Fechar menu de navegação"
           >
             <FaTimes />
           </button>

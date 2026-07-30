@@ -169,7 +169,7 @@ const categorias = {
   ],
 };
 
-const todasFrases = Object.values(categorias).flat();
+const todasFrases = [...frases, ...Object.values(categorias).flat()];
 
 export default function FraseDoDia() {
   const frase = useMemo(() => {
