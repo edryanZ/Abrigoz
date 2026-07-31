@@ -24,6 +24,7 @@ const Statistics = lazy(() => import("../../modules/statistics/Statistics"));
 const GlobalSearch = lazy(() => import("../../modules/search/GlobalSearch"));
 const Achievements = lazy(() => import("../../modules/achievements/Achievements"));
 const AdminAnalytics = lazy(() => import("../../modules/admin/AdminAnalytics"));
+const Assistant = lazy(() => import("../../modules/assistant/Assistant"));
 
 export default function AppRoutes() {
   return (
@@ -47,6 +48,7 @@ export default function AppRoutes() {
         <Route path={ROUTES.SEARCH} element={<GlobalSearch />} />
         <Route path={ROUTES.ACHIEVEMENTS} element={<Achievements />} />
         <Route path={ROUTES.ADMIN_ACTIVITY} element={<AdminAnalytics />} />
+        <Route path={ROUTES.ASSISTANT} element={<Assistant />} />
 
         <Route
           path="/home"

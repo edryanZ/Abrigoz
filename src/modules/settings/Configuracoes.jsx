@@ -20,8 +20,13 @@ import PrivacyToggle from "../../shared/componentes/PrivacyToggle";
 import AnalyticsSettings from "./components/AnalyticsSettings";
 import { APP } from "../../core/constants/app";
 import { useState } from "react";
+import {
+  loadAIPreferences, saveAIPreferences,
+} from "../../core/ai/AIPreferencesService";
+import { clearAIHistory } from "../../core/ai/AIHistoryRepository";
 
 const SECTIONS = [
+  ["assistente","Assistente e serviços externos"],
   ["perfil","Perfil"],["aparencia","Aparência"],["musica","Música e som"],
   ["privacidade","Privacidade"],["companheiro","Sugestões e Companheiro"],
   ["dados","Dados e backup"],["sincronizacao","Sincronização"],["chave","Chave do Abrigo"],
@@ -40,6 +45,7 @@ export default function Configuracoes() {
   const { name, updateUser, clearUser } = useUser();
   const music = useMusic();
   const [companion, setCompanion] = useState(loadCompanionPreferences);
+  const [ai, setAI] = useState(loadAIPreferences);
 
   const changeName = () => {
     const value = prompt("Como você gostaria de ser chamado?", name);
@@ -52,6 +58,13 @@ export default function Configuracoes() {
     window.location.replace("/");
   };
   const updateCompanion = (changes) => setCompanion(saveCompanionPreferences(changes));
+  const updateAI = (changes) => {
+    const next = saveAIPreferences(changes);
+    if (!next.assistantEnabled) {
+      import("../../core/ai/AIService").then(({ AIService }) => AIService.cancel());
+    }
+    setAI(next);
+  };
 
   return <><Ceu /><Navbar /><Container><main className="configuracoes-page">
     <PageHeader greeting={greeting} title="Configurações"
@@ -62,6 +75,24 @@ export default function Configuracoes() {
           <span>{index + 1}</span>{label}</a>)}
       </nav>
       <div className="settings-content">
+        <SettingCard id="assistente" icon={<FaHeart />} title="Assistente e serviços externos">
+          <p>A IA começa desligada. Cada autorização pode ser alterada separadamente.</p>
+          {[
+            ["assistantEnabled","Ativar Assistente externo"],
+            ["allowSelectedContent","Permitir envio de conteúdo selecionado"],
+            ["saveHistory","Salvar histórico do Assistente"],
+            ["allowStatistics","Usar estatísticas como contexto"],
+            ["allowMood","Usar humor como contexto"],
+            ["externalRecommendations","Receber recomendações externas"],
+            ["autoRedact","Ocultar informações pessoais automaticamente"],
+          ].map(([key, label]) => <label className="config-switch" key={key}><span>{label}</span>
+            <input type="checkbox" checked={ai[key]}
+              onChange={(event) => updateAI({ [key]: event.target.checked })} /></label>)}
+          <p>A remoção automática pode não encontrar todos os dados sensíveis. Revise sempre antes de enviar.</p>
+          <button className="config-button" onClick={() => {
+            clearAIHistory(); setAI(loadAIPreferences());
+          }}>Apagar histórico</button>
+        </SettingCard>
         <SettingCard id="perfil" icon={<FaUser />} title="Perfil">
           <p><strong>Nome:</strong> {name || "Visitante"}</p>
           <button className="config-button" onClick={changeName}>Alterar nome</button>

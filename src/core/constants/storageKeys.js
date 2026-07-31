@@ -25,6 +25,8 @@ export const STORAGE_KEYS = {
   SEARCH_PREFERENCES: "abrigo:search-preferences:v1",
   PRIVACY_MODE: "abrigo:privacy-mode:v1",
   ANALYTICS_CONSENT: "abrigo:analytics-consent:v1",
+  AI_PREFERENCES: "abrigo:ai-preferences:v1",
+  AI_HISTORY: "abrigo:ai-history:v1",
 
   LAST_ACCESS: "abrigo:lastAccess",
   DIARY: "abrigo:diary",
