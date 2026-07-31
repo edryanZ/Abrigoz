@@ -3,7 +3,6 @@ import "./Calendario.css";
 import { useCallback, useState } from "react";
 import { FaPlus, FaSearch } from "react-icons/fa";
 
-import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
 import PrivacyNotice from "../../shared/componentes/PrivacyNotice";
@@ -50,7 +49,6 @@ export default function Calendario() {
 
   return (
     <>
-      <Ceu />
       <Navbar />
       <Container>
         <PageHeader

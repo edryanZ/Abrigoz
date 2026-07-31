@@ -12,7 +12,6 @@ import {
 import ROUTES from "../../../core/constants/routes";
 import { useAbrigoSync } from "../../../core/sync/useAbrigoSync";
 
-import Ceu from "../../../shared/componentes/Ceu";
 import RecoveryKeyPanel from "../../../shared/componentes/RecoveryKeyPanel";
 import { useTheme } from "../../../shared/contexts/ThemeContext";
 import { useUser } from "../../../shared/contexts/UserContext";
@@ -79,7 +78,6 @@ export default function Welcome() {
 
   return (
     <>
-      <Ceu />
       <Container>
         <main className="welcome-page">
           <GlassCard className="welcome-card" hover={false}>

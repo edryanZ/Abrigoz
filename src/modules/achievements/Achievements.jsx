@@ -8,7 +8,6 @@ import {
 } from "../../core/services/achievements";
 import { subscribe } from "../../core/sync/EventBus";
 import { SYNC_EVENT } from "../../core/sync/emitSync";
-import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
 import Container from "../../shared/ui/Container";
@@ -32,7 +31,7 @@ export default function Achievements() {
 
   return (
     <>
-      <Ceu /><Navbar />
+      <Navbar />
       <Container>
         <PageHeader title="Conquistas" subtitle="Marcos de cuidado, descoberta e constância no seu ritmo." />
         <main className="achievements-page">

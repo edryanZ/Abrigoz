@@ -1,6 +1,5 @@
 import "../styles/Diary.css";
 
-import Ceu from "../../../shared/componentes/Ceu";
 import Navbar from "../../../shared/componentes/Navbar";
 import PrivacyNotice from "../../../shared/componentes/PrivacyNotice";
 import Container from "../../../shared/ui/Container";
@@ -14,7 +13,6 @@ export default function Diary() {
   const diary = useDiary();
   return (
     <>
-      <Ceu />
       <Navbar />
       <Container>
         <main className="diary-page">

@@ -7,17 +7,36 @@ export const DEFAULT_SKY_PREFERENCES = Object.freeze({
   staticBackground: false, colorMode: "system",
 });
 
+const BOOLEAN_PREFERENCES = [
+  "automatic", "useDeviceTime", "showStars", "showGlows",
+  "allowAnimations", "reduceEffects", "staticBackground",
+];
+
+export function normalizeSkyPreferences(value) {
+  if (!value || typeof value !== "object" || value.version !== 1) {
+    return { ...DEFAULT_SKY_PREFERENCES };
+  }
+  const next = { ...DEFAULT_SKY_PREFERENCES };
+  BOOLEAN_PREFERENCES.forEach((key) => {
+    if (typeof value[key] === "boolean") next[key] = value[key];
+  });
+  if (["soft","standard","strong"].includes(value.intensity)) {
+    next.intensity = value.intensity;
+  }
+  if (["light","dark","system"].includes(value.colorMode)) {
+    next.colorMode = value.colorMode;
+  }
+  return next;
+}
+
 export function loadSkyPreferences() {
-  const value = storage.get(SKY_PREFERENCES_KEY);
-  return value?.version === 1
-    ? { ...DEFAULT_SKY_PREFERENCES, ...value }
-    : { ...DEFAULT_SKY_PREFERENCES };
+  return normalizeSkyPreferences(storage.get(SKY_PREFERENCES_KEY));
 }
 
 export function saveSkyPreferences(changes) {
-  const next = { ...loadSkyPreferences(), ...changes, version: 1 };
-  if (!["soft","standard","strong"].includes(next.intensity)) next.intensity = "standard";
-  if (!["light","dark","system"].includes(next.colorMode)) next.colorMode = "system";
+  const next = normalizeSkyPreferences({
+    ...loadSkyPreferences(), ...changes, version: 1,
+  });
   storage.set(SKY_PREFERENCES_KEY, next);
   window.dispatchEvent(new CustomEvent("abrigo:sky-preferences", { detail: next }));
   return next;

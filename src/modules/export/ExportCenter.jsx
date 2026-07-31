@@ -1,6 +1,5 @@
 import "./ExportCenter.css";
 import { useMemo, useState } from "react";
-import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 import Container from "../../shared/ui/Container";
 import GlassCard from "../../shared/ui/GlassCard";
@@ -80,7 +79,7 @@ export default function ExportCenter() {
     } catch (error) { setMessage(error.message); }
   };
 
-  return <><Ceu /><Navbar /><Container><main className="export-page">
+  return <><Navbar /><Container><main className="export-page">
     <PageHeader greeting={greeting} title="Exportar"
       subtitle="Escolha exatamente o que deseja levar com você." />
     <GlassCard className="export-card">

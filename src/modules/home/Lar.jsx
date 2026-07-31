@@ -3,7 +3,6 @@ import "./Lar.css";
 import { useEffect, useState } from "react";
 import { useTheme } from "../../shared/contexts/ThemeContext";
 
-import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 
 import Container from "../../shared/ui/Container";
@@ -36,8 +35,6 @@ export default function Lar() {
 
   return (
     <>
-      <Ceu />
-
       <Navbar />
 
       <Container>

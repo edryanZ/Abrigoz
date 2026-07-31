@@ -3,7 +3,6 @@ import {
   FaAccessibleIcon, FaChartBar, FaCog, FaHeart, FaInfoCircle, FaKey,
   FaMusic, FaPalette, FaShieldAlt, FaTrashAlt, FaUser,
 } from "react-icons/fa";
-import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
 import Container from "../../shared/ui/Container";
@@ -81,7 +80,7 @@ export default function Configuracoes() {
   };
   const updateSky = (changes) => setSky(saveSkyPreferences(changes));
 
-  return <><Ceu /><Navbar /><Container><main className="configuracoes-page">
+  return <><Navbar /><Container><main className="configuracoes-page">
     <PageHeader greeting={greeting} title="Configurações"
       subtitle="Deixe o Abrigo confortável para o seu jeito de usar." />
     <div className="settings-shell">

@@ -3,7 +3,6 @@ import "./Habitos.css";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 
-import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
 import PrivacyNotice from "../../shared/componentes/PrivacyNotice";
@@ -23,7 +22,7 @@ export default function Habitos() {
 
   return (
     <>
-      <Ceu /><Navbar />
+      <Navbar />
       <Container>
         <PageHeader greeting={`${greeting} 🌿`} title="Hábitos"
           subtitle="Cuide da sua rotina com constância e gentileza." />

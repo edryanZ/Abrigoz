@@ -68,6 +68,8 @@
 
 html{
   scroll-behavior:smooth;
+  background:
+    linear-gradient(160deg, #060b22, #171342 52%, #090d24);
 }
 
 html,
@@ -83,7 +85,7 @@ body{
 
   font-family:var(--font-family);
 
-  background:var(--background);
+  background:transparent;
 
   color:var(--text-primary);
 
@@ -98,6 +100,12 @@ body{
       background .6s ease,
       color .4s ease;
 
+}
+
+#root{
+  position:relative;
+  isolation:isolate;
+  min-height:100vh;
 }
 
 /* ==========================================================

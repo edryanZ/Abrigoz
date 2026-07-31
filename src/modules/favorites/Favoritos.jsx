@@ -3,7 +3,6 @@ import "./Favoritos.css";
 import { useState } from "react";
 import { FaPlus, FaSearch } from "react-icons/fa";
 
-import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
 import PrivacyNotice from "../../shared/componentes/PrivacyNotice";
@@ -28,7 +27,6 @@ export default function Favoritos() {
 
   return (
     <>
-      <Ceu />
       <Navbar />
       <Container>
         <PageHeader

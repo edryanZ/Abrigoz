@@ -2,7 +2,6 @@ import "./Cartas.css";
 
 import { useState } from "react";
 
-import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
 
@@ -45,8 +44,6 @@ export default function Cartas() {
 
   return (
     <>
-      <Ceu />
-
       <Navbar />
 
       <Container>

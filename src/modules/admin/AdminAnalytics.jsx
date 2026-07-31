@@ -2,7 +2,6 @@ import "./AdminAnalytics.css";
 
 import { useState } from "react";
 
-import Ceu from "../../shared/componentes/Ceu";
 import Container from "../../shared/ui/Container";
 import GlassCard from "../../shared/ui/GlassCard";
 
@@ -38,7 +37,7 @@ export default function AdminAnalytics() {
   }
 
   return (
-    <><Ceu /><Container>
+    <><Container>
       <main className="admin-analytics">
         <h1>Atividade agregada do Abrigo</h1>
         <p>Os números são aproximados e não identificam pessoas. Um mesmo visitante pode abrir mais de uma sessão.</p>

@@ -1,6 +1,5 @@
 import "./Sobre.css";
 
-import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
 
@@ -54,8 +53,6 @@ const informacoes = [
 export default function Sobre() {
   return (
     <>
-      <Ceu />
-
       <Navbar />
 
       <Container>

@@ -14,7 +14,6 @@ import {
 import { subscribe } from "../../core/sync/EventBus";
 import { SYNC_EVENT } from "../../core/sync/emitSync";
 import { isPrivacyModeEnabled } from "../../core/privacy/PrivacyService";
-import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
 import Container from "../../shared/ui/Container";
@@ -72,7 +71,7 @@ export default function GlobalSearch() {
 
   return (
     <>
-      <Ceu /><Navbar />
+      <Navbar />
       <Container>
         <PageHeader title="Pesquisa global" subtitle="Encontre o que já está guardado neste dispositivo." />
         <main className="global-search">

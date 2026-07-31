@@ -23,6 +23,9 @@ const {
   nextSkyBoundary, resolveColorMode, resolveSkyPeriod,
 } = await import("../src/core/atmosphere/SkyThemeService.js");
 const {
+  DEFAULT_SKY_PREFERENCES, loadSkyPreferences, normalizeSkyPreferences,
+} = await import("../src/core/atmosphere/SkyThemePreferencesService.js");
+const {
   decryptCapsule, encryptCapsule,
 } = await import("../src/core/sharing/CapsuleCryptoService.js");
 const {
@@ -117,6 +120,67 @@ test("tema do céu diferencia claro, escuro e sistema", () => {
   assert.equal(resolveColorMode("dark", false), "dark");
   assert.equal(resolveColorMode("system", true), "dark");
   assert.equal(resolveColorMode("system", false), "light");
+});
+
+test("preferências do céu preservam escolhas válidas e corrigem migração inválida", () => {
+  values.clear();
+  const chosen = {
+    version: 1, automatic: false, staticBackground: true, showStars: false,
+    showGlows: false, allowAnimations: false, reduceEffects: true,
+    useDeviceTime: false, intensity: "soft", colorMode: "dark",
+  };
+  values.set("abrigo:sky-preferences:v1", JSON.stringify(chosen));
+  assert.deepEqual(loadSkyPreferences(), chosen);
+  assert.deepEqual(normalizeSkyPreferences({
+    version: 1, automatic: "false", staticBackground: "true",
+    showStars: "yes", showGlows: null, allowAnimations: 1,
+    intensity: "invalid", colorMode: "night",
+  }), DEFAULT_SKY_PREFERENCES);
+});
+
+test("céu é global, persistente entre rotas e não reinicia o player", async () => {
+  const app = await readFile(new URL("../src/app/App.jsx", import.meta.url), "utf8");
+  const providers = await readFile(
+    new URL("../src/app/providers/AppProviders.jsx", import.meta.url), "utf8"
+  );
+  assert.equal((app.match(/<Ceu\s*\/>/g) ?? []).length, 1);
+  assert.ok(app.indexOf("<Ceu />") < app.indexOf("<AppRoutes />"));
+  assert.match(app, /<AppProviders>[\s\S]*<Ceu \/>[\s\S]*<AppRoutes \/>[\s\S]*<\/AppProviders>/);
+  assert.match(providers, /<MusicProvider>[\s\S]*\{children\}[\s\S]*<\/MusicProvider>/);
+
+  const routeFiles = [
+    "modules/achievements/Achievements.jsx", "modules/admin/AdminAnalytics.jsx",
+    "modules/assistant/Assistant.jsx", "modules/calendar/Calendario.jsx",
+    "modules/diary/pages/Diary.jsx", "modules/export/ExportCenter.jsx",
+    "modules/favorites/Favoritos.jsx", "modules/goals/Metas.jsx",
+    "modules/habits/Habitos.jsx", "modules/home/Lar.jsx",
+    "modules/home/components/Welcome.jsx", "modules/letters/Cartas.jsx",
+    "modules/profile/Sobre.jsx", "modules/search/GlobalSearch.jsx",
+    "modules/settings/Configuracoes.jsx", "modules/statistics/Statistics.jsx",
+  ];
+  for (const file of routeFiles) {
+    const source = await readFile(new URL(`../src/${file}`, import.meta.url), "utf8");
+    assert.doesNotMatch(source, /<Ceu|import Ceu/);
+  }
+});
+
+test("empilhamento mantém céu visível com estrelas, brilhos e fallback", async () => {
+  const skyCss = await readFile(
+    new URL("../src/shared/componentes/Ceu.css", import.meta.url), "utf8"
+  );
+  const globalCss = await readFile(new URL("../src/index.css", import.meta.url), "utf8");
+  assert.doesNotMatch(skyCss, /z-index\s*:\s*-10/);
+  assert.match(skyCss, /\.ceu\s*\{[^}]*z-index\s*:\s*-1[^}]*pointer-events\s*:\s*none/s);
+  assert.doesNotMatch(skyCss, /:root\s*\{[^}]*background\s*:/s);
+  assert.match(globalCss, /#root\s*\{[^}]*position\s*:\s*relative[^}]*isolation\s*:\s*isolate/s);
+  assert.match(globalCss, /html\s*\{[^}]*linear-gradient/s);
+  assert.match(skyCss, /\.sky-noite\s*\{[^}]*--sky-top[^}]*--sky-middle[^}]*--sky-bottom/s);
+  assert.match(skyCss, /\.ceu\.has-stars::after/);
+  assert.match(skyCss, /\.ceu\.has-glows::before/);
+  assert.match(skyCss, /@supports not \(background:color-mix/);
+  assert.match(skyCss, /@supports not[\s\S]*rgba\(135,103,202,\.28\)/);
+  assert.match(skyCss, /\[data-color-mode=light\] \.ceu/);
+  assert.match(skyCss, /\[data-color-mode=dark\] \.sky-manha/);
 });
 
 test("compartilhamento remove metadados não escolhidos", () => {

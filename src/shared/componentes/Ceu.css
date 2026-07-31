@@ -1,5 +1,5 @@
-:root{--sky-top:#060b22;--sky-middle:#171342;--sky-bottom:#090d24;--sky-glow:#7456b4;
-  background:#060b22}.ceu{position:fixed;inset:0;overflow:hidden;z-index:-10;pointer-events:none;
+:root{--sky-top:#060b22;--sky-middle:#171342;--sky-bottom:#090d24;--sky-glow:#7456b4}
+.ceu{position:fixed;inset:0;overflow:hidden;z-index:-1;pointer-events:none;
   background:linear-gradient(160deg,var(--sky-top),var(--sky-middle) 52%,var(--sky-bottom));
   transition:background 1.2s ease}.sky-madrugada{--sky-top:#05091c;--sky-middle:#17113c;
   --sky-bottom:#060b1d;--sky-glow:#6f58b5}.sky-amanhecer{--sky-top:#182550;--sky-middle:#765f91;

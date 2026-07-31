@@ -7,7 +7,6 @@ import { buildMomentMap, calculateStatistics } from "../../core/intelligence/Sta
 import { resolvePeriod } from "../../core/intelligence/localDates";
 import { subscribe } from "../../core/sync/EventBus";
 import { SYNC_EVENT } from "../../core/sync/emitSync";
-import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
 import Container from "../../shared/ui/Container";
@@ -37,7 +36,6 @@ export default function Statistics() {
 
   return (
     <>
-      <Ceu />
       <Navbar />
       <Container>
         <PageHeader title="Estatísticas" subtitle="Um olhar gentil para a sua própria jornada." />

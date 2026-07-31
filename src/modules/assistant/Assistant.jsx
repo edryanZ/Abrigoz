@@ -1,6 +1,5 @@
 import "./Assistant.css";
 import { useEffect, useMemo, useState } from "react";
-import Ceu from "../../shared/componentes/Ceu";
 import Navbar from "../../shared/componentes/Navbar";
 import Container from "../../shared/ui/Container";
 import GlassCard from "../../shared/ui/GlassCard";
@@ -47,7 +46,7 @@ export default function Assistant() {
     } finally { setBusy(false); }
   };
 
-  return <><Ceu /><Navbar /><Container><main className="assistant-page">
+  return <><Navbar /><Container><main className="assistant-page">
     <PageHeader greeting={greeting} title="Assistente do Abrigo"
       subtitle="Ajuda opcional, somente com o contexto que você escolher." />
     <GlassCard className="assistant-card">
