@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import test from "node:test";
 
 const values = new Map();
@@ -138,6 +138,19 @@ test("seleção gera cinco itens, respeita filtros, bloqueio e histórico", () =
   assert.ok(short.suggestions.every((item) => item.minutes <= 2));
   const rest = selectCompanionSuggestions({ category: "rest" }, new Date(2026, 7, 1, 9));
   assert.ok(rest.suggestions.every((item) => item.categories.includes("rest")));
+});
+
+test("catálogo de música respeita licenças e orçamento offline", async () => {
+  const { musicas } = await import("../src/data/musicas.js");
+  assert.equal(musicas.length, 6);
+  assert.ok(musicas.every((track) => track.licenca.startsWith("CC ")
+    && track.licencaUrl.startsWith("https://creativecommons.org/")));
+  const directory = new URL("../public/audio/", import.meta.url);
+  const files = (await readdir(directory)).filter((name) => name.endsWith(".mp3"));
+  const sizes = await Promise.all(files.map((name) => stat(new URL(name, directory))));
+  assert.equal(files.length, musicas.length);
+  assert.ok(sizes.every((file) => file.size < 3 * 1024 * 1024));
+  assert.ok(sizes.reduce((total, file) => total + file.size, 0) < 10 * 1024 * 1024);
 });
 
 test("política de métricas aceita somente eventos e campos fechados", async () => {

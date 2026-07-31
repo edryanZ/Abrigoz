@@ -1,239 +1,149 @@
 import "./MusicPlayer.css";
-
 import {
-  FaTimes,
-  FaPlay,
-  FaPause,
-  FaForward,
-  FaBackward,
-  FaMusic,
-  FaVolumeUp,
-  FaVolumeMute,
+  FaBackward, FaDownload, FaForward, FaPause, FaPlay, FaRandom,
+  FaRedo, FaTimes, FaTrash, FaVolumeMute, FaVolumeUp,
 } from "react-icons/fa";
-
 import { useEffect, useRef, useState } from "react";
+import {
+  cacheTrack, clearAudioCache, isTrackCached,
+} from "../../core/music/AudioCacheService";
 import { useMusic } from "../contexts/MusicContext";
 
-function formatar(segundos) {
-  if (isNaN(segundos)) return "00:00";
-
-  const m = Math.floor(segundos / 60);
-  const s = Math.floor(segundos % 60);
-
-  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-}
+const format = (seconds) => {
+  if (!Number.isFinite(seconds)) return "00:00";
+  return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${
+    String(Math.floor(seconds % 60)).padStart(2, "0")}`;
+};
 
 export default function MusicPlayer({ aberto, fechar }) {
-  const {
-    musica,
-    tocando,
-    playPause,
-    proxima,
-    anterior,
-    volume,
-    setVolume,
-    audioRef,
-  } = useMusic();
-
-  const drawerRef = useRef(null);
-  const botaoFecharRef = useRef(null);
-
-  const [tempoAtual, setTempoAtual] = useState(0);
-  const [duracao, setDuracao] = useState(0);
-  const [mutado, setMutado] = useState(false);
+  const music = useMusic();
+  const closeRef = useRef(null);
+  const [time, setTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [muted, setMuted] = useState(false);
+  const [offlineIds, setOfflineIds] = useState([]);
+  const [notice, setNotice] = useState("");
 
   useEffect(() => {
-    const audio = audioRef.current;
-
-    if (!audio) return;
-
-    const atualizar = () => {
-      setTempoAtual(audio.currentTime);
-      setDuracao(audio.duration || 0);
+    const audio = music.audioRef.current;
+    if (!audio) return undefined;
+    const update = () => {
+      setTime(audio.currentTime);
+      setDuration(audio.duration || 0);
     };
-
-    audio.addEventListener("timeupdate", atualizar);
-    audio.addEventListener("loadedmetadata", atualizar);
-
+    audio.addEventListener("timeupdate", update);
+    audio.addEventListener("loadedmetadata", update);
     return () => {
-      audio.removeEventListener("timeupdate", atualizar);
-      audio.removeEventListener("loadedmetadata", atualizar);
+      audio.removeEventListener("timeupdate", update);
+      audio.removeEventListener("loadedmetadata", update);
     };
-  }, [audioRef, musica]);
+  }, [music.audioRef, music.musica]);
 
   useEffect(() => {
-    if (!aberto) return;
-
+    if (!aberto) return undefined;
     document.body.style.overflow = "hidden";
-    botaoFecharRef.current?.focus();
-
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") {
-        fechar();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
+    closeRef.current?.focus();
+    const key = (event) => event.key === "Escape" && fechar();
+    document.addEventListener("keydown", key);
+    Promise.all(music.musicas.map(async (track) =>
+      await isTrackCached(track.arquivo) ? track.id : null))
+      .then((ids) => setOfflineIds(ids.filter(Boolean)));
     return () => {
       document.body.style.overflow = "";
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keydown", key);
     };
-  }, [aberto, fechar]);
+  }, [aberto, fechar, music.musicas]);
 
-  function alterarTempo(e) {
-    if (!audioRef.current) return;
+  if (!music.preferences.enabled) return null;
+  const repeatLabel = { none: "Sem repetição", track: "Repetir faixa", list: "Repetir lista" };
+  const nextRepeat = { none: "track", track: "list", list: "none" };
 
-    const valor = Number(e.target.value);
-
-    audioRef.current.currentTime = valor;
-    setTempoAtual(valor);
-  }
-
-  function alterarVolume(e) {
-    const valor = Number(e.target.value);
-
-    setVolume(valor);
-
-    if (audioRef.current) {
-      audioRef.current.volume = valor;
+  const download = async () => {
+    setNotice("Preparando faixa...");
+    try {
+      await cacheTrack(music.musica.arquivo);
+      setOfflineIds((ids) => [...new Set([...ids, music.musica.id])]);
+      setNotice("Faixa disponível offline.");
+    } catch (error) {
+      setNotice(error.message);
     }
+  };
 
-    setMutado(valor === 0);
-  }
+  return <div className={`music-overlay ${aberto ? "aberto" : ""}`}
+    onMouseDown={(event) => event.target === event.currentTarget && fechar()}>
+    <aside className={`music-drawer ${aberto ? "aberto" : ""}`} role="dialog"
+      aria-modal="true" aria-labelledby="titulo-player">
+      <header className="music-header">
+        <div><h2 id="titulo-player">Música</h2><p>Um som tranquilo para acompanhar seu momento.</p></div>
+        <button ref={closeRef} className="fechar-player" onClick={fechar}
+          aria-label="Fechar player"><FaTimes /></button>
+      </header>
 
-  function mute() {
-    if (!audioRef.current) return;
-
-    if (mutado) {
-      audioRef.current.volume = volume;
-      setMutado(false);
-    } else {
-      audioRef.current.volume = 0;
-      setMutado(true);
-    }
-  }
-
-  function fecharAoClicarFora(e) {
-    if (e.target === drawerRef.current) {
-      fechar();
-    }
-  }
-
-  return (
-    <div
-      ref={drawerRef}
-      onMouseDown={fecharAoClicarFora}
-      className={`music-overlay ${aberto ? "aberto" : ""}`}
-    >
-      <aside
-        className={`music-drawer ${aberto ? "aberto" : ""}`}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="titulo-player"
-      >
-        <div className="music-header">
-          <div>
-            <h2 id="titulo-player">🎵 Agora tocando</h2>
-          <p>Relaxe e aproveite este momento.</p>
-          </div>
-
-          <button
-            ref={botaoFecharRef}
-            className="fechar-player"
-            onClick={fechar}
-            aria-label="Fechar player"
-          >
-            <FaTimes />
-          </button>
-        </div>
-
-        <div className="album">
-          <div
-            className={`album-art ${tocando ? "tocando" : ""}`}
-          >
-            {musica?.capa ? (
-              <img
-                src={musica.capa}
-                alt={musica.titulo}
-              />
-            ) : (
-              <FaMusic />
-            )}
-          </div>
-
-          <h3>{musica?.titulo}</h3>
-
-          <span>{musica?.artista}</span>
-
-          <div className="barra-player">
-            <input
-              type="range"
-              min="0"
-              max={duracao || 0}
-              value={tempoAtual}
-              onChange={alterarTempo}
-              aria-label="Posição da música"
-            />
-
-            <div className="tempos">
-              <span>{formatar(tempoAtual)}</span>
-
-              <span>{formatar(duracao)}</span>
-            </div>
-          </div>
-                    <div className="volume">
-            <button
-              onClick={mute}
-              aria-label={mutado ? "Ativar som" : "Silenciar"}
-            >
-              {mutado ? (
-                <FaVolumeMute />
-              ) : (
-                <FaVolumeUp />
-              )}
-            </button>
-
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={mutado ? 0 : volume}
-              onChange={alterarVolume}
-              aria-label="Volume"
-            />
-          </div>
-        </div>
-
-        <div className="controles">
-          <button
-            onClick={anterior}
-            aria-label="Música anterior"
-          >
-            <FaBackward />
-          </button>
-
-          <button
-            className="play"
-            onClick={playPause}
-            aria-label={tocando ? "Pausar" : "Reproduzir"}
-          >
-            {tocando ? (
-              <FaPause />
-            ) : (
-              <FaPlay />
-            )}
-          </button>
-
-          <button
-            onClick={proxima}
-            aria-label="Próxima música"
-          >
-            <FaForward />
-          </button>
-        </div>
-      </aside>
-    </div>
-  );
+      <section className="music-now" aria-live="polite">
+        <div className={`album-art ${music.tocando ? "tocando" : ""}`} aria-hidden="true">♫</div>
+        <div><h3>{music.musica?.titulo}</h3><p>{music.musica?.artista}</p>
+          <small>{music.musica?.licenca}</small></div>
+      </section>
+      <div className="barra-player">
+        <input type="range" min="0" max={duration || 0} value={time}
+          onChange={(event) => {
+            const value = Number(event.target.value);
+            music.seek(value);
+            setTime(value);
+          }} aria-label="Posição da música" />
+        <div className="tempos"><span>{format(time)}</span><span>{format(duration)}</span></div>
+      </div>
+      <div className="controles">
+        <button onClick={() => music.updatePreferences({ shuffle: !music.preferences.shuffle })}
+          aria-pressed={music.preferences.shuffle} aria-label="Alternar ordem aleatória"><FaRandom /></button>
+        <button onClick={music.anterior} aria-label="Música anterior"><FaBackward /></button>
+        <button className="play" onClick={music.playPause} disabled={music.loading}
+          aria-label={music.tocando ? "Pausar" : "Reproduzir"}>
+          {music.tocando ? <FaPause /> : <FaPlay />}
+        </button>
+        <button onClick={music.proxima} aria-label="Próxima música"><FaForward /></button>
+        <button onClick={() => music.updatePreferences({
+          repeat: nextRepeat[music.preferences.repeat],
+        })} aria-label={repeatLabel[music.preferences.repeat]}><FaRedo /></button>
+      </div>
+      <div className="volume">
+        <button onClick={() => {
+          music.setMuted(!muted);
+          setMuted(!muted);
+        }} aria-label={muted ? "Ativar som" : "Silenciar"}>
+          {muted ? <FaVolumeMute /> : <FaVolumeUp />}
+        </button>
+        <input type="range" min="0" max="1" step="0.01" value={muted ? 0 : music.volume}
+          onChange={(event) => {
+            music.setVolume(Number(event.target.value));
+            setMuted(false);
+          }} aria-label="Volume" />
+      </div>
+      <div className="music-tools">
+        <label>Temporizador
+          <select value={music.timerEndsAt ? "active" : ""}
+            onChange={(event) => music.setTimer(Number(event.target.value))}>
+            <option value="">Desligado</option><option value="15">15 min</option>
+            <option value="30">30 min</option><option value="60">60 min</option>
+          </select>
+        </label>
+        <button onClick={download}><FaDownload /> Disponibilizar offline</button>
+        <button onClick={async () => {
+          await clearAudioCache();
+          setOfflineIds([]);
+          setNotice("Músicas offline removidas.");
+        }}><FaTrash /> Limpar músicas offline</button>
+      </div>
+      {(notice || music.error) && <p className="music-notice">{music.error || notice}</p>}
+      <section className="music-playlist">
+        <h3>Playlist</h3>
+        {music.musicas.map((track, index) => <button key={track.id}
+          className={index === music.indice ? "is-current" : ""}
+          onClick={() => music.setIndice(index)}>
+          <span><strong>{track.titulo}</strong><small>{track.artista}</small></span>
+          {offlineIds.includes(track.id) && <small>offline</small>}
+        </button>)}
+      </section>
+    </aside>
+  </div>;
 }

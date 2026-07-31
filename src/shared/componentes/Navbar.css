@@ -385,3 +385,26 @@
     outline-offset: 3px;
 
 }
+/* Player compacto: aparece somente durante reprodução. */
+.music-mini-player {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 900;
+  max-width: min(360px, calc(100vw - 36px));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 15px;
+  background: var(--surface-strong);
+  color: var(--text-primary);
+  box-shadow: var(--shadow);
+}
+
+.music-mini-player span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

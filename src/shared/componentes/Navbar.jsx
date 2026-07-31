@@ -24,9 +24,11 @@ import {
 
 import MusicPlayer from "./MusicPlayer";
 import ROUTES from "../../core/constants/routes";
+import { useMusic } from "../contexts/MusicContext";
 
 export default function Navbar() {
   const { pathname } = useLocation();
+  const music = useMusic();
 
   const menuRef = useRef(null);
 
@@ -130,6 +132,7 @@ export default function Navbar() {
           className="navbar-icon"
           onClick={abrirPlayer}
           aria-label="Abrir reprodutor de música"
+          disabled={!music.preferences.enabled}
         >
           <FaMusic />
         </button>
@@ -195,6 +198,12 @@ export default function Navbar() {
         aberto={playerAberto}
         fechar={fecharPlayer}
       />
+      {music.preferences.enabled && music.preferences.miniPlayer && music.tocando &&
+        !playerAberto && <button type="button" className="music-mini-player"
+          onClick={abrirPlayer} aria-label="Abrir música em reprodução">
+          <FaMusic /><span>{music.musica?.titulo}</span>
+          <span aria-hidden="true">• {music.musica?.artista}</span>
+        </button>}
     </>
   );
 }
