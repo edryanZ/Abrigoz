@@ -24,6 +24,7 @@ import {
 
 import MusicPlayer from "./MusicPlayer";
 import ROUTES from "../../core/constants/routes";
+import { APP } from "../../core/constants/app";
 import { useMusic } from "../contexts/MusicContext";
 
 export default function Navbar() {
@@ -31,15 +32,23 @@ export default function Navbar() {
   const music = useMusic();
 
   const menuRef = useRef(null);
+  const menuButtonRef = useRef(null);
+  const playerButtonRef = useRef(null);
 
   const [menuAberto, setMenuAberto] = useState(false);
   const [playerAberto, setPlayerAberto] = useState(false);
 
   const abrirMenu = () => setMenuAberto(true);
-  const fecharMenu = () => setMenuAberto(false);
+  const fecharMenu = () => {
+    setMenuAberto(false);
+    requestAnimationFrame(() => menuButtonRef.current?.focus());
+  };
 
   const abrirPlayer = () => setPlayerAberto(true);
-  const fecharPlayer = () => setPlayerAberto(false);
+  const fecharPlayer = () => {
+    setPlayerAberto(false);
+    requestAnimationFrame(() => playerButtonRef.current?.focus());
+  };
 
   useEffect(() => {
     if (!menuAberto) return;
@@ -115,6 +124,7 @@ export default function Navbar() {
 
       <header className="navbar-top">
         <button
+          ref={menuButtonRef}
           type="button"
           className="navbar-icon"
           onClick={abrirMenu}
@@ -123,11 +133,13 @@ export default function Navbar() {
           <FaBars />
         </button>
 
-        <h1 className="navbar-logo">
-          Abrigo
-        </h1>
+        <Link to={ROUTES.HOME} className="navbar-logo" aria-label="Abrigo, ir para o Lar">
+          <span className="abrigo-symbol" aria-hidden="true">⌂</span>
+          <span>Abrigo</span>
+        </Link>
 
         <button
+          ref={playerButtonRef}
           type="button"
           className="navbar-icon"
           onClick={abrirPlayer}
@@ -148,6 +160,8 @@ export default function Navbar() {
       <aside
         ref={menuRef}
         className={`menu-lateral ${menuAberto ? "aberto" : ""}`}
+        aria-label="Menu principal"
+        aria-hidden={!menuAberto}
       >
         <div className="menu-topo">
           <div>
@@ -182,6 +196,7 @@ export default function Navbar() {
                     key={item.rota}
                     to={item.rota}
                     className={ativo ? "ativo" : ""}
+                    aria-current={ativo ? "page" : undefined}
                     onClick={fecharMenu}
                   >
                     <span className="icone">{item.icone}</span>
@@ -192,6 +207,10 @@ export default function Navbar() {
             </section>
           ))}
         </nav>
+        <footer className="menu-footer">
+          <p>Cuide de você, um dia de cada vez.</p>
+          <small>v{APP.VERSION} · Criado por {APP.AUTHOR}</small>
+        </footer>
       </aside>
 
       <MusicPlayer
