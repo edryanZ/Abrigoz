@@ -1,5 +1,6 @@
 :root{--sky-top:#060b22;--sky-middle:#171342;--sky-bottom:#090d24;--sky-glow:#7456b4}
-.ceu{position:fixed;inset:0;overflow:hidden;z-index:-1;pointer-events:none;
+.ceu{--sky-shift-x:0px;--sky-shift-y:0px;--sky-depth-x:0px;--sky-depth-y:0px;
+  position:fixed;inset:0;overflow:hidden;z-index:-1;pointer-events:none;
   background:linear-gradient(160deg,var(--sky-top),var(--sky-middle) 52%,var(--sky-bottom));
   transition:background 1.2s ease}.sky-madrugada{--sky-top:#05091c;--sky-middle:#17113c;
   --sky-bottom:#060b1d;--sky-glow:#6f58b5}.sky-amanhecer{--sky-top:#182550;--sky-middle:#765f91;
@@ -13,15 +14,27 @@
   radial-gradient(ellipse at 50% 105%,color-mix(in srgb,var(--sky-bottom) 70%,#f0a486),transparent 55%)}
 .ceu.has-stars::after{opacity:.55;background-image:radial-gradient(circle,#fff 0 1px,transparent 1.5px),
   radial-gradient(circle,#d9ceff 0 1px,transparent 1.6px);background-size:83px 97px,131px 149px;
-  background-position:10px 20px,54px 72px}.sky-manha::after,.sky-tarde::after{opacity:.12!important}
+  background-position:10px 20px,54px 72px;
+  transform:translate3d(var(--sky-shift-x),var(--sky-shift-y),0)}
+.sky-manha::after,.sky-tarde::after{opacity:.12!important}
 .ceu-atmosphere{background:radial-gradient(ellipse at 10% 85%,rgba(98,65,151,.22),transparent 35%),
   radial-gradient(ellipse at 90% 75%,rgba(19,29,72,.35),transparent 40%),
-  linear-gradient(90deg,rgba(2,6,23,.15),transparent 25%,transparent 75%,rgba(2,6,23,.16))}
+  linear-gradient(90deg,rgba(2,6,23,.15),transparent 25%,transparent 75%,rgba(2,6,23,.16));
+  transform:translate3d(var(--sky-depth-x),var(--sky-depth-y),0);transition:transform .8s ease-out}
 .sky-soft{filter:saturate(.82)}.sky-strong{filter:saturate(1.14) contrast(1.04)}
-.ceu.has-motion.has-stars::after{animation:skyDrift 80s linear infinite alternate}
+.ceu.has-motion.has-stars::after{
+  animation:skyDrift 80s linear infinite alternate,skyTwinkle 5.5s ease-in-out infinite}
+.ceu.has-motion.has-glows::before{animation:skyGlowFloat 16s ease-in-out infinite alternate}
 [data-color-mode=light] .ceu{filter:brightness(1.13) saturate(.82)}
 [data-color-mode=dark] .sky-manha,[data-color-mode=dark] .sky-tarde{filter:brightness(.72) saturate(.82)}
-@keyframes skyDrift{to{transform:translate3d(12px,7px,0)}}
-@media(prefers-reduced-motion:reduce){.ceu,.ceu::after{animation:none!important;transition:none!important}}
+@keyframes skyDrift{from{background-position:10px 20px,54px 72px}
+  to{background-position:30px 34px,38px 92px}}
+@keyframes skyTwinkle{0%,100%{opacity:.38}50%{opacity:.68}}
+@keyframes skyGlowFloat{from{transform:translate3d(calc(var(--sky-shift-x) - 7px),
+  calc(var(--sky-shift-y) + 4px),0) scale(1)}to{
+  transform:translate3d(calc(var(--sky-shift-x) + 9px),
+  calc(var(--sky-shift-y) - 6px),0) scale(1.045)}}
+@media(prefers-reduced-motion:reduce){.ceu,.ceu::before,.ceu::after,.ceu-atmosphere{
+  animation:none!important;transition:none!important;transform:none!important}}
 @supports not (background:color-mix(in srgb,#fff,transparent)){.ceu.has-glows::before{
   background:radial-gradient(circle at 72% 18%,rgba(135,103,202,.28),transparent 28%)}}

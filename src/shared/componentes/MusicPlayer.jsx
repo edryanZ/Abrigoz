@@ -17,6 +17,7 @@ const format = (seconds) => {
 
 export default function MusicPlayer({ aberto, fechar }) {
   const music = useMusic();
+  const { audioReady, ensureAudio, musica } = music;
   const closeRef = useRef(null);
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -25,7 +26,8 @@ export default function MusicPlayer({ aberto, fechar }) {
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
-    const audio = music.audioRef.current;
+    if (!aberto) return undefined;
+    const audio = ensureAudio();
     if (!audio) return undefined;
     const update = () => {
       setTime(audio.currentTime);
@@ -37,7 +39,7 @@ export default function MusicPlayer({ aberto, fechar }) {
       audio.removeEventListener("timeupdate", update);
       audio.removeEventListener("loadedmetadata", update);
     };
-  }, [music.audioRef, music.musica]);
+  }, [aberto, audioReady, ensureAudio, musica]);
 
   useEffect(() => {
     if (!aberto) return undefined;

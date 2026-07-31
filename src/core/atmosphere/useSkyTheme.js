@@ -13,11 +13,13 @@ export function useSkyTheme() {
   useEffect(() => {
     let timeout;
     const update = () => {
+      window.clearTimeout(timeout);
+      if (document.visibilityState === "hidden") return;
       if (!preview) setPeriod(resolveSkyPeriod());
       const delay = Math.max(1000, nextSkyBoundary().getTime() - Date.now() + 100);
       timeout = window.setTimeout(update, delay);
     };
-    const visibility = () => document.visibilityState === "visible" && update();
+    const visibility = () => update();
     update();
     document.addEventListener("visibilitychange", visibility);
     return () => {

@@ -1,12 +1,15 @@
 const storage = {
   get(key) {
-    const value = localStorage.getItem(key);
-    if (value === null) return null;
-
     try {
+      const value = localStorage.getItem(key);
+      if (value === null) return null;
       return JSON.parse(value);
     } catch {
-      return value;
+      try {
+        return localStorage.getItem(key);
+      } catch {
+        return null;
+      }
     }
   },
 
@@ -37,11 +40,20 @@ const storage = {
   },
 
   has(key) {
-    return localStorage.getItem(key) !== null;
+    try {
+      return localStorage.getItem(key) !== null;
+    } catch {
+      return false;
+    }
   },
 
   remove(key) {
-    localStorage.removeItem(key);
+    try {
+      localStorage.removeItem(key);
+      return true;
+    } catch {
+      return false;
+    }
   },
 
   removeMany(keys) {
@@ -49,16 +61,24 @@ const storage = {
   },
 
   keys() {
-    return Array.from(
-      { length: localStorage.length },
-      (_, index) => localStorage.key(index)
-    ).filter(Boolean);
+    try {
+      return Array.from(
+        { length: localStorage.length },
+        (_, index) => localStorage.key(index)
+      ).filter(Boolean);
+    } catch {
+      return [];
+    }
   },
 
   clear(prefix = null) {
     if (!prefix) {
-      localStorage.clear();
-      return;
+      try {
+        localStorage.clear();
+        return true;
+      } catch {
+        return false;
+      }
     }
 
     this.keys().forEach((key) => {
@@ -66,6 +86,7 @@ const storage = {
         localStorage.removeItem(key);
       }
     });
+    return true;
   },
 };
 
