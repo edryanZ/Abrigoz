@@ -5,6 +5,7 @@ import ErrorBoundary from "../shared/feedback/ErrorBoundary";
 import AppProviders from "./providers/AppProviders";
 import AppRoutes from "./router/AppRoutes";
 import AnalyticsTracker from "../core/analytics/AnalyticsTracker";
+import OfflineStatus from "../shared/componentes/OfflineStatus";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
       <BrowserRouter>
         <AppProviders>
           <AnalyticsTracker />
+          <OfflineStatus />
           <AppRoutes />
         </AppProviders>
       </BrowserRouter>

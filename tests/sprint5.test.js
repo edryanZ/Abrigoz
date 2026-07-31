@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const values = new Map();
@@ -30,6 +31,9 @@ const {
 const {
   prepareShareSelection,
 } = await import("../src/core/sharing/ShareService.js");
+const {
+  loadOfflinePreferences,
+} = await import("../src/core/offline/OfflinePreferencesService.js");
 
 test("Assistente inicia desativado e sem contexto automático", () => {
   values.clear();
@@ -116,4 +120,16 @@ test("cápsula usa AES-GCM e chave fica fora do registro", async () => {
   assert.equal(listCapsules().length, 1);
   revokeCapsule(record.id);
   assert.ok(listCapsules()[0].revokedAt);
+});
+
+test("offline preserva dados e atualização exige ação", async () => {
+  values.clear();
+  assert.equal(loadOfflinePreferences().updateWhenConfirmed, true);
+  const source = await readFile(new URL("../src/core/offline/StorageManagerService.js",
+    import.meta.url), "utf8");
+  assert.ok(!source.includes("localStorage.clear"));
+  assert.ok(!source.includes("storage.clear"));
+  const main = await readFile(new URL("../src/main.jsx", import.meta.url), "utf8");
+  assert.match(main, /onNeedRefresh/);
+  assert.doesNotMatch(main, /onNeedRefresh:\\s*\\(\\).*updateSW/);
 });

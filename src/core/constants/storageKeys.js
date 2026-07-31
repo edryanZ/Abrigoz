@@ -29,6 +29,7 @@ export const STORAGE_KEYS = {
   AI_HISTORY: "abrigo:ai-history:v1",
   SHARE_PREFERENCES: "abrigo:share-preferences:v1",
   SHARE_CAPSULES: "abrigo:share-capsules:v1",
+  OFFLINE_PREFERENCES: "abrigo:offline-preferences:v1",
 
   LAST_ACCESS: "abrigo:lastAccess",
   DIARY: "abrigo:diary",

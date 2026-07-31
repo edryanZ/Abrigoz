@@ -1,0 +1,6 @@
+.offline-status{position:fixed;left:50%;bottom:16px;z-index:5000;translate:-50% 0;width:min(680px,calc(100% - 28px))}
+.offline-status>div{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;
+  border:1px solid var(--border-color);border-radius:14px;background:var(--surface-strong);color:var(--text-primary);
+  box-shadow:var(--shadow)}.offline-status span{display:flex;gap:7px}.offline-status button{padding:7px 9px;
+  border:1px solid var(--border-color);border-radius:9px;background:var(--card-bg);color:var(--text-primary)}
+@media(max-width:600px){.offline-status>div{display:grid}.offline-status span{justify-content:flex-end}}

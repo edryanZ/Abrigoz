@@ -31,11 +31,13 @@ import {
   previewSky, stopSkyPreview,
 } from "../../core/atmosphere/useSkyTheme";
 import SharingSettings from "./components/SharingSettings";
+import OfflineSettings from "./components/OfflineSettings";
 
 const SECTIONS = [
   ["assistente","Assistente e serviços externos"],
   ["ceu","Céu e atmosfera"],
   ["compartilhamento","Compartilhamento"],
+  ["offline","Offline e armazenamento"],
   ["perfil","Perfil"],["aparencia","Aparência"],["musica","Música e som"],
   ["privacidade","Privacidade"],["companheiro","Sugestões e Companheiro"],
   ["dados","Dados e backup"],["sincronizacao","Sincronização"],["chave","Chave do Abrigo"],
@@ -136,6 +138,9 @@ export default function Configuracoes() {
         </SettingCard>
         <SettingCard id="compartilhamento" icon={<FaShieldAlt />} title="Compartilhamento">
           <SharingSettings />
+        </SettingCard>
+        <SettingCard id="offline" icon={<FaCog />} title="Offline e armazenamento">
+          <OfflineSettings />
         </SettingCard>
         <SettingCard id="perfil" icon={<FaUser />} title="Perfil">
           <p><strong>Nome:</strong> {name || "Visitante"}</p>
