@@ -24,9 +24,16 @@ import {
   loadAIPreferences, saveAIPreferences,
 } from "../../core/ai/AIPreferencesService";
 import { clearAIHistory } from "../../core/ai/AIHistoryRepository";
+import {
+  loadSkyPreferences, restoreSkyPreferences, saveSkyPreferences,
+} from "../../core/atmosphere/SkyThemePreferencesService";
+import {
+  previewSky, stopSkyPreview,
+} from "../../core/atmosphere/useSkyTheme";
 
 const SECTIONS = [
   ["assistente","Assistente e serviços externos"],
+  ["ceu","Céu e atmosfera"],
   ["perfil","Perfil"],["aparencia","Aparência"],["musica","Música e som"],
   ["privacidade","Privacidade"],["companheiro","Sugestões e Companheiro"],
   ["dados","Dados e backup"],["sincronizacao","Sincronização"],["chave","Chave do Abrigo"],
@@ -46,6 +53,7 @@ export default function Configuracoes() {
   const music = useMusic();
   const [companion, setCompanion] = useState(loadCompanionPreferences);
   const [ai, setAI] = useState(loadAIPreferences);
+  const [sky, setSky] = useState(loadSkyPreferences);
 
   const changeName = () => {
     const value = prompt("Como você gostaria de ser chamado?", name);
@@ -65,6 +73,7 @@ export default function Configuracoes() {
     }
     setAI(next);
   };
+  const updateSky = (changes) => setSky(saveSkyPreferences(changes));
 
   return <><Ceu /><Navbar /><Container><main className="configuracoes-page">
     <PageHeader greeting={greeting} title="Configurações"
@@ -92,6 +101,36 @@ export default function Configuracoes() {
           <button className="config-button" onClick={() => {
             clearAIHistory(); setAI(loadAIPreferences());
           }}>Apagar histórico</button>
+        </SettingCard>
+        <SettingCard id="ceu" icon={<FaPalette />} title="Céu e atmosfera">
+          <p>O fundo acompanha o horário local sem recarregar páginas ou interromper músicas.</p>
+          {[
+            ["automatic","Céu automático conforme o horário"],
+            ["useDeviceTime","Usar horário do dispositivo"],
+            ["showStars","Mostrar estrelas"],
+            ["showGlows","Mostrar brilhos"],
+            ["allowAnimations","Permitir animações suaves"],
+            ["reduceEffects","Reduzir efeitos visuais"],
+            ["staticBackground","Usar fundo estático"],
+          ].map(([key, label]) => <label className="config-switch" key={key}><span>{label}</span>
+            <input type="checkbox" checked={sky[key]}
+              onChange={(event) => updateSky({ [key]: event.target.checked })} /></label>)}
+          <label>Intensidade do fundo<select value={sky.intensity}
+            onChange={(event) => updateSky({ intensity: event.target.value })}>
+            <option value="soft">Suave</option><option value="standard">Padrão</option>
+            <option value="strong">Marcante</option></select></label>
+          <label>Tema<select value={sky.colorMode}
+            onChange={(event) => updateSky({ colorMode: event.target.value })}>
+            <option value="system">Seguir sistema</option><option value="light">Claro</option>
+            <option value="dark">Escuro</option></select></label>
+          <div className="config-actions">
+            {["madrugada","amanhecer","manha","tarde","entardecer","noite"].map((period) =>
+              <button className="config-button" key={period}
+                onClick={() => previewSky(period)}>Pré-visualizar {period}</button>)}
+            <button className="config-button" onClick={stopSkyPreview}>Voltar ao horário real</button>
+            <button className="config-button" onClick={() => setSky(restoreSkyPreferences())}>
+              Restaurar padrão</button>
+          </div>
         </SettingCard>
         <SettingCard id="perfil" icon={<FaUser />} title="Perfil">
           <p><strong>Nome:</strong> {name || "Visitante"}</p>
