@@ -16,6 +16,7 @@ export const ROUTES = {
   SEARCH: "/pesquisa",
   ACHIEVEMENTS: "/conquistas",
   ASSISTANT: "/assistente",
+  EXPORT: "/exportar",
   ADMIN_ACTIVITY: "/admin/atividade",
 
   // Sistema

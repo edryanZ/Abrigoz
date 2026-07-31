@@ -21,6 +21,7 @@ import {
   FaSearch,
   FaTrophy,
   FaComments,
+  FaFileExport,
 } from "react-icons/fa";
 
 import MusicPlayer from "./MusicPlayer";
@@ -92,6 +93,7 @@ export default function Navbar() {
         { nome: "Estatísticas", rota: ROUTES.STATISTICS, icone: <FaChartBar /> },
         { nome: "Conquistas", rota: ROUTES.ACHIEVEMENTS, icone: <FaTrophy /> },
         { nome: "Assistente", rota: ROUTES.ASSISTANT, icone: <FaComments /> },
+        { nome: "Exportar", rota: ROUTES.EXPORT, icone: <FaFileExport /> },
       ],
     },
     {

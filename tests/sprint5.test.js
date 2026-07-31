@@ -34,6 +34,21 @@ const {
 const {
   loadOfflinePreferences,
 } = await import("../src/core/offline/OfflinePreferencesService.js");
+const {
+  collectExportData, removeExportFields,
+} = await import("../src/core/export/ExportDataService.js");
+const {
+  toCsv, toHtml, toMarkdown,
+} = await import("../src/core/export/ExportFormatService.js");
+const {
+  createSingleFileZip,
+} = await import("../src/core/export/ZipStoreService.js");
+const {
+  protectExport,
+} = await import("../src/core/export/ExportCryptoService.js");
+const {
+  safeFilename,
+} = await import("../src/core/export/ExportDownloadService.js");
 
 test("Assistente inicia desativado e sem contexto automático", () => {
   values.clear();
@@ -132,4 +147,32 @@ test("offline preserva dados e atualização exige ação", async () => {
   const main = await readFile(new URL("../src/main.jsx", import.meta.url), "utf8");
   assert.match(main, /onNeedRefresh/);
   assert.doesNotMatch(main, /onNeedRefresh:\\s*\\(\\).*updateSW/);
+});
+
+test("Central de Exportação seleciona módulos e exclui campos internos", () => {
+  values.clear();
+  values.set("abrigo:diary", JSON.stringify([{ id: "1", text: "registro",
+    keyHash: "não exportar", mood: "calmo", createdAt: "2026-07-30" }]));
+  const document = collectExportData(["diary"]);
+  assert.equal(document.modules.diary.length, 1);
+  assert.ok(!JSON.stringify(document).includes("keyHash"));
+  const filtered = removeExportFields(document, { hideMood: true, hideDates: true });
+  assert.ok(!JSON.stringify(filtered).includes("calmo"));
+  assert.ok(!JSON.stringify(filtered).includes("2026-07-30"));
+});
+
+test("exportadores geram CSV, Markdown, HTML e ZIP válido", () => {
+  const document = { modules: { goals: [{ id: "1", title: "Caminhar" }] } };
+  assert.match(toCsv(document), /Caminhar/);
+  assert.match(toMarkdown(document), /## goals/);
+  assert.match(toHtml(document), /<!doctype html>/);
+  const zip = createSingleFileZip("abrigo-export.json", JSON.stringify(document));
+  assert.equal(new TextDecoder().decode(zip.slice(0, 2)), "PK");
+  assert.equal(safeFilename("../../ Meu arquivo", "json"), "Meu-arquivo.json");
+});
+
+test("JSON protegido não mantém conteúdo em texto aberto", async () => {
+  const protectedDocument = await protectExport({ private: "conteúdo pessoal" }, "senha-segura");
+  assert.equal(protectedDocument.algorithm, "AES-GCM");
+  assert.ok(!JSON.stringify(protectedDocument).includes("conteúdo pessoal"));
 });
