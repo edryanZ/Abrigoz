@@ -22,7 +22,9 @@ import PrivacyToggle from "../../shared/componentes/PrivacyToggle";
 import DashboardCustomizer from "./components/DashboardCustomizer";
 import { loadDashboardPreferences } from "../../core/intelligence/DashboardIntelligence";
 import { APP } from "../../core/constants/app";
-export default function Lar() {
+import { JourneyProvider } from "../../shared/contexts/JourneyContext";
+
+function LarContent() {
   const { greeting } = useTheme();
   const [dashboard, setDashboard] = useState(loadDashboardPreferences);
   useEffect(() => {
@@ -82,4 +84,8 @@ export default function Lar() {
       </Container>
     </>
   );
+}
+
+export default function Lar() {
+  return <JourneyProvider><LarContent /></JourneyProvider>;
 }

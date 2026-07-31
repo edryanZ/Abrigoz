@@ -1,10 +1,12 @@
-import STORAGE_KEYS from "../constants/storageKeys.js";
 import { encodeBase64Url } from "../crypto/Base64Url.js";
-import { storage } from "../storage/storage.js";
 import {
   ALLOWED_ANALYTICS_EVENTS,
   validateAnalyticsEvent,
 } from "./AnalyticsPolicy.js";
+import {
+  getAnalyticsConsent,
+  persistAnalyticsConsent,
+} from "./AnalyticsConsentService.js";
 const APP_VERSION = "2.0";
 const HEARTBEAT_MS = 60_000;
 const EVENT_INTERVAL_MS = 1_000;
@@ -12,10 +14,6 @@ const EVENT_INTERVAL_MS = 1_000;
 let sessionTokenHash = null;
 let heartbeatTimer = null;
 let lastEventAt = 0;
-
-export function getAnalyticsConsent() {
-  return storage.get(STORAGE_KEYS.ANALYTICS_CONSENT)?.enabled === true;
-}
 
 async function createSessionHash() {
   if (sessionTokenHash) return sessionTokenHash;
@@ -52,7 +50,7 @@ export function stopAnalytics() {
 }
 
 export async function setAnalyticsConsent(enabled) {
-  storage.set(STORAGE_KEYS.ANALYTICS_CONSENT, { version: 1, enabled: Boolean(enabled) });
+  persistAnalyticsConsent(enabled);
   if (!enabled) {
     stopAnalytics();
     return false;
@@ -87,3 +85,4 @@ export function startAnalytics() {
 }
 
 export { ALLOWED_ANALYTICS_EVENTS };
+export { getAnalyticsConsent };
