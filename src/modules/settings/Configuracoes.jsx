@@ -30,10 +30,12 @@ import {
 import {
   previewSky, stopSkyPreview,
 } from "../../core/atmosphere/useSkyTheme";
+import SharingSettings from "./components/SharingSettings";
 
 const SECTIONS = [
   ["assistente","Assistente e serviços externos"],
   ["ceu","Céu e atmosfera"],
+  ["compartilhamento","Compartilhamento"],
   ["perfil","Perfil"],["aparencia","Aparência"],["musica","Música e som"],
   ["privacidade","Privacidade"],["companheiro","Sugestões e Companheiro"],
   ["dados","Dados e backup"],["sincronizacao","Sincronização"],["chave","Chave do Abrigo"],
@@ -131,6 +133,9 @@ export default function Configuracoes() {
             <button className="config-button" onClick={() => setSky(restoreSkyPreferences())}>
               Restaurar padrão</button>
           </div>
+        </SettingCard>
+        <SettingCard id="compartilhamento" icon={<FaShieldAlt />} title="Compartilhamento">
+          <SharingSettings />
         </SettingCard>
         <SettingCard id="perfil" icon={<FaUser />} title="Perfil">
           <p><strong>Nome:</strong> {name || "Visitante"}</p>

@@ -21,6 +21,15 @@ const {
 const {
   nextSkyBoundary, resolveColorMode, resolveSkyPeriod,
 } = await import("../src/core/atmosphere/SkyThemeService.js");
+const {
+  decryptCapsule, encryptCapsule,
+} = await import("../src/core/sharing/CapsuleCryptoService.js");
+const {
+  createLocalCapsule, listCapsules, revokeCapsule,
+} = await import("../src/core/sharing/CapsuleRepository.js");
+const {
+  prepareShareSelection,
+} = await import("../src/core/sharing/ShareService.js");
 
 test("Assistente inicia desativado e sem contexto automático", () => {
   values.clear();
@@ -86,4 +95,25 @@ test("tema do céu diferencia claro, escuro e sistema", () => {
   assert.equal(resolveColorMode("dark", false), "dark");
   assert.equal(resolveColorMode("system", true), "dark");
   assert.equal(resolveColorMode("system", false), "light");
+});
+
+test("compartilhamento remove metadados não escolhidos", () => {
+  const selection = prepareShareSelection({
+    title: "Carta", text: "Olá", date: "2026-07-30", mood: "bem", tags: ["pessoal"],
+  }, { hideDate: true, hideMood: true, hideTags: true });
+  assert.deepEqual(selection, { title: "Carta", text: "Olá" });
+});
+
+test("cápsula usa AES-GCM e chave fica fora do registro", async () => {
+  values.clear();
+  const protectedContent = await encryptCapsule({ title: "Memória", text: "conteúdo" });
+  const opened = await decryptCapsule(protectedContent.envelope, protectedContent.key);
+  assert.equal(opened.text, "conteúdo");
+  const record = await createLocalCapsule(protectedContent.envelope, "hour");
+  const serialized = [...values.values()].join("");
+  assert.ok(!serialized.includes(protectedContent.key));
+  assert.ok(!serialized.includes(record.token));
+  assert.equal(listCapsules().length, 1);
+  revokeCapsule(record.id);
+  assert.ok(listCapsules()[0].revokedAt);
 });
