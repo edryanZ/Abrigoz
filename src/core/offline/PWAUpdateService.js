@@ -10,6 +10,10 @@ export function announcePWAUpdate() {
 
 export async function applyPWAUpdate() {
   if (!updateHandler) return false;
-  await updateHandler(true);
-  return true;
+  try {
+    await updateHandler(true);
+    return true;
+  } catch {
+    return false;
+  }
 }

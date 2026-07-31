@@ -41,6 +41,13 @@ Medição realizada sobre `origin/codex-sprint-5` (`982b12e`):
 
 Esta seção será atualizada após as otimizações e a validação final.
 
+O modo de produção do gerador do Workbox foi testado com Node 24, mas sua etapa
+de minificação não terminou mesmo após tentativas isoladas. Para não tornar o
+build instável, o service worker permanece temporariamente sem minificação. O
+registro foi alinhado ao fluxo de atualização por confirmação e o precache foi
+deduplicado; uma atualização compatível do Workbox deve ser avaliada em Sprint
+futura, sem `npm audit fix` automático.
+
 ## Limitações
 
 Tamanho de bundle não substitui métricas reais de dispositivo e rede. Esta

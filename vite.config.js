@@ -6,12 +6,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: "autoUpdate",
-
-      includeAssets: [
-        "branding/favicon-32.png",
-        "branding/apple-touch-icon.png"
-      ],
+      registerType: "prompt",
 
       manifest: {
         name: "Abrigo",
@@ -44,14 +39,24 @@ export default defineConfig({
         ]
       },
       workbox: {
+        // Workbox 7 não conclui a minificação em Node 24 neste projeto.
+        // O restante do build continua em produção; revisar após atualização compatível.
         mode: "development",
         globPatterns: ["**/*.{js,css,html,png,webp,webmanifest}"],
+        cleanupOutdatedCaches: true,
+        navigateFallback: "index.html",
+        navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [{
-          urlPattern: ({ url }) => url.pathname.startsWith("/audio/"),
+          urlPattern: ({ url, sameOrigin }) =>
+            sameOrigin && url.pathname.startsWith("/audio/"),
           handler: "CacheFirst",
           options: {
             cacheName: "abrigo-audio-v2",
-            expiration: { maxEntries: 6, maxAgeSeconds: 60 * 60 * 24 * 30 },
+            expiration: {
+              maxEntries: 6,
+              maxAgeSeconds: 60 * 60 * 24 * 30,
+              purgeOnQuotaError: true,
+            },
             cacheableResponse: { statuses: [0, 200] },
           },
         }],
