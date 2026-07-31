@@ -1,113 +1,146 @@
-import STORAGE_KEYS from "../constants/storageKeys.js";
-import { readLocalData } from "../intelligence/LocalDataSource.js";
+import { COMPANION_CATALOG } from "./companionCatalog.js";
+import {
+  loadCompanionPreferences,
+  saveCompanionPreferences,
+} from "./CompanionPreferencesService.js";
 import { getTodayMood } from "../services/mood.js";
-import { storage } from "../storage/storage.js";
-import { emitSync } from "../sync/emitSync.js";
 
-export const COMPANION_RULES_VERSION = 1;
-const DEFAULTS = {
-  version: 1, enabled: true, lightOnly: false, hiddenTypes: [],
-  blockedSuggestions: [], recent: [],
-};
+const dayKey = (date = new Date()) => [
+  date.getFullYear(), String(date.getMonth() + 1).padStart(2, "0"),
+  String(date.getDate()).padStart(2, "0"),
+].join("-");
 
-const SUGGESTIONS = {
-  neutral: [
-    ["pause", "Faça uma pausa curta, se quiser.", "Uma sugestão neutra para este momento.", "/lar"],
-    ["diary", "Guarde algumas palavras no Diário.", "Escrever é uma opção, não uma obrigação.", "/diario"],
-    ["water", "Que tal beber um pouco de água?", "Um cuidado simples para qualquer momento.", "/lar"],
-  ],
-  excited: [
-    ["creative", "Aproveite a energia em uma atividade criativa.", "Você informou estar animado.", "/lar"],
-    ["goal", "Escolha um pequeno avanço em uma meta.", "Você informou estar animado.", "/metas"],
-  ],
-  tired: [
-    ["rest", "Talvez seja um bom momento para descansar.", "Você informou estar cansado.", "/lar"],
-    ["essential", "Se precisar fazer algo, escolha somente o essencial.", "Uma opção leve para um momento cansado.", "/metas"],
-  ],
-  anxious: [
-    ["breath", "Experimente uma respiração lenta por alguns instantes.", "Uma sugestão simples porque você informou ansiedade.", "/lar"],
-    ["small_task", "Organize apenas uma pequena tarefa.", "Uma opção de baixa intensidade.", "/metas"],
-  ],
-  sad: [
-    ["trust", "Se fizer sentido, fale com alguém de confiança.", "Você informou tristeza; esta é apenas uma opção.", "/lar"],
-    ["comfort", "Reencontre algo confortável nos seus Favoritos.", "Um favorito pode oferecer companhia.", "/favoritos"],
-  ],
-  irritated: [
-    ["walk", "Considere uma pausa ou caminhada breve.", "Você informou irritação; evite decisões por impulso.", "/lar"],
-    ["private_write", "Escreva em privado antes de decidir algo.", "Uma pausa para organizar pensamentos.", "/diario"],
-  ],
-  unmotivated: [
-    ["two_minutes", "Escolha uma ação de aproximadamente dois minutos.", "Uma pequena ação já pode ser suficiente.", "/lar"],
-    ["enough", "Isso já pode ter sido suficiente por hoje.", "Descanso também importa.", "/lar"],
-  ],
-};
-
-function load() {
-  const raw = storage.get(STORAGE_KEYS.COMPANION);
-  return raw?.version === 1 ? {
-    ...DEFAULTS, ...raw,
-    hiddenTypes: Array.isArray(raw.hiddenTypes) ? raw.hiddenTypes.slice(0, 20) : [],
-    blockedSuggestions: Array.isArray(raw.blockedSuggestions) ? raw.blockedSuggestions.slice(0, 100) : [],
-    recent: Array.isArray(raw.recent) ? raw.recent.slice(-30) : [],
-  } : { ...DEFAULTS };
+function period(date = new Date()) {
+  const hour = date.getHours();
+  if (hour < 5) return "night";
+  if (hour < 12) return "morning";
+  if (hour < 18) return "afternoon";
+  return "evening";
 }
 
-function persist(value) {
-  storage.set(STORAGE_KEYS.COMPANION, value);
-  emitSync({ module: "companion", action: "update", recordId: "preferences" });
-  return value;
+function moodId(mood) {
+  if (!mood || mood.mood === "prefer_not") return "neutral";
+  if (mood.mood === "very_happy") return "happy";
+  return mood.mood;
 }
 
-function moodGroup(mood) {
-  if (!mood) return "neutral";
-  if (["very_happy", "happy", "excited"].includes(mood.mood)) return "excited";
-  return SUGGESTIONS[mood.mood] ? mood.mood : "neutral";
+function stableNumber(value) {
+  let hash = 2166136261;
+  for (const char of value) hash = Math.imul(hash ^ char.charCodeAt(0), 16777619);
+  return hash >>> 0;
 }
 
-function favoriteSuggestion(data, mood, preferences) {
-  const candidates = data.favorites.filter((item) => !item.doNotRecommend
-    && !preferences.blockedSuggestions.includes(`favorite:${item.id}`)
-    && (!mood || !item.avoidWhenTired || mood.mood !== "tired")
-    && (!preferences.hiddenTypes.includes(item.type))
-    && ((item.moodTags ?? []).includes(mood?.mood) || item.primary || item.pinned));
-  const item = candidates[0];
-  return item ? {
-    id: `favorite:${item.id}`, type: "favorite", title: item.title,
-    reason: item.moodTags?.includes(mood?.mood)
-      ? "Você marcou este favorito para momentos como este."
-      : "Este item está entre os seus Favoritos.",
-    route: "/favoritos",
-  } : null;
+export function scoreSuggestion(item, context, preferences) {
+  let score = 20;
+  if (item.moods.includes(context.mood)) score += 24;
+  if (item.periods.includes("all") || item.periods.includes(context.period)) score += 12;
+  if (context.weekend && item.periods.includes("weekend")) score += 8;
+  if (context.minutes && item.minutes <= context.minutes) score += 16;
+  if (context.category && item.categories.includes(context.category)) score += 28;
+  if (context.energy && item.energy === context.energy) score += 7;
+  score += item.categories.reduce((sum, category) =>
+    sum + Number(preferences.categoryWeights[category] ?? 0), 0);
+  if (preferences.preferredCategories.some((category) =>
+    item.categories.includes(category))) score += 6;
+  const seen = preferences.interactions.filter((entry) => entry.id === item.id);
+  score -= seen.length * 7;
+  if (seen.some((entry) => entry.action === "helped")) score += 8;
+  if (seen.some((entry) => entry.action === "not_helped")) score -= 14;
+  return score;
 }
 
-export function getCompanionSuggestion() {
-  const preferences = load();
-  if (!preferences.enabled) return { enabled: false };
-  const mood = getTodayMood();
-  const favorite = favoriteSuggestion(readLocalData(), mood, preferences);
-  if (favorite) return { enabled: true, mood: mood?.mood ?? null, suggestion: favorite };
-  const group = moodGroup(mood);
-  const available = SUGGESTIONS[group].filter(([id]) =>
-    !preferences.blockedSuggestions.includes(id)
-    && !preferences.recent.slice(-3).includes(id));
-  const [id, title, reason, route] = available[0] ?? SUGGESTIONS.neutral[0];
-  return { enabled: true, mood: mood?.mood ?? null,
-    suggestion: { id, type: group, title, reason, route } };
+function eligible(item, context, preferences, excluded) {
+  if (preferences.blocked.includes(item.id) || excluded.has(item.id)) return false;
+  if (preferences.hiddenCategories.some((category) => item.categories.includes(category))) return false;
+  if (!preferences.showMusic && item.categories.includes("music")) return false;
+  if (!preferences.showScreen && item.categories.includes("screen")) return false;
+  if (!preferences.showBooks && item.categories.includes("books")) return false;
+  if (context.minutes && item.minutes > context.minutes) return false;
+  if (context.category && !item.categories.includes(context.category)) return false;
+  return true;
 }
 
-export function respondToSuggestion(id, response) {
-  const preferences = load();
-  const next = {
-    ...preferences,
-    recent: [...preferences.recent, id].slice(-30),
-    blockedSuggestions: response === "never"
-      ? [...new Set([...preferences.blockedSuggestions, id])].slice(-100)
-      : preferences.blockedSuggestions,
+export function selectCompanionSuggestions(options = {}, now = new Date()) {
+  const preferences = loadCompanionPreferences();
+  if (!preferences.enabled) return { enabled: false, suggestions: [], preferences };
+  const context = {
+    mood: options.mood ?? moodId(getTodayMood()),
+    period: options.period ?? period(now),
+    weekend: [0, 6].includes(now.getDay()),
+    minutes: Number(options.minutes) || null,
+    category: options.category ?? null,
+    energy: options.energy ?? null,
   };
-  persist(next);
-  return getCompanionSuggestion();
+  const today = dayKey(now);
+  const recentIds = new Set(preferences.interactions
+    .filter((entry) => entry.day === today || entry.action === "later")
+    .map((entry) => entry.id));
+  const lastSet = new Set(preferences.sets.at(-1) ?? []);
+  const excluded = new Set([...recentIds, ...lastSet]);
+  let candidates = COMPANION_CATALOG.filter((item) =>
+    eligible(item, context, preferences, excluded));
+  if (candidates.length < preferences.displayCount) {
+    candidates = COMPANION_CATALOG.filter((item) =>
+      eligible(item, context, preferences, recentIds));
+  }
+  const ranked = candidates.map((item) => ({
+    item,
+    score: scoreSuggestion(item, context, preferences),
+    tie: stableNumber(`${today}:${item.id}:${preferences.sets.length}`),
+  })).sort((a, b) => b.score - a.score || a.tie - b.tie);
+  const selected = [];
+  const categoryCounts = {};
+  for (const candidate of ranked) {
+    const primary = candidate.item.categories[0];
+    if ((categoryCounts[primary] ?? 0) >= 2) continue;
+    selected.push({ ...candidate.item, score: candidate.score });
+    categoryCounts[primary] = (categoryCounts[primary] ?? 0) + 1;
+    if (selected.length >= preferences.displayCount) break;
+  }
+  const setIds = selected.map((item) => item.id);
+  const next = saveCompanionPreferences({
+    sets: [...preferences.sets, setIds].slice(-10),
+    cursor: Math.min(9, preferences.sets.length),
+    interactions: [...preferences.interactions,
+      ...setIds.map((id) => ({ id, action: "viewed", day: today, at: now.toISOString() }))]
+      .slice(-120),
+  }, false);
+  return { enabled: true, mood: context.mood, suggestions: selected,
+    preferences: next, filters: context };
+}
+
+export function getPreviousSuggestionSet() {
+  const preferences = loadCompanionPreferences();
+  if (preferences.sets.length < 2) return [];
+  const ids = preferences.sets.at(-2);
+  return ids.map((id) => COMPANION_CATALOG.find((item) => item.id === id)).filter(Boolean);
+}
+
+export function respondToSuggestion(id, action, categories = []) {
+  const preferences = loadCompanionPreferences();
+  const day = dayKey();
+  const interaction = { id, action, day, at: new Date().toISOString() };
+  const categoryWeights = { ...preferences.categoryWeights };
+  if (action === "more") categories.forEach((category) => {
+    categoryWeights[category] = Math.min(20, Number(categoryWeights[category] ?? 0) + 4);
+  });
+  if (action === "less") categories.forEach((category) => {
+    categoryWeights[category] = Math.max(-20, Number(categoryWeights[category] ?? 0) - 5);
+  });
+  return saveCompanionPreferences({
+    categoryWeights,
+    blocked: action === "never"
+      ? [...new Set([...preferences.blocked, id])] : preferences.blocked,
+    interactions: [...preferences.interactions, interaction].slice(-120),
+  });
 }
 
 export function setCompanionEnabled(enabled) {
-  return persist({ ...load(), enabled: Boolean(enabled) });
+  return saveCompanionPreferences({ enabled: Boolean(enabled) });
+}
+
+// Compatibilidade com consumidores anteriores.
+export function getCompanionSuggestion() {
+  const result = selectCompanionSuggestions();
+  return { ...result, suggestion: result.suggestions[0] ?? null };
 }

@@ -174,11 +174,35 @@
 .companion-card { display: grid; gap: 10px; }
 .companion-card h2, .companion-card p { margin: 0; }
 .companion-card small { color: var(--text-secondary); }
-.companion-card__actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.companion-card__actions a, .companion-card__actions button {
+.companion-card__heading, .companion-card__footer { display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 10px; }
+.companion-card__heading > button, .companion-card__footer button,
+.companion-suggestion__actions a, .companion-suggestion__actions button,
+.companion-filters button {
   min-height: 42px; padding: 9px 13px; border-radius: 12px;
   border: 1px solid var(--border-color); color: var(--text-primary);
   background: var(--card-bg); cursor: pointer;
+}
+.companion-filters { display: flex; gap: 7px; overflow-x: auto; padding: 4px 0; }
+.companion-filters button { flex: 0 0 auto; min-height: 38px; border-radius: 999px; }
+.companion-filters button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.companion-list { display: grid; grid-template-columns: repeat(5, minmax(190px, 1fr)); gap: 10px; overflow-x: auto; }
+.companion-suggestion { display: grid; align-content: start; gap: 9px; padding: 15px;
+  border: 1px solid var(--border-color); border-radius: 16px; background: var(--card-bg); }
+.companion-suggestion > div:first-child { display: flex; gap: 6px; }
+.companion-suggestion > div:first-child span { padding: 4px 7px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent); font-size: .72rem; }
+.companion-suggestion h3 { margin: 0; font-size: 1rem; }
+.companion-suggestion__actions { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; }
+.companion-suggestion__actions a, .companion-suggestion__actions button {
+  min-height: 34px; padding: 6px 8px; font-size: .72rem;
+}
+.companion-mobile-more { display: none; }
+@media (max-width: 600px) {
+  .companion-list { display: grid; grid-template-columns: 1fr; overflow: visible; }
+  .companion-list .companion-suggestion:nth-child(n+3) { display: none; }
+  .companion-list.is-expanded .companion-suggestion { display: grid; }
+  .companion-mobile-more { display: inline-flex; }
 }
 .today-center { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 22px 0; }
 .today-center article { display: grid; align-content: start; gap: 10px; }

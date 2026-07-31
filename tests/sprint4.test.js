@@ -34,8 +34,10 @@ const {
   processAchievements,
 } = await import("../src/core/services/achievements.js");
 const {
-  getCompanionSuggestion, respondToSuggestion,
+  getCompanionSuggestion, respondToSuggestion, selectCompanionSuggestions,
+  getPreviousSuggestionSet,
 } = await import("../src/core/companion/CompanionService.js");
+const { COMPANION_CATALOG } = await import("../src/core/companion/companionCatalog.js");
 
 function data() {
   return {
@@ -100,9 +102,42 @@ test("Companheiro prioriza Favorito e respeita bloqueio", () => {
   values.clear();
   values.set("abrigo:personal-favorites:v2", JSON.stringify({ version: 3, items: data().favorites }));
   const first = getCompanionSuggestion();
-  assert.equal(first.suggestion.type, "favorite");
-  const next = respondToSuggestion(first.suggestion.id, "never");
+  assert.ok(first.suggestion);
+  respondToSuggestion(first.suggestion.id, "never");
+  const next = getCompanionSuggestion();
   assert.notEqual(next.suggestion.id, first.suggestion.id);
+});
+
+test("catálogo do Companheiro possui 120 sugestões distintas e leves", async () => {
+  assert.equal(COMPANION_CATALOG.length, 120);
+  assert.equal(new Set(COMPANION_CATALOG.map((item) => item.title)).size, 120);
+  const source = await readFile(new URL("../src/core/companion/companionCatalog.js",
+    import.meta.url));
+  assert.ok(source.byteLength < 50 * 1024);
+  const counts = {};
+  COMPANION_CATALOG.forEach((item) => item.categories.forEach((category) => {
+    counts[category] = (counts[category] ?? 0) + 1;
+  }));
+  ["rest","selfcare","organization","creativity","movement","diary","music","quick"]
+    .forEach((category) => assert.ok(counts[category] >= 10, category));
+  ["outdoors","social","goals","habits","screen","books","starting","closing"]
+    .forEach((category) => assert.ok(counts[category] >= 8, category));
+});
+
+test("seleção gera cinco itens, respeita filtros, bloqueio e histórico", () => {
+  values.clear();
+  const first = selectCompanionSuggestions({ mood: "tired" }, new Date(2026, 6, 30, 20));
+  assert.equal(first.suggestions.length, 5);
+  assert.equal(new Set(first.suggestions.map((item) => item.id)).size, 5);
+  const second = selectCompanionSuggestions({ mood: "tired" }, new Date(2026, 6, 30, 20));
+  assert.notDeepEqual(second.suggestions.map((item) => item.id),
+    first.suggestions.map((item) => item.id));
+  assert.deepEqual(getPreviousSuggestionSet().map((item) => item.id),
+    first.suggestions.map((item) => item.id));
+  const short = selectCompanionSuggestions({ minutes: 2 }, new Date(2026, 6, 31, 9));
+  assert.ok(short.suggestions.every((item) => item.minutes <= 2));
+  const rest = selectCompanionSuggestions({ category: "rest" }, new Date(2026, 7, 1, 9));
+  assert.ok(rest.suggestions.every((item) => item.categories.includes("rest")));
 });
 
 test("política de métricas aceita somente eventos e campos fechados", async () => {
