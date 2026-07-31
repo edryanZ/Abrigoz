@@ -29,6 +29,7 @@ export const AnalyticsRepository = Object.freeze({
       p_device_category: event.deviceCategory,
       p_app_version: event.appVersion,
       p_error_code: event.errorCode ?? null,
+      p_execution_mode: event.executionMode,
     });
   },
   heartbeat(presence) {

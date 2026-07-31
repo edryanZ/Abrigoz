@@ -85,6 +85,13 @@ As tabelas têm RLS, nenhum `SELECT` público e nenhuma relação com `abrigos`.
 Somente as RPCs de escrita mínima são concedidas a `anon`; a consulta
 administrativa é restrita a `service_role`. Consulte `ANALYTICS.md`.
 
+A migration incremental
+`20260802120000_analytics_admin_aggregates.sql` adiciona somente contagens
+agregadas de modo de execução e faixa horária, limita a retenção diária a 365
+dias pela rotina de limpeza e mantém o acesso administrativo via
+`service_role`. Ela não cria eventos brutos, não altera dados pessoais e
+também deve ser aplicada manualmente após revisão.
+
 ## Sprint 5
 
 Nenhuma migration foi criada ou aplicada. Assistente, recomendações, céu,

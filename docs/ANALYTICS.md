@@ -3,8 +3,8 @@
 As métricas são opcionais, desativadas por padrão e separadas dos Abrigos. Elas
 estimam sessões, não pessoas. Uma pessoa pode abrir mais de uma sessão.
 
-Somente nomes fechados de eventos, páginas genéricas, categoria ampla de tela e
-versão do aplicativo são aceitos. Termos pesquisados, humor, textos, IDs
+Somente nomes fechados de eventos, páginas genéricas, categoria ampla de tela,
+versão do aplicativo e modo de execução (`browser` ou `pwa`) são aceitos. Termos pesquisados, humor, textos, IDs
 pessoais, Chave do Abrigo, `keyHash`, backup, ciphertext, URL completa, IP e
 User-Agent completo não são enviados.
 
@@ -17,12 +17,22 @@ sessão vista nos últimos dois minutos.
 
 Presença expira em dez minutos. `cleanup_analytics_presence()` pode ser chamada
 periodicamente pelo agendador da plataforma; a aplicação também remove
-presenças vencidas durante heartbeats. Totais diários agregados podem ser
-mantidos. Não existe trilha individual de navegação.
+presenças vencidas durante heartbeats. A limpeza incremental conserva totais
+diários agregados por até 365 dias. Não existe evento bruto nem trilha
+individual de navegação.
+
+O endpoint administrativo aceita somente intervalos de até 30 dias e retorna
+contagens agregadas de sessões estimadas, páginas, erros técnicos seguros,
+dispositivos, versões, modo de execução e horários. Grupos entre uma e quatro
+sessões são apresentados como “menos de 5”, reduzindo a exposição de grupos
+pequenos. O token administrativo permanece apenas no campo durante a consulta,
+é apagado em seguida e nunca é persistido.
 
 ## Configuração manual
 
-1. Revise e aplique `20260801120000_anonymous_analytics.sql` manualmente.
+1. Revise e aplique, nesta ordem,
+   `20260801120000_anonymous_analytics.sql` e
+   `20260802120000_analytics_admin_aggregates.sql` manualmente.
 2. Configure somente no servidor: `SUPABASE_URL`,
    `SUPABASE_SERVICE_ROLE_KEY` e `ADMIN_ANALYTICS_TOKEN`.
 3. Proteja `/admin/atividade` e `/api/admin-analytics` com o controle de acesso
@@ -33,3 +43,6 @@ mantidos. Não existe trilha individual de navegação.
 O painel fica desativado sem essas variáveis. Nenhuma deve usar prefixo
 `VITE_`. A RPC administrativa pertence somente a `service_role`; `anon` não
 pode ler tabelas ou agregados.
+
+As migrations deste repositório são artefatos para revisão: nenhum script de
+build, teste ou patch as aplica automaticamente.

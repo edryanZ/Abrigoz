@@ -1,8 +1,55 @@
-.admin-analytics { max-width: 900px; margin: 0 auto; padding: 48px 0; display: grid; gap: 18px; }
-.admin-analytics form { display: grid; gap: 12px; }
-.admin-analytics label { display: grid; gap: 6px; }
-.admin-analytics input, .admin-analytics select, .admin-analytics button { min-height: 44px; padding: 9px 12px;
-  border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-primary); background: var(--card-bg); }
-.admin-analytics__summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.admin-analytics {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 32px 0 64px;
+  display: grid;
+  gap: 18px;
+}
+
+.admin-analytics header { max-width: 720px; }
+.admin-analytics h1, .admin-analytics h2 { margin: 0 0 8px; }
+.admin-analytics h2 { font-size: 1.05rem; }
+.admin-analytics__eyebrow { color: var(--accent); font-weight: 700; margin-bottom: 6px; }
+.admin-analytics form { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.admin-analytics label { font-weight: 650; margin-top: 4px; }
+.admin-analytics input,
+.admin-analytics select,
+.admin-analytics button {
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--text-primary);
+  background: var(--card-bg);
+}
+.admin-analytics button { cursor: pointer; font-weight: 700; }
+.admin-analytics button:disabled { cursor: wait; opacity: .6; }
+.admin-analytics__message { margin: 12px 0 0; color: var(--text-secondary); }
+.admin-analytics__summary,
+.admin-analytics__details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+}
 .admin-analytics__summary article { display: grid; gap: 8px; }
-.admin-analytics__summary strong { font-size: 2rem; color: var(--accent); }
+.admin-analytics__summary strong { font-size: clamp(1.5rem, 5vw, 2rem); color: var(--accent); }
+.admin-analytics__ranking { padding: 0; margin: 0; list-style: none; display: grid; gap: 8px; }
+.admin-analytics__ranking li { display: flex; justify-content: space-between; gap: 12px; }
+.admin-analytics__ranking strong { color: var(--accent); white-space: nowrap; }
+.admin-analytics__empty, .admin-analytics__updated { color: var(--text-secondary); }
+.admin-analytics__updated { text-align: right; font-size: .875rem; }
+.admin-analytics__table-wrap { max-width: 100%; overflow-x: auto; }
+.admin-analytics table { width: 100%; border-collapse: collapse; }
+.admin-analytics th, .admin-analytics td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+  white-space: nowrap;
+}
+
+@media (min-width: 680px) {
+  .admin-analytics { padding-top: 48px; }
+  .admin-analytics form { grid-template-columns: minmax(220px, 1fr) 170px auto; align-items: end; }
+  .admin-analytics form label { grid-row: 1; }
+  .admin-analytics form input, .admin-analytics form select, .admin-analytics form button { grid-row: 2; }
+}

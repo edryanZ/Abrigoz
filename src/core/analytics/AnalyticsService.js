@@ -7,13 +7,14 @@ import {
   getAnalyticsConsent,
   persistAnalyticsConsent,
 } from "./AnalyticsConsentService.js";
-const APP_VERSION = "2.0";
+import { APP } from "../constants/app.js";
 const HEARTBEAT_MS = 60_000;
 const EVENT_INTERVAL_MS = 1_000;
 
 let sessionTokenHash = null;
 let heartbeatTimer = null;
 let lastEventAt = 0;
+let visibilityListening = false;
 
 async function createSessionHash() {
   if (sessionTokenHash) return sessionTokenHash;
@@ -30,6 +31,12 @@ function deviceCategory() {
   return width < 600 ? "mobile" : width < 1024 ? "tablet" : "desktop";
 }
 
+function executionMode() {
+  const standaloneDisplay = typeof globalThis.matchMedia === "function"
+    && globalThis.matchMedia("(display-mode: standalone)").matches;
+  return standaloneDisplay || globalThis.navigator?.standalone === true ? "pwa" : "browser";
+}
+
 async function safePresence() {
   if (!getAnalyticsConsent() || document.visibilityState === "hidden") return;
   const hash = await createSessionHash();
@@ -38,13 +45,32 @@ async function safePresence() {
   await AnalyticsRepository.heartbeat({
     sessionTokenHash: hash,
     deviceCategory: deviceCategory(),
-    appVersion: APP_VERSION,
+    appVersion: APP.VERSION,
   });
 }
 
-export function stopAnalytics() {
+function stopHeartbeat() {
   if (heartbeatTimer) window.clearInterval(heartbeatTimer);
   heartbeatTimer = null;
+}
+
+function scheduleHeartbeat() {
+  stopHeartbeat();
+  if (!getAnalyticsConsent() || document.visibilityState === "hidden") return;
+  void safePresence();
+  heartbeatTimer = window.setInterval(() => { void safePresence(); }, HEARTBEAT_MS);
+}
+
+function handleVisibility() {
+  scheduleHeartbeat();
+}
+
+export function stopAnalytics() {
+  stopHeartbeat();
+  if (visibilityListening) {
+    document.removeEventListener("visibilitychange", handleVisibility);
+    visibilityListening = false;
+  }
   sessionTokenHash = null;
   lastEventAt = 0;
 }
@@ -72,16 +98,20 @@ export async function trackAnonymousEvent(name, fields = {}) {
     errorCode: fields.errorCode,
     sessionTokenHash: hash,
     deviceCategory: deviceCategory(),
-    appVersion: APP_VERSION,
+    appVersion: APP.VERSION,
+    executionMode: executionMode(),
   });
   return result.ok;
 }
 
 export function startAnalytics() {
-  if (!getAnalyticsConsent() || heartbeatTimer) return;
-  void safePresence();
+  if (!getAnalyticsConsent()) return;
+  if (!visibilityListening) {
+    document.addEventListener("visibilitychange", handleVisibility);
+    visibilityListening = true;
+  }
+  scheduleHeartbeat();
   void trackAnonymousEvent("app_open");
-  heartbeatTimer = window.setInterval(() => { void safePresence(); }, HEARTBEAT_MS);
 }
 
 export { ALLOWED_ANALYTICS_EVENTS };
