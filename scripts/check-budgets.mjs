@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
+import { gzipSync } from "node:zlib";
 
 const root = new URL("../", import.meta.url);
 const publicDir = new URL("../public/", import.meta.url);
@@ -53,9 +54,15 @@ try {
     .sort((first, second) => second[1] - first[1])[0];
   const assistant = Object.entries(sizes).find(([file]) => file.startsWith("Assistant-"));
   const exportChunk = Object.entries(sizes).find(([file]) => file.startsWith("ExportCenter-"));
-  assert.ok(main?.[1] < 400 * 1024, "Bundle principal excede 400 KB.");
+  const mainContent = main && await readFile(new URL(`assets/${main[0]}`, distDir));
+  assert.ok(main?.[1] < 270 * 1024, "Bundle principal excede 270 KB.");
+  assert.ok(mainContent && gzipSync(mainContent, { level: 9 }).byteLength < 88 * 1024,
+    "Bundle principal excede 88 KB gzip.");
   assert.ok(assistant?.[1] < 100 * 1024, "Chunk do Assistente ausente ou excessivo.");
   assert.ok(exportChunk?.[1] < 100 * 1024, "Chunk da Exportação ausente ou excessivo.");
+  const serviceWorker = await readFile(new URL("sw.js", distDir), "utf8");
+  assert.equal(/"url":\s*"[^"]+\.mp3"/i.test(serviceWorker), false,
+    "MP3 não deve entrar no precache.");
 } catch (error) {
   if (error?.code !== "ENOENT") throw error;
 }
