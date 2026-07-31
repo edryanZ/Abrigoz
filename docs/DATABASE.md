@@ -84,3 +84,11 @@ automaticamente, cria `analytics_presence`, `analytics_daily` e as funções
 As tabelas têm RLS, nenhum `SELECT` público e nenhuma relação com `abrigos`.
 Somente as RPCs de escrita mínima são concedidas a `anon`; a consulta
 administrativa é restrita a `service_role`. Consulte `ANALYTICS.md`.
+
+## Sprint 5
+
+Nenhuma migration foi criada ou aplicada. Assistente, recomendações, céu,
+preferências, compartilhamento local, offline e exportação não exigem novas
+tabelas. Cápsulas remotas exigiriam ciphertext, token hasheado, expiração e
+revogação server-side e permanecem desativadas. Não existe tabela, bucket ou
+migration de Galeria.

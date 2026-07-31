@@ -3,13 +3,13 @@ import {
   encryptJson,
   ENCRYPTION_PURPOSES,
   validateEncryptedEnvelope,
-} from "../crypto/CryptoService";
-import { loadBackup } from "../storage/BackupStorage";
-import { storage } from "../storage/storage";
+} from "../crypto/CryptoService.js";
+import { loadBackup } from "../storage/BackupStorage.js";
+import { storage } from "../storage/storage.js";
 import {
   SYNC_QUEUE_STORAGE_KEY,
   SYNC_STATE_STORAGE_KEY,
-} from "../storage/SyncStorage";
+} from "../storage/SyncStorage.js";
 
 const BACKUP_VERSION = 1;
 const MAX_BACKUP_BYTES = 6 * 1024 * 1024;
@@ -39,11 +39,23 @@ const EXCLUDED_KEYS = new Set([
   "abrigo:search-preferences:v1",
 ]);
 
+function prepareModuleForBackup(key, value) {
+  if (key === "abrigo:share-capsules:v1" && Array.isArray(value?.items)) {
+    return {
+      version: 1,
+      items: value.items.map(({ id, createdAt, expiresAt, revokedAt }) => ({
+        id, createdAt, expiresAt, revokedAt,
+      })),
+    };
+  }
+  return value;
+}
+
 function isSensitiveStorageKey(key) {
   if (EXCLUDED_KEYS.has(key)) return true;
+  const segments = key.toLowerCase().split(/[-_:\s]+/);
   const normalizedKey = key.toLowerCase().replace(/[-_:\s]/g, "");
-  return [
-    "key",
+  return segments.includes("key") || [
     "chave",
     "hash",
     "recovery",
@@ -79,12 +91,13 @@ function serializedSize(value) {
   }
 }
 
-function collectModules() {
+function collectModules({ includeAIHistory = true } = {}) {
   return storage.keys()
     .filter((key) =>
-      STORAGE_KEY_PATTERN.test(key) && !isSensitiveStorageKey(key))
+      STORAGE_KEY_PATTERN.test(key) && !isSensitiveStorageKey(key)
+      && (includeAIHistory || key !== "abrigo:ai-history:v1"))
     .reduce((modules, key) => {
-      modules[key] = storage.get(key);
+      modules[key] = prepareModuleForBackup(key, storage.get(key));
       return modules;
     }, {});
 }
@@ -137,7 +150,7 @@ export function createBackup(modules = collectModules(), metadata = {}) {
 
 export function createLocalExportBackup() {
   return buildBackup(
-    collectModules(),
+    collectModules({ includeAIHistory: false }),
     { exportedAt: new Date().toISOString(), source: "local" }
   );
 }

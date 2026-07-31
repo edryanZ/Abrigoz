@@ -120,3 +120,18 @@ Métricas anônimas exigem consentimento explícito e usam infraestrutura
 separada. Eventos têm esquema fechado e token temporário sem ligação com
 Abrigo, chave ou conteúdo. Não há publicidade, fingerprinting, rastreamento
 entre sites ou perfil individual. O painel depende de autenticação server-side.
+
+## Proteções da Sprint 5
+
+O Assistente exige autorizações separadas e prévia. Redaction tenta ocultar
+dados comuns, mas não substitui revisão humana. Prompts e respostas não entram
+em métricas.
+
+Cápsulas locais usam AES-GCM e chave exclusiva. O storage guarda ciphertext e
+hash de token; chave e token ficam somente em memória. O backup inclui apenas
+metadados de cápsulas. O histórico autorizado entra no backup remoto
+consolidado criptografado e é excluído do backup plaintext de compatibilidade.
+
+A exportação remove campos internos, sanitiza nomes e oferece prévia. JSON pode
+usar AES-GCM com PBKDF2-SHA-256. Recursos remotos da Sprint 5 ficam desativados
+sem endpoints server-side revisados.

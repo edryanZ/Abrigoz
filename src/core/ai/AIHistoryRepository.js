@@ -23,3 +23,9 @@ export function appendAIHistory(item, enabled) {
 export function clearAIHistory() {
   storage.remove(STORAGE_KEYS.AI_HISTORY);
 }
+
+export function deleteAIConversation(id) {
+  const items = loadAIHistory(true).filter((item) => item.id !== id);
+  storage.set(STORAGE_KEYS.AI_HISTORY, { version: 1, items });
+  return items;
+}

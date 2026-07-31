@@ -49,6 +49,9 @@ const {
 const {
   safeFilename,
 } = await import("../src/core/export/ExportDownloadService.js");
+const {
+  createBackup, createLocalExportBackup, validateBackup,
+} = await import("../src/core/sync/BackupManager.js");
 
 test("Assistente inicia desativado e sem contexto automático", () => {
   values.clear();
@@ -175,4 +178,33 @@ test("JSON protegido não mantém conteúdo em texto aberto", async () => {
   const protectedDocument = await protectExport({ private: "conteúdo pessoal" }, "senha-segura");
   assert.equal(protectedDocument.algorithm, "AES-GCM");
   assert.ok(!JSON.stringify(protectedDocument).includes("conteúdo pessoal"));
+});
+
+test("backup inclui preferências elegíveis sem segredos de cápsula", () => {
+  values.clear();
+  values.set("abrigo:sky-preferences:v1", JSON.stringify({ version: 1, intensity: "soft" }));
+  values.set("abrigo:ai-history:v1", JSON.stringify({
+    version: 1, items: [{ id: "a", request: "pedido", response: "resposta" }],
+  }));
+  values.set("abrigo:share-capsules:v1", JSON.stringify({
+    version: 1,
+    items: [{ id: "c", createdAt: "2026-07-30T00:00:00.000Z", expiresAt: null,
+      revokedAt: null, tokenHash: "a".repeat(64),
+      envelope: { ciphertext: "conteúdo-protegido" } }],
+  }));
+  const remote = createBackup();
+  assert.equal(validateBackup(remote), true);
+  assert.equal(remote.modules["abrigo:sky-preferences:v1"].intensity, "soft");
+  assert.ok(remote.modules["abrigo:ai-history:v1"]);
+  assert.ok(!JSON.stringify(remote).includes("conteúdo-protegido"));
+  assert.ok(!JSON.stringify(remote).includes("tokenHash"));
+  const plaintext = createLocalExportBackup();
+  assert.equal(plaintext.modules["abrigo:ai-history:v1"], undefined);
+});
+
+test("Sprint 5 não contém módulo ou rota Galeria", async () => {
+  const routes = await readFile(new URL("../src/core/constants/routes.js", import.meta.url), "utf8");
+  assert.doesNotMatch(routes, /galeria/i);
+  const appRoutes = await readFile(new URL("../src/app/router/AppRoutes.jsx", import.meta.url), "utf8");
+  assert.doesNotMatch(appRoutes, /galeria/i);
 });

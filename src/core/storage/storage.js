@@ -49,7 +49,10 @@ const storage = {
   },
 
   keys() {
-    return Object.keys(localStorage);
+    return Array.from(
+      { length: localStorage.length },
+      (_, index) => localStorage.key(index)
+    ).filter(Boolean);
   },
 
   clear(prefix = null) {
@@ -58,7 +61,7 @@ const storage = {
       return;
     }
 
-    Object.keys(localStorage).forEach((key) => {
+    this.keys().forEach((key) => {
       if (key.startsWith(prefix)) {
         localStorage.removeItem(key);
       }

@@ -128,3 +128,20 @@ Os ícones do PWA ficam em `public/branding`. O arquivo
 `abrigo-icon-source.webp` é a fonte visual; os PNGs derivados possuem tamanhos
 específicos para favicon, iOS, manifesto normal e área segura maskable.
 O comando `npm run check:budgets` valida dimensões, peso dos ícones e áudio.
+
+## Sprint 5 — Expansão sem Galeria
+
+- Assistente opcional com contexto selecionado;
+- céu leve em seis períodos locais;
+- compartilhamento local e cápsulas AES-GCM;
+- offline, armazenamento e atualização confirmada;
+- exportação em JSON, CSV, Markdown, HTML, impressão, ICS e ZIP.
+
+O Abrigo continua funcionando sem IA, serviços externos ou sincronização. Não
+há módulo Galeria, upload, álbum ou armazenamento de fotografias pessoais.
+
+## Especificação oficial
+
+`ABRIGO_2_SPEC.md` é a principal fonte de verdade. Toda implementação deve
+consultá-lo antes da documentação complementar. Em conflito, ele prevalece até
+que os demais documentos sejam atualizados.

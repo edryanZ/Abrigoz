@@ -51,7 +51,7 @@ Médio prazo:
 
 Longo prazo:
 - Inteligência Artificial.
-- Galeria.
+- Portabilidade e compartilhamento textual seguro.
 - Compartilhamento.
 - Exportação.
 - Aplicativos Android e iOS.

@@ -52,3 +52,14 @@ privacidade apenas oculta conteúdo na interface.
 passar por `SyncService`, fila, backup ou Chave do Abrigo. O endpoint em `api/`
 consulta agregados com credenciais server-side e fica desativado sem
 configuração.
+
+## Expansão opcional
+
+`src/core/ai` separa preferências, redaction, contexto explícito, histórico e
+adaptador. A página lazy nunca lê módulos automaticamente. Chamadas externas
+usam `/api/ai`, ficam desligadas e dependem de endpoint não implantado.
+
+`src/core/atmosphere` calcula seis períodos e o próximo limite. `Ceu` renderiza
+camadas CSS sem remontar páginas. Sharing, offline e export mantêm regras fora
+dos componentes. Assistente e Exportação têm chunks lazy. Não existe módulo
+Galeria, asset pessoal ou provedor de IA no bundle inicial.

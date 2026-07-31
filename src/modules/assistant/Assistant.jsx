@@ -9,6 +9,9 @@ import { useTheme } from "../../shared/contexts/ThemeContext";
 import { AIService } from "../../core/ai/AIService";
 import { buildAIContext, contextPreview } from "../../core/ai/AIContextBuilder";
 import { loadAIPreferences } from "../../core/ai/AIPreferencesService";
+import {
+  deleteAIConversation, loadAIHistory,
+} from "../../core/ai/AIHistoryRepository";
 
 export default function Assistant() {
   const { greeting } = useTheme();
@@ -20,6 +23,8 @@ export default function Assistant() {
   const [response, setResponse] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [history, setHistory] = useState(() =>
+    loadAIHistory(loadAIPreferences().saveHistory));
   const context = useMemo(() => buildAIContext({
     instruction,
     autoRedact: preferences.autoRedact,
@@ -35,6 +40,7 @@ export default function Assistant() {
     setBusy(true); setMessage("");
     try {
       setResponse(await AIService.request({ ...context, confirmed: true }));
+      setHistory(loadAIHistory(preferences.saveHistory));
       setReviewing(false);
     } catch (error) {
       setMessage(error.message);
@@ -64,6 +70,11 @@ export default function Assistant() {
       {!preferences.assistantEnabled && <p>O Assistente externo está desativado. As sugestões locais continuam disponíveis.</p>}
       {message && <p role="status">{message}</p>}
       {response && <section className="assistant-response"><h2>Sugestão</h2><p>{response}</p></section>}
+      {preferences.saveHistory && history.length > 0 && <section className="assistant-history">
+        <h2>Histórico salvo</h2>{history.map((item) => <article key={item.id}>
+          <p><strong>{item.request}</strong></p><p>{item.response}</p>
+          <button onClick={() => setHistory(deleteAIConversation(item.id))}>
+            Excluir conversa</button></article>)}</section>}
     </GlassCard>
     {reviewing && <div className="assistant-modal" role="dialog" aria-modal="true"
       aria-labelledby="assistant-review-title"><div>

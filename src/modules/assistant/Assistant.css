@@ -4,7 +4,9 @@
 .assistant-local{display:flex;flex-wrap:wrap;gap:8px}.assistant-card button,.assistant-modal button{padding:.75rem 1rem;
   border:1px solid var(--border-color);border-radius:12px;background:var(--card-bg);color:var(--text-primary)}
 .assistant-check{display:flex;align-items:center;gap:9px}.assistant-note,.assistant-response{padding:12px;
-  border-radius:12px;background:var(--card-bg)}.assistant-modal{position:fixed;inset:0;z-index:99999;
+  border-radius:12px;background:var(--card-bg)}.assistant-history{display:grid;gap:10px}
+.assistant-history article{padding:12px;border-radius:12px;background:var(--card-bg)}
+.assistant-modal{position:fixed;inset:0;z-index:99999;
   display:grid;place-items:center;padding:18px;background:#020617c7}.assistant-modal>div{width:min(680px,100%);
   display:grid;gap:12px;padding:20px;border-radius:20px;background:var(--surface-strong)}
 .assistant-modal textarea{width:100%}.assistant-modal>div>div{display:flex;justify-content:flex-end;gap:8px}

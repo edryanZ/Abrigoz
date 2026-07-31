@@ -22,6 +22,7 @@ import {
   FaTrophy,
   FaComments,
   FaFileExport,
+  FaBookOpen,
 } from "react-icons/fa";
 
 import MusicPlayer from "./MusicPlayer";
@@ -85,39 +86,45 @@ export default function Navbar() {
 
   const grupos = [
     {
-      nome: "Abrigo",
+      nome: "Pessoal",
       itens: [
         { nome: "Lar", rota: ROUTES.HOME, icone: <FaHome /> },
-        { nome: "Cartas", rota: ROUTES.LETTERS, icone: <FaEnvelope /> },
-        { nome: "Pesquisa", rota: ROUTES.SEARCH, icone: <FaSearch /> },
-        { nome: "Estatísticas", rota: ROUTES.STATISTICS, icone: <FaChartBar /> },
-        { nome: "Conquistas", rota: ROUTES.ACHIEVEMENTS, icone: <FaTrophy /> },
-        { nome: "Assistente", rota: ROUTES.ASSISTANT, icone: <FaComments /> },
-        { nome: "Exportar", rota: ROUTES.EXPORT, icone: <FaFileExport /> },
-      ],
-    },
-    {
-      nome: "Organização pessoal",
-      itens: [
+        { nome: "Diário", rota: ROUTES.DIARY, icone: <FaBookOpen /> },
         {
           nome: "Calendário",
           rota: ROUTES.CALENDAR,
           icone: <FaCalendarAlt />,
         },
-        { nome: "Favoritos", rota: ROUTES.FAVORITES, icone: <FaStar /> },
-        { nome: "Metas", rota: ROUTES.GOALS, icone: <FaBullseye /> },
-        { nome: "Hábitos", rota: ROUTES.HABITS, icone: <FaLeaf /> },
+        { nome: "Cartas", rota: ROUTES.LETTERS, icone: <FaEnvelope /> },
       ],
     },
     {
-      nome: "Aplicativo",
+      nome: "Jornada",
       itens: [
-        { nome: "Sobre", rota: ROUTES.ABOUT, icone: <FaHeart /> },
+        { nome: "Favoritos", rota: ROUTES.FAVORITES, icone: <FaStar /> },
+        { nome: "Metas", rota: ROUTES.GOALS, icone: <FaBullseye /> },
+        { nome: "Hábitos", rota: ROUTES.HABITS, icone: <FaLeaf /> },
+        { nome: "Estatísticas", rota: ROUTES.STATISTICS, icone: <FaChartBar /> },
+        { nome: "Conquistas", rota: ROUTES.ACHIEVEMENTS, icone: <FaTrophy /> },
+      ],
+    },
+    {
+      nome: "Ferramentas",
+      itens: [
+        { nome: "Pesquisa", rota: ROUTES.SEARCH, icone: <FaSearch /> },
+        { nome: "Assistente", rota: ROUTES.ASSISTANT, icone: <FaComments /> },
+        { nome: "Exportar", rota: ROUTES.EXPORT, icone: <FaFileExport /> },
+      ],
+    },
+    {
+      nome: "Sistema",
+      itens: [
         {
           nome: "Configurações",
           rota: ROUTES.SETTINGS,
           icone: <FaCog />,
         },
+        { nome: "Sobre", rota: ROUTES.ABOUT, icone: <FaHeart /> },
       ],
     },
   ];

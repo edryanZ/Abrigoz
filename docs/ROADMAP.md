@@ -32,8 +32,11 @@ O roadmap oficial do Abrigo e organizado por Sprints. Os principios e limites do
 - [x] Metricas anonimas opcionais e infraestrutura do painel privado
 
 ## Sprint 5 - Expansao
-- Inteligencia artificial
-- Galeria
-- Compartilhamento
-- Offline
-- Exportacao
+- [x] Assistente opcional com contexto selecionado
+- [x] Céu dinâmico por horário local
+- [x] Compartilhamento local com prévia
+- [x] Cápsulas locais criptografadas
+- [x] Offline e atualização confirmada
+- [x] Central de Exportação
+
+A Sprint 5 não possui Galeria, fotografias pessoais, álbuns ou upload de imagens.
