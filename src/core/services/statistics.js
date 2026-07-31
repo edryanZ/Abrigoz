@@ -1,3 +1,5 @@
+import { storage } from "../storage/storage.js";
+
 const STORAGE_KEY = "abrigo_statistics";
 
 function getDefaultStatistics() {
@@ -17,19 +19,17 @@ function getDefaultStatistics() {
 }
 
 export function getStatistics() {
-  const data = localStorage.getItem(STORAGE_KEY);
-
-  if (!data) {
+  const data = storage.get(STORAGE_KEY);
+  if (!data || typeof data !== "object" || Array.isArray(data)) {
     const initial = getDefaultStatistics();
     saveStatistics(initial);
     return initial;
   }
-
-  return JSON.parse(data);
+  return { ...getDefaultStatistics(), ...data };
 }
 
 export function saveStatistics(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  return storage.set(STORAGE_KEY, data);
 }
 
 export function updateStatistics(updater) {
@@ -84,5 +84,5 @@ export function getStatistic(key) {
 }
 
 export function resetStatistics() {
-  localStorage.removeItem(STORAGE_KEY);
+  storage.remove(STORAGE_KEY);
 }

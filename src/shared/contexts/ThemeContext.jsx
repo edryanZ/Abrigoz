@@ -16,18 +16,23 @@ export function ThemeProvider({ children }) {
   const [period, setPeriod] = useState(getPeriod());
 
   useEffect(() => {
+    let timer;
     function atualizarPeriodo() {
       setPeriod(getPeriod());
+      const now = new Date();
+      const nextHours = [5, 6, 12, 18, 24].find((hour) => hour > now.getHours()) ?? 24;
+      const next = new Date(now);
+      if (nextHours === 24) {
+        next.setDate(next.getDate() + 1);
+        next.setHours(0, 0, 0, 0);
+      } else {
+        next.setHours(nextHours, 0, 0, 0);
+      }
+      timer = window.setTimeout(atualizarPeriodo, Math.max(1_000, next - now));
     }
 
     atualizarPeriodo();
-
-    const intervalo = setInterval(
-      atualizarPeriodo,
-      60000
-    );
-
-    return () => clearInterval(intervalo);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const theme = themes[period];

@@ -3,7 +3,12 @@ import { storage } from "../storage/storage.js";
 
 function localStorageBytes() {
   return storage.keys().reduce((total, key) => {
-    const value = localStorage.getItem(key) ?? "";
+    let value;
+    try {
+      value = globalThis.localStorage?.getItem(key) ?? "";
+    } catch {
+      return total;
+    }
     return total + new Blob([key, value]).size;
   }, 0);
 }

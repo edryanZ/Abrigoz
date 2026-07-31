@@ -27,8 +27,7 @@ const storage = {
       );
 
       return true;
-    } catch (error) {
-      console.error(`Erro ao salvar "${key}".`, error);
+    } catch {
       return false;
     }
   },
@@ -57,7 +56,7 @@ const storage = {
   },
 
   removeMany(keys) {
-    keys.forEach((key) => localStorage.removeItem(key));
+    return keys.every((key) => this.remove(key));
   },
 
   keys() {
@@ -83,7 +82,7 @@ const storage = {
 
     this.keys().forEach((key) => {
       if (key.startsWith(prefix)) {
-        localStorage.removeItem(key);
+        this.remove(key);
       }
     });
     return true;

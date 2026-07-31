@@ -1,3 +1,5 @@
+import { storage } from "../storage/storage.js";
+
 const STORAGE_KEY = "abrigo_streak";
 
 function formatDate(date = new Date()) {
@@ -22,19 +24,21 @@ function getDefaultData() {
 }
 
 export function getStreakData() {
-  const data = localStorage.getItem(STORAGE_KEY);
-
-  if (!data) {
+  const data = storage.get(STORAGE_KEY);
+  if (!data || typeof data !== "object" || Array.isArray(data)) {
     const initial = getDefaultData();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+    storage.set(STORAGE_KEY, initial);
     return initial;
   }
-
-  return JSON.parse(data);
+  return {
+    ...getDefaultData(),
+    ...data,
+    uniqueVisits: Array.isArray(data.uniqueVisits) ? data.uniqueVisits : [],
+  };
 }
 
 export function saveStreakData(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  return storage.set(STORAGE_KEY, data);
 }
 
 export function registerVisit() {
@@ -90,5 +94,5 @@ export function getCreatedAt() {
 }
 
 export function resetStreak() {
-  localStorage.removeItem(STORAGE_KEY);
+  storage.remove(STORAGE_KEY);
 }

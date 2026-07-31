@@ -1,7 +1,6 @@
 import STORAGE_KEYS from "../constants/storageKeys";
+import { storage } from "../storage/storage.js";
 
 export function resetAbrigo() {
-  Object.values(STORAGE_KEYS).forEach((key) => {
-    localStorage.removeItem(key);
-  });
+  return storage.removeMany(Object.values(STORAGE_KEYS));
 }

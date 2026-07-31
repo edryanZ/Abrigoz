@@ -16,9 +16,12 @@ export default class ErrorBoundary extends Component {
     };
   }
 
-  componentDidCatch(error, info) {
-    console.error("Erro capturado pelo ErrorBoundary:", error);
-    console.error(info);
+  componentDidCatch() {
+    void import("../../core/analytics/AnalyticsService.js")
+      .then(({ trackAnonymousEvent }) => trackAnonymousEvent(
+        "app_error_safe", { errorCode: "render_failed" }
+      ))
+      .catch(() => false);
   }
 
   handleReload = () => {
