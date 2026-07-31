@@ -31,6 +31,20 @@ function ranked(counts) {
   })).sort((first, second) => Number(second.count) - Number(first.count));
 }
 
+export function validateAdminRange(body) {
+  if (!body || typeof body !== "object" || Array.isArray(body)
+      || Object.keys(body).some((key) => !["start", "end"].includes(key))) {
+    return null;
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(body.start ?? "")
+      || !/^\d{4}-\d{2}-\d{2}$/.test(body.end ?? "")) return null;
+  const startTime = Date.parse(`${body.start}T12:00:00Z`);
+  const endTime = Date.parse(`${body.end}T12:00:00Z`);
+  const span = (endTime - startTime) / 86400000;
+  if (!Number.isFinite(span) || span < 0 || span > MAX_RANGE_DAYS) return null;
+  return { start: body.start, end: body.end };
+}
+
 export function aggregateAdminAnalytics(payload = {}) {
   const dailySource = Array.isArray(payload.daily) ? payload.daily : [];
   const modules = {};
@@ -99,17 +113,9 @@ export default async function handler(request, response) {
   if (left.length !== right.length || !timingSafeEqual(left, right)) {
     return json(response, 401, { error: "unauthorized" });
   }
-  const body = request.body && typeof request.body === "object" ? request.body : {};
-  if (Object.keys(body).some((key) => !["start", "end"].includes(key))) {
-    return json(response, 400, { error: "invalid_request" });
-  }
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(body.start ?? "")
-      || !/^\d{4}-\d{2}-\d{2}$/.test(body.end ?? "")) {
-    return json(response, 400, { error: "invalid_range" });
-  }
-  const { start, end } = body;
-  const span = (new Date(`${end}T12:00:00`) - new Date(`${start}T12:00:00`)) / 86400000;
-  if (span < 0 || span > MAX_RANGE_DAYS) return json(response, 400, { error: "invalid_range" });
+  const range = validateAdminRange(request.body);
+  if (!range) return json(response, 400, { error: "invalid_range" });
+  const { start, end } = range;
   const client = createClient(url, serviceKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });

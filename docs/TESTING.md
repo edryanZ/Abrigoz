@@ -265,3 +265,27 @@ Sistema operacional
 # Objetivo Final
 
 Toda nova versão do Abrigo deve ser publicada apenas após passar por uma validação completa de funcionamento, responsividade, acessibilidade e desempenho.
+
+## Validação reproduzível da Sprint 6
+
+Execute, sem alterar dependências:
+
+```bash
+npm run test
+npm run lint
+npm run build
+npm run check:budgets
+npm run analyze:bundle
+npm audit
+```
+
+Os testes permanentes cobrem dados antigos e corrompidos, armazenamento
+indisponível, player, céu, PWA, privacidade, criptografia, exportação,
+sincronização e analytics. A inspeção manual em `npm run preview` deve
+complementá-los em navegador real, incluindo cache limpo, offline, instalação,
+atualização sob confirmação, rotas diretas, player durante navegação, temas,
+redução de movimento e larguras de 320 a 1366 px.
+
+Não use conteúdo pessoal real nos testes. Migrations e endpoints
+administrativos são revisados localmente, mas aplicados ou publicados apenas
+em procedimento separado e autorizado.

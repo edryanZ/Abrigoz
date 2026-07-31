@@ -39,7 +39,26 @@ Medição realizada sobre `origin/codex-sprint-5` (`982b12e`):
 
 ## Alterações e números finais
 
-Esta seção será atualizada após as otimizações e a validação final.
+- entrada principal: 252.850 bytes (246,92 KiB) brutos e 78,57 KiB gzip;
+- redução da entrada: 1,40% bruto e 5,57% gzip;
+- JavaScript total: 675,39 KiB bruto e 214,76 KiB gzip;
+- CSS total: 72,84 KiB bruto e 22,70 KiB gzip;
+- Supabase: 101,78 KiB bruto e 24,46 KiB gzip, em chunk tardio;
+- precache: 79 entradas, 75 únicas e 1.242,04 KiB;
+- `dist`: 84 arquivos e 7.400,80 KiB.
+
+O `JourneyProvider` passou a existir somente na rota Lar. Analytics e seu
+repositório remoto são importados somente depois do consentimento. O player
+cria `Audio` sob demanda, conserva listeners, grava posição no máximo a cada
+cinco segundos e encerra corretamente timers e Media Session. Céu e tema
+pausam trabalho desnecessário; o service worker exclui MP3 do precache, limpa
+caches antigos e aguarda confirmação para atualizar.
+
+A meta desejada de 10% e de 230 KiB bruto não foi atingida. A estrutura global
+restante contém tema, céu, roteamento, Navbar, player e avisos essenciais.
+Retirá-los da entrada atrasaria a primeira interface ou criaria downloads
+imediatos equivalentes. Não foi usado `manualChunks` artificial nem houve
+fragmentação de React apenas para aparentar redução.
 
 O modo de produção do gerador do Workbox foi testado com Node 24, mas sua etapa
 de minificação não terminou mesmo após tentativas isoladas. Para não tornar o
@@ -53,3 +72,8 @@ futura, sem `npm audit fix` automático.
 Tamanho de bundle não substitui métricas reais de dispositivo e rede. Esta
 Sprint mede artefatos reproduzíveis localmente; avaliações de Core Web Vitals
 em produção continuam recomendadas depois de uma publicação autorizada.
+
+O painel administrativo acrescenta um chunk de rota de 5,10 KiB bruto, que não
+é baixado na abertura comum. A pequena alta final em relação ao melhor ponto
+intermediário da Sprint corresponde ao painel e aos controles de analytics
+solicitados, mantendo-os fora da entrada principal sempre que possível.
