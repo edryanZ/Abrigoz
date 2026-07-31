@@ -122,3 +122,9 @@ Uma plataforma para organização da vida pessoal.
 ## Documentação
 
 Veja a pasta docs/.
+# Identidade instalável
+
+Os ícones do PWA ficam em `public/branding`. O arquivo
+`abrigo-icon-source.webp` é a fonte visual; os PNGs derivados possuem tamanhos
+específicos para favicon, iOS, manifesto normal e área segura maskable.
+O comando `npm run check:budgets` valida dimensões, peso dos ícones e áudio.

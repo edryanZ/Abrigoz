@@ -59,6 +59,8 @@
     box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
 }
 
+.abrigo-symbol img { width: 100%; height: 100%; border-radius: inherit; }
+
 .navbar-icon {
 
     width: 46px;

@@ -6,9 +6,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/build.mjs",
     "lint": "eslint .",
     "test": "node --test tests/*.test.js",
+    "check:budgets": "node scripts/check-budgets.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

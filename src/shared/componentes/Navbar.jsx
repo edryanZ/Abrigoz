@@ -134,7 +134,9 @@ export default function Navbar() {
         </button>
 
         <Link to={ROUTES.HOME} className="navbar-logo" aria-label="Abrigo, ir para o Lar">
-          <span className="abrigo-symbol" aria-hidden="true">⌂</span>
+          <span className="abrigo-symbol" aria-hidden="true">
+            <img src="/branding/favicon-32.png" alt="" />
+          </span>
           <span>Abrigo</span>
         </Link>
 
