@@ -1,5 +1,6 @@
 :root{--sky-top:#060b22;--sky-middle:#171342;--sky-bottom:#090d24;--sky-glow:#7456b4}
 .ceu{--sky-shift-x:0px;--sky-shift-y:0px;--sky-depth-x:0px;--sky-depth-y:0px;
+  --atmosphere-density:1;
   position:fixed;inset:0;overflow:hidden;z-index:-1;pointer-events:none;
   background:linear-gradient(160deg,var(--sky-top),var(--sky-middle) 52%,var(--sky-bottom));
   transition:background 1.2s ease}.sky-madrugada{--sky-top:#05091c;--sky-middle:#17113c;
@@ -22,9 +23,51 @@
   linear-gradient(90deg,rgba(2,6,23,.15),transparent 25%,transparent 75%,rgba(2,6,23,.16));
   transform:translate3d(var(--sky-depth-x),var(--sky-depth-y),0);transition:transform .8s ease-out}
 .sky-soft{filter:saturate(.82)}.sky-strong{filter:saturate(1.14) contrast(1.04)}
+.atmosphere-level-high{--atmosphere-density:1}.atmosphere-level-medium{--atmosphere-density:.82}
+.atmosphere-level-gentle{--atmosphere-density:.62}.atmosphere-level-low{--atmosphere-density:.46}
+.atmosphere-level-minimal{--atmosphere-density:.28}
+.ceu-stars,.ceu-clouds,.ceu-fauna,.ceu-celestial{position:absolute;inset:0;opacity:var(--atmosphere-density)}
+.ceu-celestial{transform:translate3d(var(--sky-depth-x),var(--sky-depth-y),0);transition:opacity 1s ease}
+.ceu-sun,.ceu-moon{position:absolute;right:11%;top:12%;width:clamp(64px,9vw,112px);aspect-ratio:1;
+  border-radius:50%;transition:opacity 1.4s ease,transform 1.4s ease}
+.ceu-sun{background:radial-gradient(circle,#fff7cf 0 30%,#ffd47a 52%,rgba(255,203,105,.1) 72%,transparent 74%);
+  box-shadow:0 0 45px rgba(255,211,119,.38);opacity:0}
+.ceu-moon{overflow:hidden;background:radial-gradient(circle at 35% 32%,#fff 0 9%,#d9d9ea 42%,#aaa8c8 100%);
+  box-shadow:0 0 22px rgba(226,220,255,.42),0 0 70px rgba(156,128,225,.22);opacity:0}
+.ceu-moon::after{content:"";position:absolute;inset:-3%;border-radius:50%;background:rgba(13,17,45,.82);
+  transform:translateX(calc(100% - var(--moon-shadow)));filter:blur(1px)}
+.sky-manha .ceu-sun,.sky-tarde .ceu-sun,.sky-amanhecer .ceu-sun,.sky-entardecer .ceu-sun{opacity:.78}
+.sky-madrugada .ceu-moon,.sky-noite .ceu-moon,.sky-entardecer .ceu-moon{opacity:.9}
+.ceu-stars>span:not(.ceu-constellation):not(.ceu-shooting-star):not(.ceu-meteor){position:absolute;left:var(--x);top:var(--y);
+  width:2px;height:2px;border-radius:50%;background:#fff;box-shadow:0 0 6px rgba(228,220,255,.8);
+  transform:scale(var(--scale));opacity:.66}
+.sky-manha .ceu-stars,.sky-tarde .ceu-stars{opacity:calc(var(--atmosphere-density) * .08)}
+.sky-amanhecer .ceu-stars{opacity:calc(var(--atmosphere-density) * .25)}
+.sky-entardecer .ceu-stars{opacity:calc(var(--atmosphere-density) * .38)}
+.ceu-clouds>span{position:absolute;left:calc(var(--x) - 18%);top:var(--y);width:clamp(130px,18vw,270px);height:42px;
+  border-radius:50%;background:rgba(230,235,250,.1);filter:blur(10px);transform:scale(var(--scale));opacity:.58}
+.ceu-bird{position:absolute;left:-30px;top:var(--y);width:18px;height:7px;border-top:2px solid rgba(19,28,56,.42);
+  border-radius:50%;opacity:0}.ceu-bird::after{content:"";position:absolute;left:8px;top:-2px;width:10px;height:6px;
+  border-top:2px solid rgba(19,28,56,.42);border-radius:50%}
+.ceu-firefly{position:absolute;left:var(--x);top:var(--y);width:3px;height:3px;border-radius:50%;background:#ffe79a;
+  box-shadow:0 0 9px rgba(255,223,121,.8);opacity:0}
+.sky-manha .ceu-firefly,.sky-tarde .ceu-firefly,.sky-amanhecer .ceu-firefly{display:none}
+.ceu-shooting-star,.ceu-meteor{position:absolute;left:74%;top:18%;width:75px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.85));transform:rotate(-28deg);opacity:0}
+.ceu-meteor{left:22%;top:12%;width:95px;background:linear-gradient(90deg,transparent,rgba(255,190,126,.9))}
+.ceu-constellation{position:absolute;left:16%;top:19%;width:42px;height:28px;border:1px solid rgba(216,207,255,.13);
+  border-width:1px 1px 0 0;transform:rotate(12deg);opacity:.55}
+.sky-manha .ceu-shooting-star,.sky-tarde .ceu-shooting-star,.sky-amanhecer .ceu-shooting-star,
+.sky-manha .ceu-meteor,.sky-tarde .ceu-meteor,.sky-amanhecer .ceu-meteor{display:none}
 .ceu.has-motion.has-stars::after{
   animation:skyDrift 80s linear infinite alternate,skyTwinkle 5.5s ease-in-out infinite}
 .ceu.has-motion.has-glows::before{animation:skyGlowFloat 16s ease-in-out infinite alternate}
+.ceu.has-motion .ceu-stars>span:not(.ceu-constellation):not(.ceu-shooting-star):not(.ceu-meteor){animation:skyPointTwinkle var(--duration) ease-in-out var(--delay) infinite}
+.ceu.has-motion .ceu-clouds>span{animation:skyCloudDrift var(--duration) linear var(--delay) infinite}
+.ceu.has-motion .ceu-bird{animation:skyBirdPass var(--duration) linear var(--delay) 1}
+.ceu.has-motion .ceu-firefly{animation:skyFirefly var(--duration) ease-in-out var(--delay) infinite}
+.ceu.has-motion .ceu-shooting-star{animation:skyRarePass 1.4s ease-out 27s 1}
+.ceu.has-motion .ceu-meteor{animation:skyRarePass 1.9s ease-out 48s 1}
 [data-color-mode=light] .ceu{filter:brightness(1.13) saturate(.82)}
 [data-color-mode=dark] .sky-manha,[data-color-mode=dark] .sky-tarde{filter:brightness(.72) saturate(.82)}
 @keyframes skyDrift{from{background-position:10px 20px,54px 72px}
@@ -34,7 +77,15 @@
   calc(var(--sky-shift-y) + 4px),0) scale(1)}to{
   transform:translate3d(calc(var(--sky-shift-x) + 9px),
   calc(var(--sky-shift-y) - 6px),0) scale(1.045)}}
+@keyframes skyPointTwinkle{0%,100%{opacity:.3}50%{opacity:.9}}
+@keyframes skyCloudDrift{from{translate:-12vw 0}to{translate:128vw 0}}
+@keyframes skyBirdPass{0%,5%{translate:0 0;opacity:0}12%{opacity:.45}90%{opacity:.35}100%{translate:115vw -12px;opacity:0}}
+@keyframes skyFirefly{0%,100%{opacity:0;translate:0 0}45%{opacity:.75;translate:7px -9px}70%{opacity:.2;translate:-4px -4px}}
+@keyframes skyRarePass{0%{opacity:0;translate:0 0}15%{opacity:.8}100%{opacity:0;translate:-38vw 30vh}}
+@media(max-width:700px){.ceu-stars>span:nth-child(n+11),.ceu-clouds>span:nth-child(n+4),.ceu-bird:nth-child(n+2),
+  .ceu-firefly:nth-child(n+4){display:none}.ceu-sun,.ceu-moon{right:8%;top:10%;width:68px}}
 @media(prefers-reduced-motion:reduce){.ceu,.ceu::before,.ceu::after,.ceu-atmosphere{
-  animation:none!important;transition:none!important;transform:none!important}}
+  animation:none!important;transition:none!important;transform:none!important}.ceu-clouds,.ceu-fauna,
+  .ceu-shooting-star,.ceu-meteor{display:none!important}.ceu-stars>span{animation:none!important}}
 @supports not (background:color-mix(in srgb,#fff,transparent)){.ceu.has-glows::before{
   background:radial-gradient(circle at 72% 18%,rgba(135,103,202,.28),transparent 28%)}}

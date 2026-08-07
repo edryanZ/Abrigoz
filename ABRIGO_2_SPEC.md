@@ -51,6 +51,22 @@ First, glassmorphism, respirável e sem aparência corporativa ou de painel de
 produtividade. Animações são lentas e discretas e respeitam
 `prefers-reduced-motion`.
 
+## Atmosfera do Abrigo
+
+O céu cria atmosfera; o conteúdo continua sendo o protagonista. A atmosfera é
+global, local e persistente durante a navegação, acompanha gradualmente a hora
+do dispositivo e pode variar deterministicamente pela data local. Não usa
+clima, localização, perfil emocional, API externa ou comportamento pessoal.
+
+Telas de leitura, formulários, pesquisa e configurações reduzem automaticamente
+a densidade visual. Espaços de pausa podem permitir uma atmosfera mais presente.
+Movimento decorativo nunca bloqueia controles e é reduzido de forma substancial
+quando `prefers-reduced-motion` está ativo.
+
+Na inicialização real da aplicação, uma Splash curta apresenta o Abrigo antes
+do fluxo local existente de Welcome ou Lar. Ela não é uma rota, não entra no
+histórico e não reaparece durante a navegação.
+
 ## Arquitetura
 
 O Abrigo segue Module First. Módulos podem conter apenas as pastas necessárias

@@ -1,10 +1,21 @@
 import "./Ceu.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { useSkyTheme } from "../../core/atmosphere/useSkyTheme";
+import { resolveAtmosphereLevel } from "../../core/atmosphere/SkyThemeService";
 
 export default function Ceu() {
   const sky = useSkyTheme();
+  const { pathname } = useLocation();
   const skyRef = useRef(null);
+  const atmosphereLevel = resolveAtmosphereLevel(pathname);
+  const style = useMemo(() => ({
+    "--sky-top": sky.palette.colors[0],
+    "--sky-middle": sky.palette.colors[1],
+    "--sky-bottom": sky.palette.colors[2],
+    "--sky-glow": sky.palette.colors[3],
+    "--moon-shadow": `${Math.round((1 - sky.lunar.illumination) * 72)}%`,
+  }), [sky.lunar.illumination, sky.palette.colors]);
   useEffect(() => {
     document.documentElement.dataset.skyPeriod = sky.period;
     document.documentElement.dataset.colorMode = sky.colorMode;
@@ -56,10 +67,39 @@ export default function Ceu() {
     };
   }, [sky.motion]);
 
-  return <div ref={skyRef} className={`ceu sky-${sky.period} sky-${sky.preferences.intensity} ${
+  return <div ref={skyRef} style={style} className={`ceu sky-${sky.period} sky-${sky.preferences.intensity} atmosphere-level-${atmosphereLevel} ${
     sky.preferences.showStars ? "has-stars" : ""} ${
     sky.preferences.showGlows ? "has-glows" : ""} ${
     sky.motion ? "has-motion" : "no-motion"}`} aria-hidden="true">
     <div className="ceu-atmosphere" />
+    <div className="ceu-celestial">
+      <span className="ceu-sun" />
+      <span className="ceu-moon" />
+    </div>
+    <div className="ceu-stars">
+      {sky.scene.stars.map((star) => <span key={star.id} style={{
+        "--x": `${star.x}%`, "--y": `${star.y}%`, "--scale": star.scale,
+        "--delay": `${star.delay}s`, "--duration": `${star.duration}s`,
+      }} />)}
+      {sky.scene.constellation && <span className="ceu-constellation" />}
+      {sky.scene.shootingStar && <span className="ceu-shooting-star" />}
+      {sky.scene.meteor && <span className="ceu-meteor" />}
+    </div>
+    <div className="ceu-clouds">
+      {sky.scene.clouds.map((cloud) => <span key={cloud.id} style={{
+        "--x": `${cloud.x}%`, "--y": `${20 + cloud.y * .7}%`, "--scale": cloud.scale,
+        "--delay": `-${cloud.delay}s`, "--duration": `${cloud.duration + 45}s`,
+      }} />)}
+    </div>
+    <div className="ceu-fauna">
+      {sky.scene.birds.map((bird) => <span className="ceu-bird" key={bird.id} style={{
+        "--y": `${18 + bird.y * .45}%`, "--delay": `${bird.delay + 5}s`,
+        "--duration": `${bird.duration + 35}s`,
+      }} />)}
+      {sky.scene.fireflies.map((firefly) => <span className="ceu-firefly" key={firefly.id} style={{
+        "--x": `${firefly.x}%`, "--y": `${60 + firefly.y * .45}%`,
+        "--delay": `${firefly.delay}s`, "--duration": `${firefly.duration}s`,
+      }} />)}
+    </div>
   </div>;
 }

@@ -1,0 +1,46 @@
+.abrigo-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 2400;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: linear-gradient(180deg, rgba(4, 8, 26, .16), rgba(4, 8, 26, .36));
+  backdrop-filter: blur(2px);
+  animation: abrigo-splash-exit 1.2s ease both;
+}
+
+.abrigo-splash__content {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .38);
+  animation: abrigo-splash-arrive .65s ease both;
+}
+
+.abrigo-splash__content img {
+  width: 78px;
+  height: 78px;
+  border-radius: 24px;
+  box-shadow: 0 14px 42px rgba(0, 0, 0, .2), 0 0 42px rgba(189, 164, 255, .18);
+}
+
+.abrigo-splash__content strong { font-size: clamp(1.7rem, 7vw, 2.35rem); }
+.abrigo-splash__content p { margin: 0; color: rgba(255, 255, 255, .84); line-height: 1.5; }
+
+@keyframes abrigo-splash-arrive {
+  from { opacity: 0; transform: scale(.96) translateY(5px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes abrigo-splash-exit {
+  0%, 78% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .abrigo-splash,
+  .abrigo-splash__content { animation: none; }
+}
