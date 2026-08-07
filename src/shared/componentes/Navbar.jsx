@@ -18,6 +18,7 @@ import {
   FaSearch,
   FaFileExport,
   FaBookOpen,
+  FaMoon,
 } from "react-icons/fa";
 
 import MusicPlayer from "./MusicPlayer";
@@ -89,6 +90,7 @@ export default function Navbar() {
       itens: [
         { nome: "Lar", rota: ROUTES.HOME, icone: <FaHome /> },
         { nome: "Momento do Dia", rota: ROUTES.MOMENT, icone: <FaHeart /> },
+        { nome: "Só ficar", rota: ROUTES.PAUSE, icone: <FaMoon /> },
         { nome: "Reflexões", rota: ROUTES.DIARY, icone: <FaBookOpen /> },
         { nome: "Cartas", rota: ROUTES.LETTERS, icone: <FaEnvelope /> },
         { nome: "Coisas que fazem bem", rota: ROUTES.FAVORITES, icone: <FaHeart /> },

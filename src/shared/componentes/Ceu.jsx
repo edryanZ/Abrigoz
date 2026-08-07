@@ -1,13 +1,21 @@
 import "./Ceu.css";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSkyTheme } from "../../core/atmosphere/useSkyTheme";
-import { resolveAtmosphereLevel } from "../../core/atmosphere/SkyThemeService";
+import { getMoonMessage, resolveAtmosphereLevel } from "../../core/atmosphere/SkyThemeService";
+import { useAtmospherePreferences } from "../../core/atmosphere/useAtmospherePreferences";
+import { useMusic } from "../contexts/MusicContext";
 
 export default function Ceu() {
   const sky = useSkyTheme();
+  const atmosphere = useAtmospherePreferences();
+  const music = useMusic();
   const { pathname } = useLocation();
   const skyRef = useRef(null);
+  const messageTimerRef = useRef(0);
+  const [activeStar, setActiveStar] = useState(null);
+  const [moonMessage, setMoonMessage] = useState("");
+  const [constellationOpen, setConstellationOpen] = useState(false);
   const atmosphereLevel = resolveAtmosphereLevel(pathname);
   const style = useMemo(() => ({
     "--sky-top": sky.palette.colors[0],
@@ -67,39 +75,64 @@ export default function Ceu() {
     };
   }, [sky.motion]);
 
+  useEffect(() => () => window.clearTimeout(messageTimerRef.current), []);
+
+  const showTemporarily = (callback, reset, duration = 4200) => {
+    window.clearTimeout(messageTimerRef.current);
+    callback();
+    messageTimerRef.current = window.setTimeout(reset, duration);
+  };
+
+  const interactWithMoon = () => showTemporarily(
+    () => setMoonMessage(getMoonMessage(sky.now)), () => setMoonMessage(""), 5200
+  );
+  const interactive = atmosphere.preferences.interactiveSky;
+  const showRareEvents = atmosphere.preferences.rareEvents && !atmosphere.preferences.silenceMode;
+
   return <div ref={skyRef} style={style} className={`ceu sky-${sky.period} sky-${sky.preferences.intensity} atmosphere-level-${atmosphereLevel} ${
     sky.preferences.showStars ? "has-stars" : ""} ${
     sky.preferences.showGlows ? "has-glows" : ""} ${
-    sky.motion ? "has-motion" : "no-motion"}`} aria-hidden="true">
-    <div className="ceu-atmosphere" />
+    sky.motion ? "has-motion" : "no-motion"} ${interactive ? "is-interactive" : ""} ${
+    atmosphere.preferences.silenceMode ? "mode-silence" : ""} ${music.tocando ? "music-active" : ""}`}>
+    <div className="ceu-atmosphere" aria-hidden="true" />
     <div className="ceu-celestial">
-      <span className="ceu-sun" />
-      <span className="ceu-moon" />
+      <span className="ceu-sun" aria-hidden="true" />
+      {interactive && ["madrugada", "noite", "entardecer"].includes(sky.period)
+        ? <button type="button" className={`ceu-moon ${moonMessage ? "is-listening" : ""}`}
+          onClick={interactWithMoon} aria-label="Ouvir uma mensagem da lua" />
+        : <span className="ceu-moon" aria-hidden="true" />}
     </div>
-    <div className="ceu-stars">
-      {sky.scene.stars.map((star) => <span key={star.id} style={{
+    <div className="ceu-stars" aria-hidden="true">
+      {sky.scene.stars.map((star) => <span key={star.id} className={activeStar === star.id ? "is-active" : ""}
+        onPointerDown={interactive ? () => showTemporarily(
+          () => setActiveStar(star.id), () => setActiveStar(null), 1100
+        ) : undefined} style={{
         "--x": `${star.x}%`, "--y": `${star.y}%`, "--scale": star.scale,
         "--delay": `${star.delay}s`, "--duration": `${star.duration}s`,
       }} />)}
-      {sky.scene.constellation && <span className="ceu-constellation" />}
-      {sky.scene.shootingStar && <span className="ceu-shooting-star" />}
-      {sky.scene.meteor && <span className="ceu-meteor" />}
+      {sky.scene.constellation && <span className={`ceu-constellation ${constellationOpen ? "is-open" : ""}`}
+        onPointerDown={interactive ? () => showTemporarily(
+          () => setConstellationOpen(true), () => setConstellationOpen(false), 3600
+        ) : undefined} />}
+      {showRareEvents && sky.scene.shootingStar && <span className="ceu-shooting-star" />}
+      {showRareEvents && sky.scene.meteor && <span className="ceu-meteor" />}
     </div>
-    <div className="ceu-clouds">
+    <div className="ceu-clouds" aria-hidden="true">
       {sky.scene.clouds.map((cloud) => <span key={cloud.id} style={{
         "--x": `${cloud.x}%`, "--y": `${20 + cloud.y * .7}%`, "--scale": cloud.scale,
         "--delay": `-${cloud.delay}s`, "--duration": `${cloud.duration + 45}s`,
       }} />)}
     </div>
-    <div className="ceu-fauna">
-      {sky.scene.birds.map((bird) => <span className="ceu-bird" key={bird.id} style={{
+    <div className="ceu-fauna" aria-hidden="true">
+      {showRareEvents && sky.scene.birds.map((bird) => <span className="ceu-bird" key={bird.id} style={{
         "--y": `${18 + bird.y * .45}%`, "--delay": `${bird.delay + 5}s`,
         "--duration": `${bird.duration + 35}s`,
       }} />)}
-      {sky.scene.fireflies.map((firefly) => <span className="ceu-firefly" key={firefly.id} style={{
+      {showRareEvents && sky.scene.fireflies.map((firefly) => <span className="ceu-firefly" key={firefly.id} style={{
         "--x": `${firefly.x}%`, "--y": `${60 + firefly.y * .45}%`,
         "--delay": `${firefly.delay}s`, "--duration": `${firefly.duration}s`,
       }} />)}
     </div>
+    {moonMessage && <p className="ceu-moon-message" role="status">{moonMessage}</p>}
   </div>;
 }

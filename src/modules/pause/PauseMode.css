@@ -1,0 +1,15 @@
+.pause-mode{position:relative;display:grid;min-height:100dvh;place-items:center;padding:88px 20px 40px;color:var(--text-primary)}
+.pause-mode__exit{position:fixed;top:20px;left:20px;z-index:20;display:inline-flex;align-items:center;gap:8px;
+  padding:10px 13px;border:1px solid var(--border-color);border-radius:14px;background:var(--surface);backdrop-filter:blur(18px);
+  color:var(--text-primary);font-weight:650}.pause-mode__exit:focus-visible,.pause-mode__controls button:focus-visible{
+  outline:3px solid var(--accent);outline-offset:3px}.pause-mode__center{display:grid;justify-items:center;gap:13px;width:min(580px,100%);
+  padding:clamp(24px,6vw,44px);border-radius:30px;background:linear-gradient(160deg,rgba(14,20,45,.22),rgba(39,28,68,.16));
+  backdrop-filter:blur(7px);text-align:center}.pause-mode__eyebrow{color:var(--accent);font-size:.78rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase}.pause-mode h1{margin:0;font-size:clamp(2rem,9vw,3.6rem)}
+.pause-mode p{margin:0;max-width:42ch;color:var(--text-secondary);font-size:clamp(1rem,3vw,1.15rem);line-height:1.75}
+.pause-mode__controls{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:10px}.pause-mode__controls button{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--border-color);border-radius:14px;
+  background:var(--surface);color:var(--text-primary);cursor:pointer}.pause-mode__controls button:disabled{opacity:.5;cursor:not-allowed}
+.pause-mode__ambient{font-size:.78rem!important;opacity:.7}
+@media(max-width:480px){.pause-mode__exit span{display:none}.pause-mode__center{padding:24px 18px}}
+@media(prefers-reduced-motion:reduce){.pause-mode *{transition:none!important}}

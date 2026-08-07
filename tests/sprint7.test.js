@@ -5,6 +5,7 @@ import test from "node:test";
 const {
   buildDailySkyScene,
   getSplashPhrase,
+  getMoonMessage,
   localDayKey,
   resolveAtmosphereLevel,
   resolveLunarPhase,
@@ -48,4 +49,37 @@ test("Splash é global, curta, sem rota e respeita reduced motion", async () => 
   assert.match(splash, /SPLASH_DURATION_MS = 1200/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.ok(getSplashPhrase(new Date(2026, 7, 7, 23)).length > 10);
+});
+
+test("Sprint 7B mantém interações locais e Modo Só Ficar sem API", async () => {
+  const date = new Date(2026, 7, 7, 22);
+  assert.equal(getMoonMessage(date), getMoonMessage(date));
+  assert.equal(resolveAtmosphereLevel("/so-ficar"), "maximum");
+  const page = await readFile(new URL("../src/modules/pause/PauseMode.jsx", import.meta.url), "utf8");
+  assert.match(page, /Janela do Abrigo/);
+  assert.match(page, /Modo Silêncio/);
+  assert.doesNotMatch(page, /fetch\(|localStorage|Supabase|geolocation/);
+});
+
+test("sons ambientes ficam indisponíveis sem assets locais apropriados", async () => {
+  const { AMBIENT_SOUND_SLOTS, getAvailableAmbientSounds } = await import(
+    "../src/core/atmosphere/AmbientSoundService.js"
+  );
+  assert.equal(AMBIENT_SOUND_SLOTS.length, 5);
+  assert.equal(getAvailableAmbientSounds().length, 0);
+});
+
+test("preferências da atmosfera normalizam modo silêncio e eventos sem acesso de componente ao storage", async () => {
+  const { normalizeAtmospherePreferences } = await import(
+    "../src/core/atmosphere/AtmospherePreferencesService.js"
+  );
+  const value = normalizeAtmospherePreferences({
+    version: 1, silenceMode: true, interactiveSky: false, rareEvents: false,
+    ambientEnabled: false, ambientVolume: 4,
+  });
+  assert.equal(value.silenceMode, true);
+  assert.equal(value.interactiveSky, false);
+  assert.equal(value.ambientVolume, 1);
+  const page = await readFile(new URL("../src/modules/pause/PauseMode.jsx", import.meta.url), "utf8");
+  assert.doesNotMatch(page, /localStorage|sessionStorage|IndexedDB/);
 });

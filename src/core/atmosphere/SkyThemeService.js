@@ -127,6 +127,7 @@ export function buildDailySkyScene(date = new Date()) {
 }
 
 export function resolveAtmosphereLevel(pathname = "/") {
+  if (pathname === "/so-ficar") return "maximum";
   if (["/configuracoes", "/pesquisa", "/exportar"].includes(pathname)) return "minimal";
   if (["/reflexoes", "/cartas", "/intencoes", "/pequenos-cuidados", "/meu-dia"].includes(pathname)) {
     return "low";
@@ -135,6 +136,18 @@ export function resolveAtmosphereLevel(pathname = "/") {
   if (pathname === "/momento-do-dia") return "gentle";
   if (pathname === "/") return "high";
   return "low";
+}
+
+const MOON_MESSAGES = Object.freeze([
+  "Você não precisa resolver nada agora.",
+  "Há espaço para ficar em silêncio também.",
+  "Nem todo momento precisa virar resposta.",
+  "A noite pode ser só uma pausa.",
+  "Vá no seu tempo. O Abrigo continua aqui.",
+]);
+
+export function getMoonMessage(date = new Date()) {
+  return MOON_MESSAGES[seedFromLocalDate(date) % MOON_MESSAGES.length];
 }
 
 export function getSplashPhrase(date = new Date()) {

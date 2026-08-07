@@ -67,6 +67,16 @@ Na inicialização real da aplicação, uma Splash curta apresenta o Abrigo ante
 do fluxo local existente de Welcome ou Lar. Ela não é uma rota, não entra no
 histórico e não reaparece durante a navegação.
 
+Interações opcionais do céu são leves, locais e nunca registram comportamento.
+O **Modo Só Ficar** também representa a **Janela do Abrigo**: é uma única
+experiência de pausa com controles mínimos, sem métricas ou produtividade. O
+Modo Silêncio reduz efeitos secundários sem alterar dados.
+
+Música e futuros sons ambientes nunca começam sem ação ou consentimento. Sons
+ambientes só podem ser oferecidos quando houver assets locais apropriados e
+com origem/licença compatível; a ausência desses assets não é simulada por
+serviço remoto.
+
 ## Arquitetura
 
 O Abrigo segue Module First. Módulos podem conter apenas as pastas necessárias

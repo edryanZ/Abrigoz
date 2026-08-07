@@ -26,13 +26,14 @@
 .atmosphere-level-high{--atmosphere-density:1}.atmosphere-level-medium{--atmosphere-density:.82}
 .atmosphere-level-gentle{--atmosphere-density:.62}.atmosphere-level-low{--atmosphere-density:.46}
 .atmosphere-level-minimal{--atmosphere-density:.28}
+.atmosphere-level-maximum{--atmosphere-density:1.08}
 .ceu-stars,.ceu-clouds,.ceu-fauna,.ceu-celestial{position:absolute;inset:0;opacity:var(--atmosphere-density)}
 .ceu-celestial{transform:translate3d(var(--sky-depth-x),var(--sky-depth-y),0);transition:opacity 1s ease}
 .ceu-sun,.ceu-moon{position:absolute;right:11%;top:12%;width:clamp(64px,9vw,112px);aspect-ratio:1;
   border-radius:50%;transition:opacity 1.4s ease,transform 1.4s ease}
 .ceu-sun{background:radial-gradient(circle,#fff7cf 0 30%,#ffd47a 52%,rgba(255,203,105,.1) 72%,transparent 74%);
   box-shadow:0 0 45px rgba(255,211,119,.38);opacity:0}
-.ceu-moon{overflow:hidden;background:radial-gradient(circle at 35% 32%,#fff 0 9%,#d9d9ea 42%,#aaa8c8 100%);
+.ceu-moon{overflow:hidden;border:0;background:radial-gradient(circle at 35% 32%,#fff 0 9%,#d9d9ea 42%,#aaa8c8 100%);
   box-shadow:0 0 22px rgba(226,220,255,.42),0 0 70px rgba(156,128,225,.22);opacity:0}
 .ceu-moon::after{content:"";position:absolute;inset:-3%;border-radius:50%;background:rgba(13,17,45,.82);
   transform:translateX(calc(100% - var(--moon-shadow)));filter:blur(1px)}
@@ -57,6 +58,18 @@
 .ceu-meteor{left:22%;top:12%;width:95px;background:linear-gradient(90deg,transparent,rgba(255,190,126,.9))}
 .ceu-constellation{position:absolute;left:16%;top:19%;width:42px;height:28px;border:1px solid rgba(216,207,255,.13);
   border-width:1px 1px 0 0;transform:rotate(12deg);opacity:.55}
+.ceu.is-interactive .ceu-moon{pointer-events:auto;cursor:pointer}.ceu.is-interactive .ceu-moon:focus-visible{
+  outline:3px solid rgba(235,227,255,.9);outline-offset:5px}.ceu-moon.is-listening{box-shadow:0 0 30px rgba(238,231,255,.58),0 0 92px rgba(166,132,238,.38)}
+.ceu.is-interactive .ceu-stars>span{pointer-events:auto;cursor:default}.ceu-stars>span.is-active{
+  opacity:1!important;box-shadow:0 0 13px 3px rgba(238,228,255,.9)!important}.ceu-constellation.is-open{
+  border-color:rgba(229,220,255,.48);box-shadow:8px -6px 12px rgba(196,178,255,.12)}
+.ceu-moon-message{position:fixed;right:clamp(18px,8vw,120px);top:calc(12% + clamp(82px,11vw,135px));
+  max-width:min(280px,70vw);padding:9px 13px;border:1px solid rgba(255,255,255,.15);border-radius:14px;
+  background:rgba(8,12,32,.48);backdrop-filter:blur(12px);color:rgba(255,255,255,.9);font-size:.82rem;
+  line-height:1.5;text-align:center;pointer-events:none;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+.ceu.mode-silence .ceu-fauna,.ceu.mode-silence .ceu-shooting-star,.ceu.mode-silence .ceu-meteor,
+.ceu.mode-silence .ceu-constellation{display:none}.ceu.mode-silence .ceu-clouds{opacity:calc(var(--atmosphere-density) * .34)}
+.ceu.music-active.has-glows::before{filter:saturate(1.04) brightness(1.04)}
 .sky-manha .ceu-shooting-star,.sky-tarde .ceu-shooting-star,.sky-amanhecer .ceu-shooting-star,
 .sky-manha .ceu-meteor,.sky-tarde .ceu-meteor,.sky-amanhecer .ceu-meteor{display:none}
 .ceu.has-motion.has-stars::after{

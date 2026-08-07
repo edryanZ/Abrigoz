@@ -9,6 +9,7 @@ import NotFound from "../../modules/errors/NotFound";
 const Welcome = lazy(() => import("../../modules/home/components/Welcome"));
 const Lar = lazy(() => import("../../modules/home/Lar"));
 const MomentoDoDia = lazy(() => import("../../modules/moment/MomentoDoDia"));
+const PauseMode = lazy(() => import("../../modules/pause/PauseMode"));
 
 const Calendario = lazy(() => import("../../modules/calendar/Calendario"));
 const Favoritos = lazy(() => import("../../modules/favorites/Favoritos"));
@@ -33,6 +34,7 @@ export default function AppRoutes() {
         <Route path={ROUTES.WELCOME} element={<Welcome />} />
         <Route path={ROUTES.HOME} element={<Lar />} />
         <Route path={ROUTES.MOMENT} element={<MomentoDoDia />} />
+        <Route path={ROUTES.PAUSE} element={<PauseMode />} />
         <Route path={ROUTES.CALENDAR} element={<Calendario />} />
         <Route path={ROUTES.FAVORITES} element={<Favoritos />} />
         <Route path={ROUTES.GOALS} element={<Metas />} />

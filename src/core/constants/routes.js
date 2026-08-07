@@ -5,6 +5,7 @@ export const ROUTES = {
 
   // Páginas principais
   MOMENT: "/momento-do-dia",
+  PAUSE: "/so-ficar",
   CALENDAR: "/meu-dia",
   FAVORITES: "/coisas-que-fazem-bem",
   GOALS: "/intencoes",
