@@ -1,6 +1,6 @@
 import "./CartaModal.css";
 
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { saveWellbeingMoment } from "../../../core/memory/WellbeingMemoryService";
 import { enterReadingFocus, leaveReadingFocus } from "../../../core/atmosphere/AtmosphereFocusService";
 
@@ -11,6 +11,7 @@ import {
   favorito,
   alternarFavorito,
 } from "../../../core/utils/favoritos";
+import { downloadShareCard } from "../../../core/sharing/ShareImageService";
 
 export default function CartaModal({
   aberto,
@@ -19,6 +20,8 @@ export default function CartaModal({
   onClose,
 }) {
   const [, refresh] = useReducer((value) => value + 1, 0);
+  const [presentation, setPresentation] = useState(false);
+  const [shareMessage, setShareMessage] = useState("");
   const favoritado = carta ? favorito(carta.id) : false;
 
   useEffect(() => {
@@ -27,7 +30,8 @@ export default function CartaModal({
 
     function handleKeyDown(event) {
       if (event.key === "Escape") {
-        onClose();
+        if (presentation) setPresentation(false);
+        else onClose();
       }
     }
 
@@ -47,7 +51,7 @@ export default function CartaModal({
         handleKeyDown
       );
     };
-  }, [aberto, onClose]);
+  }, [aberto, onClose, presentation]);
 
   if (!aberto || !carta) {
     return null;
@@ -79,7 +83,7 @@ export default function CartaModal({
       aria-labelledby="titulo-carta-modal"
     >
       <GlassCard
-        className="carta-modal"
+        className={`carta-modal ${presentation ? "carta-modal--presentation" : ""}`}
         hover={false}
       >
         <header className="carta-modal__header">
@@ -117,6 +121,16 @@ export default function CartaModal({
           </span>
 
           <div className="carta-modal__actions">
+          <GlassButton variant="secondary" onClick={() => setPresentation((value) => !value)}>
+            {presentation ? "Sair da apresentação" : "Apresentar carta"}
+          </GlassButton>
+          {!presentation && <GlassButton variant="secondary" onClick={async () => {
+            try {
+              await downloadShareCard({ title: carta.titulo, text: carta.texto }, { skyInspired: true });
+              setShareMessage("Cartão criado no seu dispositivo.");
+            } catch { setShareMessage("Não foi possível criar o cartão agora."); }
+          }}>Compartilhar como imagem</GlassButton>}
+          {!presentation && <>
           <GlassButton variant="secondary" onClick={handleSaveMoment}>
             Guardar este momento
           </GlassButton>
@@ -126,7 +140,9 @@ export default function CartaModal({
           >
             Fechar
           </GlassButton>
+          </>}
           </div>
+          {shareMessage && !presentation && <span role="status">{shareMessage}</span>}
         </footer>
       </GlassCard>
     </section>

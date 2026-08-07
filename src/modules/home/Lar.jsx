@@ -15,6 +15,7 @@ import Container from "../../shared/ui/Container";
 import GlassCard from "../../shared/ui/GlassCard";
 import MoodSelector from "./components/MoodSelector";
 import { usePersonalization } from "../../core/atmosphere/usePersonalization";
+import MonthlyRitual from "../../shared/componentes/MonthlyRitual";
 
 function LarContent() {
   const { greeting } = useTheme();
@@ -39,6 +40,7 @@ function LarContent() {
           “{personalization.preferences.personalPhrase}”
         </p>}
         <MoodSelector />
+        <MonthlyRitual />
 
         <div className="home-emotional__grid">
           <GlassCard className="home-gentle-card" hover={false}>

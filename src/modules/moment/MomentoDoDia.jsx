@@ -9,12 +9,14 @@ import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
 import Container from "../../shared/ui/Container";
 import GlassCard from "../../shared/ui/GlassCard";
+import { downloadShareCard } from "../../core/sharing/ShareImageService";
 
 export default function MomentoDoDia() {
   const [carried, setCarried] = useState(false);
   const [saved, setSaved] = useState(false);
   const [moment] = useState(getDailyMoment);
   const [spontaneousCare] = useState(getSpontaneousCare);
+  const [shareMessage, setShareMessage] = useState("");
 
   return <>
     <Navbar />
@@ -36,7 +38,14 @@ export default function MomentoDoDia() {
             saveWellbeingMoment({ title: moment.message, description: moment.invitation, source: "daily-moment" });
             setSaved(true);
           }}>{saved ? "Momento guardado" : "Guardar este momento"}</button>
+          <button type="button" className="secondary" onClick={async () => {
+            try {
+              await downloadShareCard({ title: "Momento do Dia", text: moment.message }, { skyInspired: true });
+              setShareMessage("Cartão criado no seu dispositivo.");
+            } catch { setShareMessage("Não foi possível criar o cartão agora."); }
+          }}>Compartilhar como imagem</button>
         </GlassCard>
+        {shareMessage && <p role="status" className="daily-moment-note">{shareMessage}</p>}
         {spontaneousCare && <p className="daily-moment-care">Se couber agora: {spontaneousCare.text}</p>}
         <p className="daily-moment-note">Este momento fica igual durante o dia e muda amanhã.</p>
       </div>

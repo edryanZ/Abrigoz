@@ -36,6 +36,7 @@ export const STORAGE_KEYS = {
   ACCESSIBILITY: "abrigo:accessibility:v1",
   INSTALL_PROMPT: "abrigo:install-prompt:v1",
   SPECIAL_DATES: "abrigo:special-dates:v1",
+  MONTHLY_RITUALS: "abrigo:monthly-rituals:v1",
 
   LAST_ACCESS: "abrigo:lastAccess",
   DIARY: "abrigo:diary",

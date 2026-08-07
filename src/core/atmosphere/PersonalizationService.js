@@ -10,6 +10,7 @@ export const ATMOSPHERE_THEMES = Object.freeze({
 export const DEFAULT_PERSONALIZATION = Object.freeze({
   version: 1, personalPhrase: "", atmosphereTheme: "serene", visualEnergy: "quiet",
   showReflectionsOnHome: true, introspectiveContent: true,
+  monthlyRituals: false,
 });
 
 export function normalizePersonalization(value) {
@@ -25,6 +26,7 @@ export function normalizePersonalization(value) {
       ? value.visualEnergy : DEFAULT_PERSONALIZATION.visualEnergy,
     showReflectionsOnHome: value.showReflectionsOnHome !== false,
     introspectiveContent: value.introspectiveContent !== false,
+    monthlyRituals: value.monthlyRituals === true,
   };
 }
 

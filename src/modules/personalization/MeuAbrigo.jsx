@@ -84,6 +84,9 @@ export default function MeuAbrigo() {
         <label className="my-abrigo-switch"><span>Conteúdo mais introspectivo</span><input type="checkbox"
           checked={personalization.preferences.introspectiveContent}
           onChange={(event) => updatePersonalization({ introspectiveContent: event.target.checked })} /></label>
+        <label className="my-abrigo-switch"><span>Rituais leves de início e fechamento do mês</span><input type="checkbox"
+          checked={personalization.preferences.monthlyRituals}
+          onChange={(event) => updatePersonalization({ monthlyRituals: event.target.checked })} /></label>
         <label className="my-abrigo-switch"><span>Memórias antigas podem reaparecer</span><input type="checkbox"
           checked={memories.preferences.enabled}
           onChange={(event) => memories.update({ enabled: event.target.checked })} /></label>

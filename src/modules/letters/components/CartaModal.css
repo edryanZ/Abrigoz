@@ -211,6 +211,7 @@
 }
 
 .carta-modal__actions{display:flex;flex-wrap:wrap;gap:10px}
+.carta-modal--presentation{width:100%;height:100%;max-height:none;border-radius:0;padding:clamp(28px,7vw,90px);justify-content:center;background:rgba(10,18,38,.88);backdrop-filter:blur(24px)}.carta-modal--presentation .carta-modal__categoria,.carta-modal--presentation .favorito-btn,.carta-modal--presentation .assinatura{display:none}.carta-modal--presentation .carta-modal__header{justify-content:center;text-align:center}.carta-modal--presentation .carta-modal__header h2{font-size:clamp(1.8rem,4vw,3rem);color:#fff}.carta-modal--presentation .carta-modal__texto{max-width:860px;margin:auto;font-size:clamp(1.1rem,2.2vw,1.45rem);line-height:2;color:rgba(255,255,255,.94)}.carta-modal--presentation .carta-modal__footer{justify-content:center}.carta-modal--presentation .carta-modal__actions{justify-content:center}
 
 /* =========================================================
    Animações
