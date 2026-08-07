@@ -141,6 +141,8 @@
   color: var(--text-secondary);
 }
 
+.calendar-special-dates{display:grid;gap:.65rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border-color)}.calendar-special-dates>p{color:var(--text-secondary)}.calendar-special-dates label{display:grid;gap:.3rem;color:var(--text-secondary);font-size:.88rem}.calendar-special-dates input,.calendar-special-dates textarea{width:100%;padding:.7rem;border:1px solid var(--border-color);border-radius:.75rem;background:var(--surface);color:var(--text-primary)}.special-date-item{display:flex;justify-content:space-between;gap:.75rem;padding:.7rem;border-radius:.75rem;background:var(--surface)}.special-date-item button{align-self:start;border:0;background:transparent;color:var(--text-secondary);text-decoration:underline;cursor:pointer}
+
 @media (min-width: 900px) {
   .calendar-layout {
     grid-template-columns: minmax(0, 1fr) minmax(320px, .8fr);

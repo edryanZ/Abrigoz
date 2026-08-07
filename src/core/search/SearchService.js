@@ -96,9 +96,11 @@ function relevance(item, query) {
 
 export function searchLocal(index, input, filters = {}) {
   const query = normalizeSearchText(input);
-  if (query.length < 2) return { total: 0, groups: {} };
+  const filteringWithoutText = Boolean(filters.module && filters.module !== "all"
+    || filters.start || filters.end || filters.month || filters.category || filters.status || filters.tag);
+  if (query.length < 2 && !filteringWithoutText) return { total: 0, groups: {} };
   const moduleFilter = ALLOWED_MODULES.has(filters.module) ? filters.module : "all";
-  const matches = index.map((item) => ({ ...item, score: relevance(item, query) }))
+  const matches = index.map((item) => ({ ...item, score: query.length >= 2 ? relevance(item, query) : 1 }))
     .filter((item) => item.score > 0
       && (moduleFilter === "all" || item.module === moduleFilter)
       && (!filters.category || normalizeSearchText(item.category) === normalizeSearchText(filters.category))
@@ -106,7 +108,8 @@ export function searchLocal(index, input, filters = {}) {
       && (!filters.tag || item.tags.some((tag) =>
         normalizeSearchText(tag) === normalizeSearchText(filters.tag)))
       && (!filters.start || item.date.slice(0, 10) >= filters.start)
-      && (!filters.end || item.date.slice(0, 10) <= filters.end))
+      && (!filters.end || item.date.slice(0, 10) <= filters.end)
+      && (!filters.month || item.date.slice(5, 7) === String(filters.month).padStart(2, "0")))
     .sort((a, b) => filters.order === "date"
       ? b.date.localeCompare(a.date)
       : b.score - a.score || b.date.localeCompare(a.date));
@@ -120,6 +123,18 @@ export function searchLocal(index, input, filters = {}) {
       }, {}),
     limit: GROUP_LIMIT,
   };
+}
+
+export function resolveSearchPeriod(preset, now = new Date()) {
+  const pad = (value) => String(value).padStart(2, "0");
+  const key = (date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  if (preset === "this_month") {
+    return { start: key(new Date(now.getFullYear(), now.getMonth(), 1)), end: key(new Date(now.getFullYear(), now.getMonth() + 1, 0)) };
+  }
+  if (preset === "last_year") {
+    return { start: `${now.getFullYear() - 1}-01-01`, end: `${now.getFullYear() - 1}-12-31` };
+  }
+  return { start: "", end: "" };
 }
 
 const DEFAULT_PREFERENCES = { version: 1, historyEnabled: false, recent: [] };

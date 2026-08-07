@@ -8,6 +8,7 @@ import {
   createSearchIndex,
   loadSearchPreferences,
   rememberSearch,
+  resolveSearchPeriod,
   saveSearchPreferences,
   searchLocal,
 } from "../../core/search/SearchService";
@@ -40,7 +41,7 @@ export default function GlobalSearch() {
   const [module, setModule] = useState("all");
   const [order, setOrder] = useState("relevance");
   const [filters, setFilters] = useState({
-    start: "", end: "", category: "", tag: "", status: "",
+    start: "", end: "", month: "", category: "", tag: "", status: "",
   });
   const [result, setResult] = useState({ total: 0, groups: {} });
   const [preferences, setPreferences] = useState(loadSearchPreferences);
@@ -59,8 +60,13 @@ export default function GlobalSearch() {
   }, [filters, index, module, order, query]);
   const updateFilter = (key, value) =>
     setFilters((current) => ({ ...current, [key]: value }));
+  const applyPeriod = (value) => {
+    const range = resolveSearchPeriod(value);
+    setFilters((current) => ({ ...current, ...range }));
+  };
 
   const groups = useMemo(() => Object.entries(result.groups), [result.groups]);
+  const canFilterWithoutText = module !== "all" || Object.values(filters).some(Boolean);
   const toggleHistory = () => {
     const next = saveSearchPreferences({
       ...preferences, historyEnabled: !preferences.historyEnabled,
@@ -94,6 +100,12 @@ export default function GlobalSearch() {
                 onChange={(event) => updateFilter("start", event.target.value)} /></label>
               <label>Data final<input type="date" value={filters.end}
                 onChange={(event) => updateFilter("end", event.target.value)} /></label>
+              <label>Período<select defaultValue="" onChange={(event) => applyPeriod(event.target.value)}>
+                <option value="">Datas livres</option><option value="this_month">Este mês</option>
+                <option value="last_year">Ano passado</option></select></label>
+              <label>Mês<select value={filters.month} onChange={(event) => updateFilter("month", event.target.value)}>
+                <option value="">Qualquer mês</option>{["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"].map((label, index) =>
+                  <option value={index + 1} key={label}>{label}</option>)}</select></label>
               <label>Categoria<input value={filters.category} maxLength={80}
                 onChange={(event) => updateFilter("category", event.target.value)} /></label>
               <label>Tag<input value={filters.tag} maxLength={40}
@@ -112,7 +124,7 @@ export default function GlobalSearch() {
               <button type="button" onClick={() => setPreferences(clearSearchHistory())}>Limpar</button>
             </div>}
           </GlassCard>
-          {query.trim().length < 2
+          {query.trim().length < 2 && !canFilterWithoutText
             ? <p className="global-search__empty">Digite algo que queira reencontrar.</p>
             : result.total === 0
               ? <p className="global-search__empty">Nada apareceu por aqui. Tente outras palavras.</p>

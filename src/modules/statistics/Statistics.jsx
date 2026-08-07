@@ -9,7 +9,8 @@ import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
 import Container from "../../shared/ui/Container";
 import GlassCard from "../../shared/ui/GlassCard";
-import { getGentleMemory, hideGentleMemory } from "../../core/memory/MemoryService";
+import { getGentleMemory, getSameDayMemory, hideGentleMemory, isMemoryHidden, loadMemoryPreferences } from "../../core/memory/MemoryService";
+import { buildAbstractMemoryMap, buildSymbolicConstellation } from "../../core/memory/MemoryMapService";
 
 function newest(items, fields) {
   return [...items].sort((a, b) => {
@@ -50,6 +51,12 @@ export default function Statistics() {
   useEffect(() => subscribe(SYNC_EVENT, () => setData(readLocalData())), []);
   const retrospective = useMemo(() => buildRetrospective(data), [data]);
   const gentleMemory = getGentleMemory(new Date(), data);
+  const sameDayMemory = getSameDayMemory(new Date(), data);
+  const memoriesEnabled = loadMemoryPreferences().enabled;
+  const memoryMap = useMemo(() => memoriesEnabled
+    ? buildAbstractMemoryMap(data).filter((marker) => !isMemoryHidden(marker.id)) : [], [data, memoriesEnabled]);
+  const constellation = useMemo(() => memoriesEnabled && memoryMap.length
+    ? buildSymbolicConstellation(data) : [], [data, memoriesEnabled, memoryMap]);
 
   return <>
     <Navbar />
@@ -64,6 +71,13 @@ export default function Statistics() {
           {gentleMemory.text && <p>{gentleMemory.text}</p>}
           <button type="button" onClick={() => {
             hideGentleMemory(gentleMemory.id); setMemoryRevision((value) => value + 1);
+          }}>Não mostrar isso novamente</button>
+        </GlassCard>}
+        {sameDayMemory && sameDayMemory.id !== gentleMemory?.id && <GlassCard className="retrospective-memory" hover={false}>
+          <span>Este dia, outro ano</span><h2>{sameDayMemory.title}</h2>
+          {sameDayMemory.text && <p>{sameDayMemory.text}</p>}
+          <button type="button" onClick={() => {
+            hideGentleMemory(sameDayMemory.id); setMemoryRevision((value) => value + 1);
           }}>Não mostrar isso novamente</button>
         </GlassCard>}
         {!retrospective.hasAnything ? <GlassCard className="retrospective-empty" hover={false}>
@@ -87,6 +101,26 @@ export default function Statistics() {
             <p>Não são conquistas para cumprir. São apenas sinais de coisas que, em algum momento, encontraram espaço no Abrigo.</p>
             <ul>{retrospective.marks.map((mark) => <li key={mark}>{mark}</li>)}</ul>
           </GlassCard>}
+          {memoryMap.length > 0 && <section aria-labelledby="memory-map-title">
+            <h2 id="memory-map-title">Mapa de memórias</h2>
+            <GlassCard className="memory-map" hover={false}>
+              <p>Um mapa abstrato, sem localização e sem medir seu caminho. Toque nos pontos para reconhecer o tipo e a data.</p>
+              <div className="memory-map__field" role="group" aria-label="Pontos abstratos de memórias">
+                {memoryMap.map((marker) => <button key={marker.id} type="button"
+                  style={{ left: `${marker.x}%`, top: `${marker.y}%` }}
+                  aria-label={`${marker.type}, ${marker.date}`} title={`${marker.type} · ${marker.date}`} />)}
+              </div>
+            </GlassCard>
+          </section>}
+          {constellation.length > 0 && <section aria-labelledby="memory-constellation-title">
+            <h2 id="memory-constellation-title">Constelação de memórias</h2>
+            <GlassCard className="memory-constellation" hover={false}>
+              <p>Uma paisagem simbólica inspirada no céu do Abrigo. As estrelas não contam memórias, pontos ou conquistas.</p>
+              <div className="memory-constellation__sky" aria-hidden="true">
+                {constellation.map((star) => <i key={star.id} style={{ left: `${star.x}%`, top: `${star.y}%` }} />)}
+              </div>
+            </GlassCard>
+          </section>}
         </>}
       </div>
     </Container>

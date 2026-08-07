@@ -14,6 +14,7 @@ export default function CalendarioGrid({
   onSelect,
   onChangeMonth,
   onToday,
+  contentIndicators = {},
 }) {
   const firstWeekday = new Date(
     month.getFullYear(),
@@ -43,6 +44,7 @@ export default function CalendarioGrid({
         key,
         day: index + 1,
         events: occurrences.filter((event) => event.occurrenceDate === key),
+        indicators: contentIndicators[key] ?? [],
       };
     }),
   ];
@@ -89,9 +91,10 @@ export default function CalendarioGrid({
               item.key === todayKey ? "hoje" : "",
               item.key === selectedDate ? "ativo" : "",
               item.events.length ? "evento" : "",
+              item.indicators.length ? "tem-memoria" : "",
             ].join(" ")}
             onClick={() => onSelect(item.key)}
-            aria-label={`${item.day}, ${item.events.length} evento(s)`}
+            aria-label={`${item.day}, ${item.events.length} evento(s), ${item.indicators.length} lembrança(s) indicada(s)`}
           >
             <span className="numero-dia">{item.day}</span>
             <span className="calendar-dots" aria-hidden="true">
@@ -103,6 +106,9 @@ export default function CalendarioGrid({
                   }}
                 />
               ))}
+            </span>
+            <span className="memory-dots" aria-hidden="true">
+              {item.indicators.slice(0, 4).map((type) => <i key={type} className={`memory-dot memory-dot--${type}`} />)}
             </span>
           </button>
         ))}

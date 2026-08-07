@@ -85,3 +85,5 @@
   height: 4px;
   border-radius: 50%;
 }
+
+.memory-dots{position:absolute;top:3px;right:3px;display:flex;gap:2px}.memory-dot{width:4px;height:4px;border-radius:50%;background:var(--text-secondary);opacity:.72}.memory-dot--reflection{background:#a78bfa}.memory-dot--memory{background:#f0a6b8}.memory-dot--capsule{background:#73c9c4}.memory-dot--special{background:#f3c96b}

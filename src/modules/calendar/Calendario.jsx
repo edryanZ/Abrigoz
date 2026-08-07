@@ -15,12 +15,20 @@ import EventList from "./components/EventList";
 import ModalEvento from "./components/ModalEvento";
 import useCalendarEvents from "./hooks/useCalendarEvents";
 import { EVENT_CATEGORIES } from "./services/calendarService";
+import { buildContentIndicatorMap } from "../../core/memory/MemoryService";
+import { readLocalData } from "../../core/intelligence/LocalDataSource";
+import { deleteSpecialDate, listSpecialDates, saveSpecialDate } from "../../core/memory/SpecialDatesService";
 
 export default function Calendario() {
   const { greeting } = useTheme();
   const calendar = useCalendarEvents();
   const [editing, setEditing] = useState(null);
   const [formOpen, setFormOpen] = useState(false);
+  const [specialDates, setSpecialDates] = useState(listSpecialDates);
+  const [specialName, setSpecialName] = useState("");
+  const [specialDescription, setSpecialDescription] = useState("");
+  const contentIndicators = buildContentIndicatorMap(readLocalData());
+  const selectedSpecialDates = specialDates.filter((item) => item.date === calendar.selectedDate);
 
   const closeForm = useCallback(() => {
     setEditing(null);
@@ -67,6 +75,7 @@ export default function Calendario() {
                 onSelect={calendar.setSelectedDate}
                 onChangeMonth={calendar.changeMonth}
                 onToday={calendar.goToday}
+                contentIndicators={contentIndicators}
               />
             </GlassCard>
 
@@ -121,6 +130,24 @@ export default function Calendario() {
                 }}
                 onDelete={handleDelete}
               />
+              <section className="calendar-special-dates" aria-labelledby="special-date-title">
+                <h3 id="special-date-title">Data importante</h3>
+                <p>Opcional. Você não precisa explicar o motivo.</p>
+                {selectedSpecialDates.map((item) => <div className="special-date-item" key={item.id}>
+                  <div><strong>{item.name || "Data importante"}</strong>{item.description && <p>{item.description}</p>}</div>
+                  <button type="button" onClick={() => {
+                    deleteSpecialDate(item.id); setSpecialDates(listSpecialDates());
+                  }}>Remover</button>
+                </div>)}
+                <label>Nome opcional<input value={specialName} maxLength={100}
+                  onChange={(event) => setSpecialName(event.target.value)} /></label>
+                <label>Descrição opcional<textarea value={specialDescription} maxLength={300}
+                  onChange={(event) => setSpecialDescription(event.target.value)} /></label>
+                <button type="button" className="calendar-add" onClick={() => {
+                  saveSpecialDate({ date: calendar.selectedDate, name: specialName, description: specialDescription });
+                  setSpecialName(""); setSpecialDescription(""); setSpecialDates(listSpecialDates());
+                }}>Guardar esta data</button>
+              </section>
             </GlassCard>
           </div>
         </Section>
