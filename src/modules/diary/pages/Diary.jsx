@@ -1,9 +1,10 @@
 import "../styles/Diary.css";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { getDailyReflection } from "../../../core/emotional/DailyEmotionalService";
 import { saveWellbeingMoment } from "../../../core/memory/WellbeingMemoryService";
+import { enterReadingFocus, leaveReadingFocus } from "../../../core/atmosphere/AtmosphereFocusService";
 import Navbar from "../../../shared/componentes/Navbar";
 import PageHeader from "../../../shared/componentes/PageHeader";
 import PrivacyNotice from "../../../shared/componentes/PrivacyNotice";
@@ -14,6 +15,10 @@ import DiaryTimeline from "../components/DiaryTimeline";
 import useDiary from "../hooks/useDiary";
 
 export default function Diary() {
+  useEffect(() => {
+    enterReadingFocus();
+    return leaveReadingFocus;
+  }, []);
   const diary = useDiary();
   const [reflection] = useState(getDailyReflection);
   const existing = useMemo(() => diary.entries.find((entry) =>

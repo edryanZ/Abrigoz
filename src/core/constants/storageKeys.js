@@ -25,6 +25,7 @@ export const STORAGE_KEYS = {
   MEMORY_PREFERENCES: "abrigo:memory-preferences:v1",
   FUTURE_CAPSULES: "abrigo:future-capsules:v1",
   PAUSE_MOMENTS: "abrigo:pause-moments:v1",
+  PERSONALIZATION: "abrigo:personalization:v1",
   SEARCH_PREFERENCES: "abrigo:search-preferences:v1",
   PRIVACY_MODE: "abrigo:privacy-mode:v1",
   ANALYTICS_CONSENT: "abrigo:analytics-consent:v1",

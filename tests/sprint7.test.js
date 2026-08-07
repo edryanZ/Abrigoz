@@ -161,3 +161,40 @@ test("Reflexões permite não escrever sem persistência e módulos guardam mome
     assert.doesNotMatch(source, /modules\/favorites/);
   }
 });
+
+test("Sprint 7D personalização é versionada, local e não substitui o horário do céu", async () => {
+  storageValues.clear();
+  const {
+    ATMOSPHERE_THEMES, DEFAULT_PERSONALIZATION, loadPersonalization,
+    normalizePersonalization,
+  } = await import("../src/core/atmosphere/PersonalizationService.js");
+  assert.equal(Object.keys(ATMOSPHERE_THEMES).length, 5);
+  assert.deepEqual(loadPersonalization(), DEFAULT_PERSONALIZATION);
+  assert.equal(normalizePersonalization({
+    version: 1, personalPhrase: " Vai no seu tempo. ", atmosphereTheme: "rain",
+    visualEnergy: "vivid", showReflectionsOnHome: false, introspectiveContent: false,
+  }).personalPhrase, "Vai no seu tempo.");
+  const service = await readFile(new URL("../src/core/atmosphere/PersonalizationService.js", import.meta.url), "utf8");
+  assert.doesNotMatch(service, /fetch\(|geolocation|Supabase/);
+});
+
+test("Meu Abrigo coordena services sem acessar storage ou infraestrutura remota", async () => {
+  const page = await readFile(new URL("../src/modules/personalization/MeuAbrigo.jsx", import.meta.url), "utf8");
+  assert.match(page, /Meu Abrigo/);
+  assert.match(page, /Intensidade visual/);
+  assert.match(page, /Eventos raros/);
+  assert.match(page, /Memórias antigas podem reaparecer/);
+  assert.doesNotMatch(page, /localStorage|sessionStorage|IndexedDB|Supabase|fetch\(/);
+});
+
+test("tema Chuva e modo leitura respeitam conteúdo e redução de movimento", async () => {
+  const skyCss = await readFile(new URL("../src/shared/componentes/Ceu.css", import.meta.url), "utf8");
+  const modal = await readFile(new URL("../src/modules/home/components/CartaModal.jsx", import.meta.url), "utf8");
+  const diary = await readFile(new URL("../src/modules/diary/pages/Diary.jsx", import.meta.url), "utf8");
+  assert.match(skyCss, /atmosphere-theme-rain/);
+  assert.match(skyCss, /focus-reading/);
+  assert.match(skyCss, /prefers-reduced-motion:reduce[\s\S]*atmosphere-theme-rain/);
+  assert.match(modal, /enterReadingFocus/);
+  assert.match(modal, /leaveReadingFocus/);
+  assert.match(diary, /enterReadingFocus/);
+});

@@ -91,6 +91,17 @@ compatível de Coisas que fazem bem por uma camada do core, sem acoplamento
 direto entre módulos. Refletir sem escrever não persiste ausência, falha ou
 qualquer marcador negativo.
 
+## Personalização
+
+**Meu Abrigo** concentra preferências leves, sem criar perfil público. Nome,
+frase pessoal, personalidade atmosférica, intensidade, interações, memórias e
+conteúdo introspectivo são opcionais. Temas atmosféricos modulam a identidade
+visual, mas a iluminação continua partindo da hora local.
+
+O tema Chuva usa somente efeito visual local quando não existem assets sonoros
+adequados. Em leitura focada, a atmosfera reduz movimento e elementos
+secundários. A preferência do sistema por movimento reduzido sempre prevalece.
+
 ## Arquitetura
 
 O Abrigo segue Module First. Módulos podem conter apenas as pastas necessárias

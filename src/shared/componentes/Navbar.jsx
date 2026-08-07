@@ -20,6 +20,7 @@ import {
   FaBookOpen,
   FaMoon,
   FaClock,
+  FaSlidersH,
 } from "react-icons/fa";
 
 import MusicPlayer from "./MusicPlayer";
@@ -104,6 +105,7 @@ export default function Navbar() {
         { nome: "Intenções", rota: ROUTES.GOALS, icone: <FaHeart /> },
         { nome: "Meu Dia", rota: ROUTES.CALENDAR, icone: <FaCalendarAlt /> },
         { nome: "Cápsulas", rota: ROUTES.CAPSULES, icone: <FaClock /> },
+        { nome: "Meu Abrigo", rota: ROUTES.PERSONALIZATION, icone: <FaSlidersH /> },
         { nome: "Retrospectiva", rota: ROUTES.STATISTICS, icone: <FaBookOpen /> },
       ],
     },

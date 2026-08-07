@@ -7,6 +7,7 @@ export const ROUTES = {
   MOMENT: "/momento-do-dia",
   PAUSE: "/so-ficar",
   CAPSULES: "/capsulas",
+  PERSONALIZATION: "/meu-abrigo",
   CALENDAR: "/meu-dia",
   FAVORITES: "/coisas-que-fazem-bem",
   GOALS: "/intencoes",

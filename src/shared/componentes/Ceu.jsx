@@ -5,17 +5,21 @@ import { useSkyTheme } from "../../core/atmosphere/useSkyTheme";
 import { getMoonMessage, resolveAtmosphereLevel } from "../../core/atmosphere/SkyThemeService";
 import { useAtmospherePreferences } from "../../core/atmosphere/useAtmospherePreferences";
 import { useMusic } from "../contexts/MusicContext";
+import { usePersonalization } from "../../core/atmosphere/usePersonalization";
+import { ATMOSPHERE_FOCUS_EVENT } from "../../core/atmosphere/AtmosphereFocusService";
 
 export default function Ceu() {
   const sky = useSkyTheme();
   const atmosphere = useAtmospherePreferences();
   const music = useMusic();
+  const personalization = usePersonalization();
   const { pathname } = useLocation();
   const skyRef = useRef(null);
   const messageTimerRef = useRef(0);
   const [activeStar, setActiveStar] = useState(null);
   const [moonMessage, setMoonMessage] = useState("");
   const [constellationOpen, setConstellationOpen] = useState(false);
+  const [readingFocus, setReadingFocus] = useState(false);
   const atmosphereLevel = resolveAtmosphereLevel(pathname);
   const style = useMemo(() => ({
     "--sky-top": sky.palette.colors[0],
@@ -76,6 +80,11 @@ export default function Ceu() {
   }, [sky.motion]);
 
   useEffect(() => () => window.clearTimeout(messageTimerRef.current), []);
+  useEffect(() => {
+    const listener = (event) => setReadingFocus(Boolean(event.detail));
+    window.addEventListener(ATMOSPHERE_FOCUS_EVENT, listener);
+    return () => window.removeEventListener(ATMOSPHERE_FOCUS_EVENT, listener);
+  }, []);
 
   const showTemporarily = (callback, reset, duration = 4200) => {
     window.clearTimeout(messageTimerRef.current);
@@ -93,7 +102,8 @@ export default function Ceu() {
     sky.preferences.showStars ? "has-stars" : ""} ${
     sky.preferences.showGlows ? "has-glows" : ""} ${
     sky.motion ? "has-motion" : "no-motion"} ${interactive ? "is-interactive" : ""} ${
-    atmosphere.preferences.silenceMode ? "mode-silence" : ""} ${music.tocando ? "music-active" : ""}`}>
+    atmosphere.preferences.silenceMode ? "mode-silence" : ""} ${music.tocando ? "music-active" : ""} ${
+    readingFocus ? "focus-reading" : ""} atmosphere-theme-${personalization.preferences.atmosphereTheme} visual-energy-${personalization.preferences.visualEnergy}`}>
     <div className="ceu-atmosphere" aria-hidden="true" />
     <div className="ceu-celestial">
       <span className="ceu-sun" aria-hidden="true" />

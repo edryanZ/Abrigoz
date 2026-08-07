@@ -34,6 +34,20 @@
     box-sizing: border-box;
 }
 
+[data-sky-period="manha"] .glass-card,
+[data-sky-period="amanhecer"] .glass-card {
+    box-shadow: inset 0 1px 0 rgba(235, 245, 255, .11), 0 10px 30px rgba(0, 0, 0, .10);
+}
+
+[data-sky-period="entardecer"] .glass-card {
+    box-shadow: inset 0 1px 0 rgba(255, 190, 154, .10), 0 10px 30px rgba(0, 0, 0, .10);
+}
+
+[data-sky-period="noite"] .glass-card,
+[data-sky-period="madrugada"] .glass-card {
+    box-shadow: inset 0 1px 0 rgba(180, 166, 242, .10), 0 10px 30px rgba(0, 0, 0, .10);
+}
+
 .glass-card--hover:hover {
     transform: translateY(-4px);
 

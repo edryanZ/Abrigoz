@@ -14,10 +14,12 @@ import { useUser } from "../../shared/contexts/UserContext";
 import Container from "../../shared/ui/Container";
 import GlassCard from "../../shared/ui/GlassCard";
 import MoodSelector from "./components/MoodSelector";
+import { usePersonalization } from "../../core/atmosphere/usePersonalization";
 
 function LarContent() {
   const { greeting } = useTheme();
   const { name } = useUser();
+  const personalization = usePersonalization();
   const moment = getDailyMoment();
   const care = getDailyCare();
   const reflection = getDailyReflection();
@@ -33,6 +35,9 @@ function LarContent() {
       <PrivacyNotice compact />
 
       <div className="home-emotional" aria-label="Seu Lar no Abrigo">
+        {personalization.preferences.personalPhrase && <p className="home-personal-phrase">
+          “{personalization.preferences.personalPhrase}”
+        </p>}
         <MoodSelector />
 
         <div className="home-emotional__grid">
@@ -50,12 +55,13 @@ function LarContent() {
             <Link to={ROUTES.HABITS}>Ver Pequenos Cuidados</Link>
           </GlassCard>
 
+          {personalization.preferences.showReflectionsOnHome && personalization.preferences.introspectiveContent &&
           <GlassCard className="home-gentle-card home-gentle-card--wide" hover={false}>
             <span className="home-gentle-card__eyebrow">Uma pergunta para hoje</span>
             <h2>{reflection.question}</h2>
             <p>Você não precisa responder agora. A pergunta pode apenas acompanhar o seu dia.</p>
             <Link to={ROUTES.DIARY}>Ir para Reflexões</Link>
-          </GlassCard>
+          </GlassCard>}
         </div>
       </div>
 

@@ -10,6 +10,7 @@ import { getAvailableAmbientSounds } from "../../core/atmosphere/AmbientSoundSer
 import { useAtmospherePreferences } from "../../core/atmosphere/useAtmospherePreferences";
 import { useMusic } from "../../shared/contexts/MusicContext";
 import { useSkyTheme } from "../../core/atmosphere/useSkyTheme";
+import { usePersonalization } from "../../core/atmosphere/usePersonalization";
 
 export default function PauseMode() {
   const atmosphere = useAtmospherePreferences();
@@ -17,6 +18,7 @@ export default function PauseMode() {
   const moment = getDailyMoment();
   const ambientSounds = getAvailableAmbientSounds();
   const sky = useSkyTheme();
+  const personalization = usePersonalization();
   const [savingMoment, setSavingMoment] = useState(false);
   const [phrase, setPhrase] = useState("");
   const [savedMessage, setSavedMessage] = useState("");
@@ -29,6 +31,9 @@ export default function PauseMode() {
       <span className="pause-mode__eyebrow">Janela do Abrigo</span>
       <h1 id="pause-title">Só ficar</h1>
       <p>{moment.invitation}</p>
+      {personalization.preferences.personalPhrase && <p className="pause-mode__personal">
+        “{personalization.preferences.personalPhrase}”
+      </p>}
       <div className="pause-mode__controls" aria-label="Controles desta pausa">
         {music.preferences.enabled && <button type="button" onClick={music.playPause}
           disabled={music.loading} aria-label={music.tocando ? "Pausar música" : "Tocar música"}>

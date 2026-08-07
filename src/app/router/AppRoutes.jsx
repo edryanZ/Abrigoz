@@ -11,6 +11,7 @@ const Lar = lazy(() => import("../../modules/home/Lar"));
 const MomentoDoDia = lazy(() => import("../../modules/moment/MomentoDoDia"));
 const PauseMode = lazy(() => import("../../modules/pause/PauseMode"));
 const Capsules = lazy(() => import("../../modules/memory/Capsules"));
+const MeuAbrigo = lazy(() => import("../../modules/personalization/MeuAbrigo"));
 
 const Calendario = lazy(() => import("../../modules/calendar/Calendario"));
 const Favoritos = lazy(() => import("../../modules/favorites/Favoritos"));
@@ -37,6 +38,7 @@ export default function AppRoutes() {
         <Route path={ROUTES.MOMENT} element={<MomentoDoDia />} />
         <Route path={ROUTES.PAUSE} element={<PauseMode />} />
         <Route path={ROUTES.CAPSULES} element={<Capsules />} />
+        <Route path={ROUTES.PERSONALIZATION} element={<MeuAbrigo />} />
         <Route path={ROUTES.CALENDAR} element={<Calendario />} />
         <Route path={ROUTES.FAVORITES} element={<Favoritos />} />
         <Route path={ROUTES.GOALS} element={<Metas />} />

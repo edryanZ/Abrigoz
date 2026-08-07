@@ -29,8 +29,11 @@ import {
 import SharingSettings from "./components/SharingSettings";
 import OfflineSettings from "./components/OfflineSettings";
 import ExportSettings from "./components/ExportSettings";
+import { Link } from "react-router-dom";
+import ROUTES from "../../core/constants/routes";
 
 const SECTIONS = [
+  ["meu-abrigo","Meu Abrigo"],
   ["ceu","Céu e atmosfera"],
   ["compartilhamento","Compartilhamento"],
   ["offline","Offline e armazenamento"],
@@ -84,6 +87,10 @@ export default function Configuracoes() {
           <span>{index + 1}</span>{label}</a>)}
       </nav>
       <div className="settings-content">
+        <SettingCard id="meu-abrigo" icon={<FaUser />} title="Meu Abrigo">
+          <p>Escolha a atmosfera, sua frase, memórias e quanto movimento combina com este espaço.</p>
+          <Link className="config-link" to={ROUTES.PERSONALIZATION}>Abrir Meu Abrigo</Link>
+        </SettingCard>
         <SettingCard id="ceu" icon={<FaPalette />} title="Céu e atmosfera">
           <p>O fundo acompanha o horário local sem recarregar páginas ou interromper músicas.</p>
           {[

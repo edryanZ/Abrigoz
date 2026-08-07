@@ -2,6 +2,7 @@ import "./CartaModal.css";
 
 import { useEffect, useReducer } from "react";
 import { saveWellbeingMoment } from "../../../core/memory/WellbeingMemoryService";
+import { enterReadingFocus, leaveReadingFocus } from "../../../core/atmosphere/AtmosphereFocusService";
 
 import GlassCard from "../../../shared/ui/GlassCard";
 import GlassButton from "../../../shared/ui/GlassButton";
@@ -22,6 +23,7 @@ export default function CartaModal({
 
   useEffect(() => {
     if (!aberto) return;
+    enterReadingFocus();
 
     function handleKeyDown(event) {
       if (event.key === "Escape") {
@@ -37,6 +39,7 @@ export default function CartaModal({
     );
 
     return () => {
+      leaveReadingFocus();
       document.body.style.overflow = "";
 
       window.removeEventListener(
