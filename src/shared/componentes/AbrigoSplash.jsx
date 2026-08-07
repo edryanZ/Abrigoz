@@ -13,7 +13,7 @@ export default function AbrigoSplash({ onComplete }) {
 
   return <div className="abrigo-splash" role="status" aria-label="Abrigo iniciando">
     <div className="abrigo-splash__content">
-      <img src="/branding/favicon-192.png" alt="" aria-hidden="true" />
+      <img src="/branding/abrigo-icon-source.webp" alt="" aria-hidden="true" />
       <strong>Abrigo</strong>
       <p>{getSplashPhrase()}</p>
     </div>

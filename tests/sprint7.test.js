@@ -53,9 +53,12 @@ test("Splash é global, curta, sem rota e respeita reduced motion", async () => 
   const routes = await readFile(new URL("../src/app/router/AppRoutes.jsx", import.meta.url), "utf8");
   const splash = await readFile(new URL("../src/shared/componentes/AbrigoSplash.jsx", import.meta.url), "utf8");
   const css = await readFile(new URL("../src/shared/componentes/AbrigoSplash.css", import.meta.url), "utf8");
+  const brandAsset = await readFile(new URL("../public/branding/abrigo-icon-source.webp", import.meta.url));
   assert.equal((app.match(/<AbrigoSplash/g) ?? []).length, 1);
   assert.doesNotMatch(routes, /AbrigoSplash/);
   assert.match(splash, /SPLASH_DURATION_MS = 1200/);
+  assert.match(splash, /\/branding\/abrigo-icon-source\.webp/);
+  assert.ok(brandAsset.byteLength > 0);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.ok(getSplashPhrase(new Date(2026, 7, 7, 23)).length > 10);
 });
