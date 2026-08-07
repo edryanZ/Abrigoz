@@ -94,3 +94,18 @@ Sprints permanece em `ROADMAP.md`.
 
 Aplicativos móveis nativos não fazem parte do escopo vigente documentado; a
 experiência atual é Web/PWA e mobile-first.
+
+## Controle e redução
+
+A Sprint 8 torna explícita a regra “O Abrigo deve poder ficar menor”. A pessoa
+pode esconder módulos opcionais da navegação sem apagar conteúdo e escolher até
+três atalhos. Configurações, privacidade e recuperação continuam acessíveis.
+
+Pessoal é o espaço real; Visitante é uma sessão efêmera; Demonstração usa
+somente exemplos fictícios. Nenhum deles exige conta ou e-mail. O PIN opcional
+é descrito honestamente como bloqueio local de interface, e não como
+criptografia total do dispositivo.
+
+Memórias podem aparecer por tempo/data, em mapa abstrato ou constelação
+simbólica, sempre localmente, sem GPS, diagnóstico ou desempenho. Rituais
+mensais dependem de opt-in e nunca cobram resposta, meta, sequência ou prazo.

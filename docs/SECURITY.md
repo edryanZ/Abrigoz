@@ -106,6 +106,25 @@ antiga permanece por compatibilidade.
 - Quem possuir a Chave do Abrigo e acesso ao serviço poderá abrir o conteúdo
   protegido; a chave deve ser guardada com cuidado.
 
+## PIN local e espaços isolados
+
+O PIN da Sprint 8 é um **bloqueio de interface neste dispositivo**, não uma
+camada de criptografia para todo o storage. O valor original não é persistido:
+um salt aleatório e um verificador PBKDF2-SHA-256 com custo iterativo são
+armazenados localmente. Verificação, troca e desativação acontecem via Web
+Crypto, sem servidor, analytics ou logs do PIN.
+
+Visitante e Demonstração usam armazenamento efêmero separado dos dados
+pessoais. Nesses espaços, sync, backup remoto e métricas são bloqueados também
+no core. A Demo é preenchida somente com fixtures fictícias e nunca deriva
+exemplos do conteúdo Pessoal.
+
+Prévias de importação exibem categorias, não registros inteiros. Backup
+protegido precisa ser descriptografado/validado antes dessa prévia e a
+restauração continua transacional. Cartões visuais são renderizados localmente
+e recebem apenas título/texto explicitamente selecionados, sem nome,
+localização, chave ou identificadores do Abrigo.
+
 ## Processamento local e métricas
 
 Retrospectiva, pesquisa, humor, memórias, Marcos e sugestões emocionais são

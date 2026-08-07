@@ -80,3 +80,21 @@ momentos escreve de forma compatível no formato histórico de Favoritos sem que
 um módulo importe outro. Sharing, offline e export mantêm regras fora dos
 componentes. Exportação permanece em chunk lazy. Não existe módulo Galeria,
 asset pessoal ou provedor de IA no produto.
+
+## Espaços, bloqueio e personalização de navegação
+
+`WorkspaceModeService` define Pessoal, Visitante e Demonstração antes dos
+providers que consomem dados. O adapter central de Storage direciona os dois
+espaços não pessoais para mapas efêmeros, e a troca de espaço remonta os
+providers. `SyncService`, SyncStorage, eventos de sync e AnalyticsService
+recusam trabalho remoto fora do Pessoal; não se trata apenas de esconder UI.
+
+`DevicePinService` concentra PBKDF2/Web Crypto e a configuração de auto-lock.
+React recebe somente operações e estado público, sem acessar storage ou PIN
+persistido diretamente. `NavigationPreferencesService` controla simplificação,
+módulos ocultos e até três favoritos. `ContentVisibilityService` oferece a
+política comum de ocultar/restaurar conteúdo sem apagar o registro original.
+
+Compartilhamento visual usa canvas local e fica em `core/sharing`. Mapas e
+constelações usam funções locais em `core/memory`; não usam GPS, localização,
+canvas global, IA ou infraestrutura remota.

@@ -74,3 +74,18 @@ reescritos por esta etapa.
 Nenhuma migration, RPC, autenticação, IA, API meteorológica ou geolocalização
 foi adicionada. Sons ambientes permanecem sem reprodução até existirem assets
 locais apropriados.
+
+## Sprint 8 - Fechamento da experiência
+
+- [x] PIN local opcional, auto-lock e espaços Pessoal/Visitante/Demonstração isolados;
+- [x] tamanho de texto, alto contraste, fonte de leitura e experiência PWA mais humana;
+- [x] exportação seletiva ampliada e prévia segura antes de restaurar backup;
+- [x] busca temporal, indicadores no Meu Dia, datas importantes e “Este dia, outro ano”;
+- [x] mapa abstrato e constelação simbólica de memórias sem gamificação;
+- [x] rituais mensais opt-in, cartão visual local e Modo Apresentação de Carta;
+- [x] “Quero menos coisas”, módulos ocultáveis, até três favoritos e Ctrl+K;
+- [x] política comum de ocultar/restaurar e página Novidades local/versionada.
+
+Eventos raros do Céu 2.0 já atendiam à surpresa estética e não foram
+duplicados. Nenhuma migration, RPC, alteração de Supabase, IA, weather API ou
+geolocalização foi adicionada na Sprint 8.

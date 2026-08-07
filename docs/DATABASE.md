@@ -107,3 +107,11 @@ preferências, compartilhamento local, offline ou exportação. O Assistente foi
 posteriormente substituído por uma experiência totalmente local. Cápsulas
 remotas exigiriam ciphertext, token hasheado, expiração e revogação server-side
 e permanecem desativadas. Não existe tabela, bucket ou migration de Galeria.
+
+## Sprint 8
+
+PIN, espaços Pessoal/Visitante/Demonstração, acessibilidade, datas especiais,
+rituais, constelação, preferências de navegação e ocultação de conteúdo são
+recursos locais e entram apenas no backup consolidado quando aplicável. A
+Sprint 8 não cria nem aplica migration, tabela, bucket, Auth ou RPC e não muda
+as permissões do Supabase.

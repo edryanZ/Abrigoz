@@ -131,3 +131,28 @@ confirmada.
 
 Todo bug deve registrar descrição, passos para reproduzir, resultado esperado,
 resultado encontrado, versão e navegador.
+
+## Sprint 8
+
+Além do checklist anterior, validar:
+
+- PIN não aparece em texto puro no storage; PIN correto/incorreto, troca,
+  desativação e auto-lock funcionam por teclado;
+- Visitante/Demo não carregam dados pessoais e bloqueiam sync/analytics no
+  core; encerrar descarta o estado efêmero;
+- texto pequeno/padrão/grande, alto contraste, fonte de leitura, reduced motion
+  e zoom permanecem legíveis em 360×800, 412×915, 768×1024 e 1366×768;
+- shortcuts PWA são no máximo quatro; instalação não insiste após “Agora não”;
+- exportação seletiva exclui campos internos; import preview mostra categorias
+  e restauração nunca acontece sem confirmação;
+- filtros temporais, indicadores do Meu Dia, datas especiais e “Este dia,
+  outro ano” respeitam datas locais, preferências e itens ocultos;
+- mapa/constelação não mostram ranking, desempenho ou relação 1:1 entre
+  memória e estrela;
+- rituais não persistem “Só pensar nisso”; cartão visual não recebe nome,
+  localização ou identificadores sem escolha explícita;
+- simplificação não apaga dados, favoritos ficam limitados a três, Ctrl+K não
+  captura inputs/editores, Escape fecha a Pesquisa aberta pelo atalho e
+  conteúdos ocultos podem ser restaurados;
+- Novidades é local/versionada e a Navbar não ganha uma entrada principal para
+  cada recurso novo.

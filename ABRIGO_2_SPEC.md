@@ -141,3 +141,38 @@ a ser enviado individualmente.
 `ARCHITECTURE` detalha a organização técnica; `SECURITY` as garantias de
 segurança; `DATABASE` os limites de dados; `ROADMAP` registra a evolução do
 produto; `DESIGN_SYSTEM` define a linguagem visual e de experiência.
+
+## Fechamento de experiência — Sprint 8
+
+O Abrigo pode usar um **PIN local opcional** como bloqueio de acesso pela
+interface neste dispositivo. O PIN original nunca é persistido; a verificação
+usa derivação PBKDF2-SHA-256 via Web Crypto. Esse bloqueio **não criptografa
+todos os dados locais** e nunca deve ser descrito dessa forma.
+
+Existem três espaços locais: **Pessoal**, **Visitante** e **Demonstração**.
+Visitante e Demonstração usam armazenamento efêmero isolado, não carregam o
+conteúdo pessoal e não sincronizam, fazem backup remoto ou enviam métricas.
+Demonstração usa somente exemplos fictícios. Voltar ao Pessoal pode exigir o
+PIN quando o bloqueio estiver ativo.
+
+Acessibilidade inclui tamanho de texto, alto contraste independente do tema e
+fonte de leitura longa. A PWA pode oferecer instalação de forma discreta,
+shortcuts limitados e atualização sempre confirmada pela pessoa.
+
+Exportação continua seletiva e remove campos internos; importação de backup
+mostra apenas categorias em uma prévia segura e exige confirmação antes da
+restauração transacional. Pesquisa temporal, datas importantes, indicadores no
+Meu Dia, “Este dia, outro ano”, mapa abstrato e constelação são processados
+localmente e respeitam memórias ocultas/desativadas. A constelação é simbólica,
+sem equivalência entre quantidade de registros e estrelas.
+
+Rituais mensais são opt-in, sem metas ou sequência. Compartilhar como imagem
+gera um cartão local sem metadados pessoais não escolhidos. Cartas podem usar
+modo apresentação. Eventos raros já existentes no Céu 2.0 cumprem o papel de
+surpresas estéticas e não criam recompensa ou gamificação.
+
+“Quero menos coisas” pode ocultar módulos apenas da navegação; dados nunca são
+apagados por essa ação. Há até três atalhos favoritos, Ctrl+K abre a Pesquisa
+no desktop e conteúdos reapresentados podem ser ocultados e restaurados. A
+área Novidades é local e versionada. Configurações, privacidade e recuperação
+permanecem sempre acessíveis.

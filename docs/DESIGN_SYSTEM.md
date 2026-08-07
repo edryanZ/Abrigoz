@@ -539,3 +539,19 @@ Sempre verificar se o componente pode pertencer ao Shared.
 O usuário deve reconhecer imediatamente que está utilizando o Abrigo.
 
 Todas as telas devem compartilhar a mesma linguagem visual, transmitindo conforto, simplicidade e organização.
+
+## Controles de experiência da Sprint 8
+
+Tamanho de texto oferece pequeno, padrão e grande por tokens globais. Alto
+contraste é independente do tema claro/escuro: reduz transparência, fortalece
+bordas e contraste, mas não remove a atmosfera do céu. Cartas e Reflexões podem
+usar fonte de leitura confortável baseada apenas em fontes do sistema.
+
+O menu pode ficar menor por escolha da pessoa. Módulos ocultos não perdem dados
+e Configurações/privacidade/recuperação não podem desaparecer. Favoritos são no
+máximo três e aparecem dentro do drawer existente, sem nova barra.
+
+Mapa e constelação de memórias são abstratos, sem geografia, contadores ou
+ranking. Compartilhamento visual usa tipografia legível e fundo inspirado no
+céu, sem nome ou metadados pessoais por padrão. Modo Apresentação de Carta
+reduz controles e mantém Escape/saída explícita.

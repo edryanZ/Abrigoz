@@ -16,3 +16,13 @@ O usuário deve revisar e confirmar novamente.
 Atualizações da PWA exibem aviso e só recarregam após confirmação. As limpezas
 removem caches públicos e áudio reconstruível, nunca registros pessoais. A
 estimativa usa StorageManager quando disponível.
+
+Na Sprint 8, `beforeinstallprompt` pode gerar uma sugestão discreta de
+instalação. “Agora não” é persistido e evita repetição em toda visita. O
+manifest oferece somente Só Ficar, Reflexões, Momento do Dia e Meu Dia como
+shortcuts. Mensagens sem rede preservam linguagem humana e atualizações
+continuam dependendo de confirmação explícita.
+
+Visitante e Demonstração também são locais, mas usam memória efêmera isolada:
+não sincronizam nem fazem backup remoto. Cartões de compartilhamento são
+renderizados localmente e não dependem de rede.

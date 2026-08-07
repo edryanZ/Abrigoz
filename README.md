@@ -24,6 +24,10 @@ Abrigo, com foco em simplicidade, privacidade e acolhimento.
 - Atmosfera 2.0 com variação local, Modo Só Ficar e personalização em Meu Abrigo;
 - cápsulas para o futuro e memórias locais controláveis;
 - pesquisa, exportação, backup e sincronização opcional protegida.
+- PIN local opcional e espaços Pessoal, Visitante e Demonstração isolados;
+- ajustes de texto, alto contraste e leitura confortável;
+- busca temporal, datas importantes e memórias simbólicas sem gamificação;
+- simplificação da navegação, até três favoritos e Ctrl+K para Pesquisa.
 
 O Abrigo funciona localmente e não exige sincronização nem preenchimento de
 informações pessoais para ser útil.
