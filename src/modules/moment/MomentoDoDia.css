@@ -11,8 +11,10 @@
   border: 1px solid var(--border-color); border-radius: 999px; background: var(--card-bg);
   color: var(--text-primary); cursor: pointer; }
 .daily-moment-card button:disabled { opacity: .72; cursor: default; }
+.daily-moment-card button.secondary { background: transparent; color: var(--text-secondary); }
 .daily-moment-card button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .daily-moment-note { color: var(--text-secondary); font-size: .86rem; text-align: center; }
+.daily-moment-care { color: var(--text-secondary); font-size: .88rem; line-height: 1.6; text-align: center; }
 @media (prefers-reduced-motion: no-preference) {
   .daily-moment-card { animation: emotional-fade .6s ease both; }
   @keyframes emotional-fade { from { opacity: 0; transform: translateY(8px); }

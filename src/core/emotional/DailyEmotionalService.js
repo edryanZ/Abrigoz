@@ -111,6 +111,12 @@ export function getDailyCare(date = new Date()) {
   return { dateKey, text: value };
 }
 
+export function getSpontaneousCare(date = new Date()) {
+  const item = dailyItem(CARES, "spontaneous-care", date);
+  const visible = (seed(`${item.dateKey}:care`) % 4) === 0;
+  return visible ? { dateKey: item.dateKey, text: item.value } : null;
+}
+
 export function getSuggestedIntentions() {
   return [...INTENTIONS];
 }

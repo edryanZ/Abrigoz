@@ -11,4 +11,8 @@
 .retrospective-marks { display: grid; gap: 12px; }
 .retrospective-marks ul { display: grid; gap: 8px; margin: 0; padding-left: 20px; }
 .retrospective-empty { display: grid; gap: 10px; max-width: 680px; }
+.retrospective-memory{display:grid;gap:10px;max-width:720px}.retrospective-memory>span{color:var(--accent);font-size:.78rem;font-weight:700}
+.retrospective-memory h2,.retrospective-memory p{margin:0}.retrospective-memory p{color:var(--text-secondary);line-height:1.7}
+.retrospective-memory button{width:fit-content;padding:8px 0;border:0;background:transparent;color:var(--text-secondary);text-decoration:underline;cursor:pointer}
+.retrospective-memory button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 @media (max-width: 760px) { .retrospective-grid { grid-template-columns: 1fr; } }

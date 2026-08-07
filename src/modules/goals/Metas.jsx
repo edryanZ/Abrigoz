@@ -16,6 +16,7 @@ export default function Metas() {
   const [text, setText] = useState("");
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState("");
+  const [temporaryIntention, setTemporaryIntention] = useState("");
   const suggestions = useMemo(() => getSuggestedIntentions(), []);
   const items = useMemo(() => {
     const normalized = query.trim().toLocaleLowerCase("pt-BR");
@@ -56,8 +57,17 @@ export default function Metas() {
             placeholder="Quero respeitar mais o meu próprio ritmo."
             onChange={(event) => { setText(event.target.value); setMessage(""); }} />
           <button type="button" onClick={() => saveIntention()}>Guardar intenção</button>
+          <button type="button" className="secondary" disabled={!text.trim()} onClick={() => {
+            setTemporaryIntention(text.trim().slice(0, 180)); setText("");
+            setMessage("Esta intenção fica só por agora e não foi guardada nos seus dados.");
+          }}>Levar só por agora</button>
           {message && <p role="status" className="intention-message">{message}</p>}
         </GlassCard>
+
+        {temporaryIntention && <GlassCard className="intention-card intention-card--temporary" hover={false}>
+          <span>Para agora</span><h2>{temporaryIntention}</h2>
+          <button type="button" onClick={() => setTemporaryIntention("")}>Deixar ir</button>
+        </GlassCard>}
 
         <section className="intention-suggestions" aria-labelledby="intention-suggestions-title">
           <h2 id="intention-suggestions-title">Se quiser, escolha uma destas</h2>

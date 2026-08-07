@@ -3,7 +3,8 @@ import "./MomentoDoDia.css";
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 
-import { getDailyMoment } from "../../core/emotional/DailyEmotionalService";
+import { getDailyMoment, getSpontaneousCare } from "../../core/emotional/DailyEmotionalService";
+import { saveWellbeingMoment } from "../../core/memory/WellbeingMemoryService";
 import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
 import Container from "../../shared/ui/Container";
@@ -11,7 +12,9 @@ import GlassCard from "../../shared/ui/GlassCard";
 
 export default function MomentoDoDia() {
   const [carried, setCarried] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [moment] = useState(getDailyMoment);
+  const [spontaneousCare] = useState(getSpontaneousCare);
 
   return <>
     <Navbar />
@@ -29,7 +32,12 @@ export default function MomentoDoDia() {
           <button type="button" onClick={() => setCarried(true)} disabled={carried}>
             <FaHeart aria-hidden="true" /> {carried ? "Vai comigo hoje" : "Levar comigo"}
           </button>
+          <button type="button" className="secondary" disabled={saved} onClick={() => {
+            saveWellbeingMoment({ title: moment.message, description: moment.invitation, source: "daily-moment" });
+            setSaved(true);
+          }}>{saved ? "Momento guardado" : "Guardar este momento"}</button>
         </GlassCard>
+        {spontaneousCare && <p className="daily-moment-care">Se couber agora: {spontaneousCare.text}</p>}
         <p className="daily-moment-note">Este momento fica igual durante o dia e muda amanhã.</p>
       </div>
     </Container>

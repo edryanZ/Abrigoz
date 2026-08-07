@@ -1,6 +1,7 @@
 import "./CartaModal.css";
 
 import { useEffect, useReducer } from "react";
+import { saveWellbeingMoment } from "../../../core/memory/WellbeingMemoryService";
 
 import GlassCard from "../../../shared/ui/GlassCard";
 import GlassButton from "../../../shared/ui/GlassButton";
@@ -52,6 +53,11 @@ export default function CartaModal({
   function handleFavorito() {
     alternarFavorito(carta.id);
 
+    refresh();
+  }
+
+  function handleSaveMoment() {
+    saveWellbeingMoment({ title: carta.titulo, description: carta.texto, source: "letter" });
     refresh();
   }
 
@@ -107,12 +113,17 @@ export default function CartaModal({
             {carta.assinatura}
           </span>
 
+          <div className="carta-modal__actions">
+          <GlassButton variant="secondary" onClick={handleSaveMoment}>
+            Guardar este momento
+          </GlassButton>
           <GlassButton
             variant="secondary"
             onClick={onClose}
           >
             Fechar
           </GlassButton>
+          </div>
         </footer>
       </GlassCard>
     </section>

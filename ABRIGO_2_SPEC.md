@@ -77,6 +77,20 @@ ambientes só podem ser oferecidos quando houver assets locais apropriados e
 com origem/licença compatível; a ausência desses assets não é simulada por
 serviço remoto.
 
+## Memória e pausas
+
+Cápsulas para o futuro, momentos de pausa e preferências de memórias são dados
+locais versionados e entram no backup consolidado quando aplicável, sem tabela
+ou RPC individual. Uma cápsula futura permanece fechada na interface até sua
+data local de abertura e pode ser cancelada explicitamente antes disso.
+
+Memórias antigas reaparecem apenas por regras locais simples e previsíveis,
+sem inferir importância emocional. A pessoa pode desativar recordações ou
+ocultar uma lembrança específica. “Guardar este momento” reutiliza a estrutura
+compatível de Coisas que fazem bem por uma camada do core, sem acoplamento
+direto entre módulos. Refletir sem escrever não persiste ausência, falha ou
+qualquer marcador negativo.
+
 ## Arquitetura
 
 O Abrigo segue Module First. Módulos podem conter apenas as pastas necessárias

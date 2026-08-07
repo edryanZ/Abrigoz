@@ -11,5 +11,12 @@
   display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--border-color);border-radius:14px;
   background:var(--surface);color:var(--text-primary);cursor:pointer}.pause-mode__controls button:disabled{opacity:.5;cursor:not-allowed}
 .pause-mode__ambient{font-size:.78rem!important;opacity:.7}
+.pause-mode__save{border:0;background:transparent;color:var(--text-secondary);text-decoration:underline;cursor:pointer}
+.pause-mode__memory{display:grid;gap:8px;width:min(420px,100%);padding:14px;border:1px solid var(--border-color);border-radius:16px;
+  background:var(--surface)}.pause-mode__memory label{font-size:.82rem;color:var(--text-secondary)}.pause-mode__memory input{
+  width:100%;padding:10px;border:1px solid var(--border-color);border-radius:11px;background:var(--card-bg);color:var(--text-primary)}
+.pause-mode__memory>div{display:flex;justify-content:flex-end;gap:8px}.pause-mode__memory button{padding:8px 11px;border:1px solid var(--border-color);
+  border-radius:10px;background:var(--card-bg);color:var(--text-primary);cursor:pointer}.pause-mode__saved{font-size:.82rem!important}
+.pause-mode__save:focus-visible,.pause-mode__memory input:focus-visible,.pause-mode__memory button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 @media(max-width:480px){.pause-mode__exit span{display:none}.pause-mode__center{padding:24px 18px}}
 @media(prefers-reduced-motion:reduce){.pause-mode *{transition:none!important}}

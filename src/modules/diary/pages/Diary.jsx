@@ -3,6 +3,7 @@ import "../styles/Diary.css";
 import { useMemo, useState } from "react";
 
 import { getDailyReflection } from "../../../core/emotional/DailyEmotionalService";
+import { saveWellbeingMoment } from "../../../core/memory/WellbeingMemoryService";
 import Navbar from "../../../shared/componentes/Navbar";
 import PageHeader from "../../../shared/componentes/PageHeader";
 import PrivacyNotice from "../../../shared/componentes/PrivacyNotice";
@@ -55,8 +56,13 @@ export default function Diary() {
               Guardar uma resposta
             </button>
             <button type="button" className="secondary" onClick={() => {
-              setMessage("Tudo bem. Você pode só levar essa pergunta com você.");
-            }}>Só quero levar essa pergunta comigo</button>
+              setAnswer("");
+              setMessage("Tudo bem. Nada foi guardado.");
+            }}>Hoje não quero escrever</button>
+            <button type="button" className="secondary" onClick={() => {
+              saveWellbeingMoment({ title: reflection.question, source: "reflection" });
+              setMessage("Este momento ficou em Coisas que fazem bem.");
+            }}>Guardar este momento</button>
           </div>
           {message && <p role="status" className="reflection-message">{message}</p>}
         </GlassCard>

@@ -9,6 +9,7 @@ import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
 import Container from "../../shared/ui/Container";
 import GlassCard from "../../shared/ui/GlassCard";
+import { getGentleMemory, hideGentleMemory } from "../../core/memory/MemoryService";
 
 function newest(items, fields) {
   return [...items].sort((a, b) => {
@@ -45,8 +46,10 @@ function buildRetrospective(data) {
 
 export default function Statistics() {
   const [data, setData] = useState(readLocalData);
+  const [, setMemoryRevision] = useState(0);
   useEffect(() => subscribe(SYNC_EVENT, () => setData(readLocalData())), []);
   const retrospective = useMemo(() => buildRetrospective(data), [data]);
+  const gentleMemory = getGentleMemory(new Date(), data);
 
   return <>
     <Navbar />
@@ -56,6 +59,13 @@ export default function Statistics() {
         subtitle="Um olhar para o que fez parte do seu caminho — sem notas, metas de desempenho ou comparações."
       />
       <div className="retrospective-page">
+        {gentleMemory && <GlassCard className="retrospective-memory" hover={false}>
+          <span>Uma lembrança que reapareceu</span><h2>{gentleMemory.title}</h2>
+          {gentleMemory.text && <p>{gentleMemory.text}</p>}
+          <button type="button" onClick={() => {
+            hideGentleMemory(gentleMemory.id); setMemoryRevision((value) => value + 1);
+          }}>Não mostrar isso novamente</button>
+        </GlassCard>}
         {!retrospective.hasAnything ? <GlassCard className="retrospective-empty" hover={false}>
           <h2>Seu caminho pode começar pequeno</h2>
           <p>Quando você guardar uma reflexão, uma intenção ou algo que faz bem, algumas lembranças poderão reaparecer aqui com delicadeza.</p>
