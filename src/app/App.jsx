@@ -11,6 +11,7 @@ import OfflineStatus from "../shared/componentes/OfflineStatus";
 import AbrigoSplash from "../shared/componentes/AbrigoSplash";
 import AnalyticsNotice from "../shared/componentes/AnalyticsNotice";
 import DeviceLock from "../shared/componentes/DeviceLock";
+import InstallSuggestion from "../shared/componentes/InstallSuggestion";
 import { WorkspaceProvider } from "../shared/contexts/WorkspaceContext";
 import {
   getWorkspaceMode,
@@ -21,13 +22,21 @@ import {
   getPinConfiguration,
   subscribeDeviceLock,
 } from "../core/privacy/DevicePinService";
+import {
+  applyAccessibilityPreferences,
+} from "../core/accessibility/AccessibilityPreferencesService";
 
 function WorkspaceRuntime({ ready, onSplashComplete }) {
+  useEffect(() => {
+    applyAccessibilityPreferences();
+  }, []);
+
   return (
     <AppProviders>
       <Ceu />
       <AnalyticsTracker />
       <OfflineStatus />
+      <InstallSuggestion />
 
       {!ready && <AbrigoSplash onComplete={onSplashComplete} />}
 
