@@ -1,0 +1,1 @@
+.news-list{display:grid;gap:14px;padding-bottom:48px}.news-list article{display:grid;gap:10px}.news-list article>span{color:var(--accent);font-size:.8rem;font-weight:700}.news-list h2{margin:0;font-size:1.15rem}.news-list ul{display:grid;gap:7px;padding-left:20px;list-style:disc;color:var(--text-secondary);line-height:1.6}

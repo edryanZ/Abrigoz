@@ -28,6 +28,7 @@ const Statistics = lazy(() => import("../../modules/statistics/Statistics"));
 const GlobalSearch = lazy(() => import("../../modules/search/GlobalSearch"));
 const AdminAnalytics = lazy(() => import("../../modules/admin/AdminAnalytics"));
 const ExportCenter = lazy(() => import("../../modules/export/ExportCenter"));
+const Novidades = lazy(() => import("../../modules/profile/Novidades"));
 
 export default function AppRoutes() {
   return (
@@ -55,6 +56,7 @@ export default function AppRoutes() {
         <Route path={ROUTES.SEARCH} element={<GlobalSearch />} />
         <Route path={ROUTES.ADMIN_ACTIVITY} element={<AdminAnalytics />} />
         <Route path={ROUTES.EXPORT} element={<ExportCenter />} />
+        <Route path={ROUTES.NEWS} element={<Novidades />} />
 
         {/* Endereços antigos continuam levando ao conteúdo preservado. */}
         <Route path="/diario" element={<Navigate to={ROUTES.DIARY} replace />} />

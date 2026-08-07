@@ -31,6 +31,11 @@ import ExportSettings from "./components/ExportSettings";
 import { Link } from "react-router-dom";
 import ROUTES from "../../core/constants/routes";
 import { resetAbrigo } from "../../core/services/reset";
+import PrivacySpaceSettings from "./components/PrivacySpaceSettings";
+import { useWorkspace } from "../../shared/contexts/WorkspaceContext";
+import AccessibilitySettings from "./components/AccessibilitySettings";
+import NavigationSettings from "./components/NavigationSettings";
+import HiddenContentSettings from "./components/HiddenContentSettings";
 
 const SECTIONS = [
   ["meu-abrigo","Meu Abrigo"],
@@ -55,6 +60,7 @@ export default function Configuracoes() {
   const { greeting } = useTheme();
   const { name, updateUser, clearUser } = useUser();
   const music = useMusic();
+  const workspace = useWorkspace();
   const [sky, setSky] = useState(loadSkyPreferences);
   const [hasLegacyAssistantData, setHasLegacyAssistantData] = useState(
     hasLegacyAssistantHistory
@@ -90,6 +96,7 @@ export default function Configuracoes() {
         <SettingCard id="meu-abrigo" icon={<FaUser />} title="Meu Abrigo">
           <p>Escolha a atmosfera, sua frase, memórias e quanto movimento combina com este espaço.</p>
           <Link className="config-link" to={ROUTES.PERSONALIZATION}>Abrir Meu Abrigo</Link>
+          <NavigationSettings />
         </SettingCard>
         <SettingCard id="ceu" icon={<FaPalette />} title="Céu e atmosfera">
           <p>O fundo acompanha o horário local sem recarregar páginas ou interromper músicas.</p>
@@ -157,6 +164,8 @@ export default function Configuracoes() {
         <SettingCard id="privacidade" icon={<FaShieldAlt />} title="Privacidade">
           <p>Oculta rapidamente textos pessoais. Não substitui o bloqueio do dispositivo.</p>
           <PrivacyToggle />
+          <PrivacySpaceSettings />
+          <HiddenContentSettings />
           {hasLegacyAssistantData && <div className="legacy-assistant-data">
             <h3>Dados antigos do Assistente</h3>
             <p>Versões antigas do Abrigo podiam guardar um histórico local do antigo Assistente. Esse conteúdo não é mais usado pela experiência atual.</p>
@@ -168,17 +177,19 @@ export default function Configuracoes() {
           <p>Backups locais e restauração permanecem dentro do painel seguro abaixo.</p>
         </SettingCard>
         <SettingCard id="sincronizacao" icon={<FaCog />} title="Sincronização">
-          <SyncSettings />
+          {workspace.isPersonal ? <SyncSettings /> :
+            <p>Sincronização fica desligada no modo Visitante e na Demonstração.</p>}
         </SettingCard>
         <SettingCard id="chave" icon={<FaKey />} title="Chave do Abrigo">
           <p>A criação, recuperação e troca da chave são realizadas no painel de sincronização, sem exibir o hash.</p>
           <a className="config-link" href="#sincronizacao">Ir para sincronização</a>
         </SettingCard>
         <SettingCard id="metricas" icon={<FaChartBar />} title="Métricas anônimas">
-          <AnalyticsSettings />
+          {workspace.isPersonal ? <AnalyticsSettings /> :
+            <p>Métricas ficam desligadas neste espaço.</p>}
         </SettingCard>
         <SettingCard id="acessibilidade" icon={<FaAccessibleIcon />} title="Acessibilidade">
-          <p>O Abrigo respeita redução de movimento, navegação por teclado e ajustes do seu navegador.</p>
+          <AccessibilitySettings />
         </SettingCard>
         <SettingCard id="aplicativo" icon={<FaInfoCircle />} title="Informações do aplicativo">
           <p><strong>{APP.NAME} — criado por {APP.AUTHOR}</strong></p>

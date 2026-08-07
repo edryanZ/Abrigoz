@@ -19,6 +19,7 @@ export const ROUTES = {
   STATISTICS: "/retrospectiva",
   SEARCH: "/pesquisa",
   EXPORT: "/exportar",
+  NEWS: "/novidades",
   ADMIN_ACTIVITY: "/admin/atividade",
 
   // Sistema

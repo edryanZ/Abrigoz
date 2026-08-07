@@ -1,7 +1,7 @@
 import "./GlobalSearch.css";
 
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import {
   clearSearchHistory,
@@ -36,6 +36,7 @@ function Highlight({ text, query, hidden }) {
 }
 
 export default function GlobalSearch() {
+  const location = useLocation();
   const [index, setIndex] = useState(createSearchIndex);
   const [query, setQuery] = useState("");
   const [module, setModule] = useState("all");
@@ -84,6 +85,7 @@ export default function GlobalSearch() {
           <GlassCard className="global-search__controls">
             <label>Pesquisar
               <input type="search" value={query} autoComplete="off"
+                autoFocus={Boolean(location.state?.fromShortcut)}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Digite pelo menos duas letras" />
             </label>
