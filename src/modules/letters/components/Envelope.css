@@ -209,89 +209,17 @@
 
 }
 
-.envelope__progress{
-
-    width:100%;
-
-}
-
-.envelope__numbers{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:baseline;
-
-    gap:8px;
-
-    margin-bottom:12px;
-
-}
-
-.envelope__numbers span{
-
-    color:var(--text-primary);
-
-    font-size:1.15rem;
-
-    font-weight:700;
-
-}
-
-.envelope__numbers small{
-
-    color:var(--text-secondary);
-
-}
-
-/* ==========================================================
-   Barra
-========================================================== */
-
-.progress{
-
-    width:100%;
-
-    height:12px;
-
-    border-radius:999px;
-
-    overflow:hidden;
-
-    background:#ece4dc;
-
-}
-
-.progress__fill{
-
-    height:100%;
-
-    border-radius:999px;
-
-    background:
-
-        linear-gradient(
-            90deg,
-            #b77945,
-            #e0b176
-        );
-
-    transition:width .5s ease;
-
+.envelope__invitation{
+    margin:0;
+    color:#6f6258;
+    font-size:.84rem;
+    line-height:1.5;
+    text-align:center;
 }
 
 /* ==========================================================
    Estados
 ========================================================== */
-
-.envelope__complete{
-
-    color:#2f8b57;
-
-    font-weight:700;
-
-}
 
 .envelope__locked{
 
@@ -386,14 +314,6 @@
         font-size: 2rem;
     }
 
-    .progress{
-        height: 10px;
-    }
-
-    .envelope__numbers span{
-        font-size: 1rem;
-    }
-
     .envelope__label{
         padding: 8px 16px;
     }
@@ -402,4 +322,14 @@
         font-size: .95rem;
     }
 
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .envelope,
+    .envelope__flap,
+    .envelope__paper { transition: none; }
+    .envelope:hover,
+    .envelope:focus-visible,
+    .envelope--abrindo .envelope__flap,
+    .envelope--abrindo .envelope__paper { transform: none; }
 }

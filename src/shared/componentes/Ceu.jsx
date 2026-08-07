@@ -97,13 +97,14 @@ export default function Ceu() {
   );
   const interactive = atmosphere.preferences.interactiveSky;
   const showRareEvents = atmosphere.preferences.rareEvents && !atmosphere.preferences.silenceMode;
+  const deepNight = sky.realPeriod === "madrugada" && sky.now.getHours() < 4;
 
   return <div ref={skyRef} style={style} className={`ceu sky-${sky.period} sky-${sky.preferences.intensity} atmosphere-level-${atmosphereLevel} ${
     sky.preferences.showStars ? "has-stars" : ""} ${
     sky.preferences.showGlows ? "has-glows" : ""} ${
     sky.motion ? "has-motion" : "no-motion"} ${interactive ? "is-interactive" : ""} ${
     atmosphere.preferences.silenceMode ? "mode-silence" : ""} ${music.tocando ? "music-active" : ""} ${
-    readingFocus ? "focus-reading" : ""} atmosphere-theme-${personalization.preferences.atmosphereTheme} visual-energy-${personalization.preferences.visualEnergy}`}>
+    readingFocus ? "focus-reading" : ""} ${deepNight ? "deep-night" : ""} atmosphere-theme-${personalization.preferences.atmosphereTheme} visual-energy-${personalization.preferences.visualEnergy}`}>
     <div className="ceu-atmosphere" aria-hidden="true" />
     <div className="ceu-celestial">
       <span className="ceu-sun" aria-hidden="true" />

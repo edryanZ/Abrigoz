@@ -73,6 +73,7 @@
 .ceu.visual-energy-quiet{--energy-factor:.82}.ceu.visual-energy-vivid{--energy-factor:1.05}
 .ceu.focus-reading{--energy-factor:.3}.ceu.focus-reading .ceu-fauna,.ceu.focus-reading .ceu-shooting-star,
 .ceu.focus-reading .ceu-meteor{display:none}
+.ceu.deep-night{--energy-factor:.7}.ceu.deep-night .ceu-fauna,.ceu.deep-night .ceu-meteor{display:none}
 .ceu.atmosphere-theme-aurora .ceu-atmosphere{background:radial-gradient(ellipse at 18% 80%,rgba(104,188,183,.14),transparent 36%),
   radial-gradient(ellipse at 82% 30%,rgba(192,126,209,.12),transparent 34%)}
 .ceu.atmosphere-theme-sunset .ceu-atmosphere{background:radial-gradient(ellipse at 50% 95%,rgba(236,145,104,.17),transparent 48%)}

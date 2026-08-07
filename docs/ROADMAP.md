@@ -60,3 +60,17 @@ interface vigente:
 Dados históricos continuam preservados em seus formatos locais existentes.
 Sincronização, backup criptografado, recuperação, PWA, música e céu não são
 reescritos por esta etapa.
+
+## Sprint 7 - Experiência Abrigo
+
+- [x] Splash curta de inicialização e Atmosfera 2.0 global;
+- [x] céu contínuo por hora local, variação diária, sol, lua, nuvens e eventos leves;
+- [x] níveis de intensidade, Modo Silêncio e Modo Só Ficar/Janela do Abrigo;
+- [x] interações locais do céu e infraestrutura para sons ambientes sem asset remoto;
+- [x] cápsulas para o futuro, momentos guardados e memórias controláveis;
+- [x] Meu Abrigo, frase pessoal e temas atmosféricos;
+- [x] foco de leitura, reduced motion e polimento de privacidade.
+
+Nenhuma migration, RPC, autenticação, IA, API meteorológica ou geolocalização
+foi adicionada. Sons ambientes permanecem sem reprodução até existirem assets
+locais apropriados.

@@ -7,8 +7,8 @@ import { useAbrigoSync } from "../../core/sync/useAbrigoSync";
 
 const PROTECTION_MESSAGES = {
   active: {
-    title: "Proteção ativa",
-    text: "Seus dados sincronizados e backups protegidos são criptografados antes de sair deste dispositivo.",
+    title: "Protegido e sincronizado",
+    text: "Suas coisas continuam suas. O conteúdo é protegido antes de sair deste dispositivo.",
   },
   session_only: {
     title: "Proteção ativa nesta sessão",
@@ -31,8 +31,8 @@ const PROTECTION_MESSAGES = {
     text: "Estamos preparando a criptografia antes de qualquer envio.",
   },
   local: {
-    title: "Somente neste dispositivo",
-    text: "Seus dados permanecem neste dispositivo enquanto a sincronização estiver desativada.",
+    title: "Guardado neste dispositivo",
+    text: "Suas coisas permanecem aqui enquanto a sincronização estiver desativada.",
   },
 };
 

@@ -10,7 +10,6 @@ import GlassCard from "../../shared/ui/GlassCard";
 import { useTheme } from "../../shared/contexts/ThemeContext";
 import { useUser } from "../../shared/contexts/UserContext";
 import { useMusic } from "../../shared/contexts/MusicContext";
-import { storage } from "../../core/storage/storage";
 import SyncSettings from "./components/SyncSettings";
 import PrivacyToggle from "../../shared/componentes/PrivacyToggle";
 import AnalyticsSettings from "./components/AnalyticsSettings";
@@ -31,6 +30,7 @@ import OfflineSettings from "./components/OfflineSettings";
 import ExportSettings from "./components/ExportSettings";
 import { Link } from "react-router-dom";
 import ROUTES from "../../core/constants/routes";
+import { resetAbrigo } from "../../core/services/reset";
 
 const SECTIONS = [
   ["meu-abrigo","Meu Abrigo"],
@@ -67,7 +67,7 @@ export default function Configuracoes() {
   const reset = () => {
     if (!window.confirm("Deseja realmente apagar os dados locais do Abrigo?")) return;
     clearUser();
-    storage.removeMany(["abrigo_streak","abrigo_statistics","abrigo_moods","abrigo_achievements"]);
+    resetAbrigo();
     window.location.replace("/");
   };
   const updateSky = (changes) => setSky(saveSkyPreferences(changes));

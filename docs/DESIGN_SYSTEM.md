@@ -18,6 +18,20 @@ Termos técnicos ficam em detalhes avançados e documentação. A interface comu
 evita “dashboard”, “performance”, “produtividade”, “prioridade alta”,
 “sequência”, “falha” e linguagem de IA.
 
+### Atmosfera e foco
+
+Regra central: **o céu cria atmosfera; o conteúdo continua sendo o
+protagonista**. Splash e Só Ficar podem usar atmosfera alta; Lar usa presença
+média; Momento do Dia usa média/baixa; leitura, Cartas, Reflexões, Intenções,
+Pequenos Cuidados e Meu Dia usam baixa; Pesquisa, Configurações e formulários
+usam mínima. Os nomes técnicos não precisam aparecer na UI.
+
+Temas Sereno, Aurora, Chuva, Entardecer e Noite Estrelada modulam personalidade,
+sem substituir iluminação determinada pela hora local. Em movimento reduzido,
+parallax, fauna, meteoros, estrelas cadentes e chuva animada são removidos ou
+congelados. Cards podem receber reflexos muito sutis do período sem reduzir
+contraste.
+
 ## Componentes oficiais reutilizáveis
 
 Os componentes abaixo são a base da interface e devem ser reutilizados sempre que possível:

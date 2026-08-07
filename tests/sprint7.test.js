@@ -153,7 +153,7 @@ test("memórias reaparecem deterministicamente e podem ser ocultadas", async () 
 test("Reflexões permite não escrever sem persistência e módulos guardam momentos via core", async () => {
   const diary = await readFile(new URL("../src/modules/diary/pages/Diary.jsx", import.meta.url), "utf8");
   const moment = await readFile(new URL("../src/modules/moment/MomentoDoDia.jsx", import.meta.url), "utf8");
-  const letters = await readFile(new URL("../src/modules/home/components/CartaModal.jsx", import.meta.url), "utf8");
+  const letters = await readFile(new URL("../src/modules/letters/components/CartaModal.jsx", import.meta.url), "utf8");
   assert.match(diary, /Hoje não quero escrever/);
   assert.match(diary, /setAnswer\(""\)/);
   for (const source of [diary, moment, letters]) {
@@ -189,7 +189,7 @@ test("Meu Abrigo coordena services sem acessar storage ou infraestrutura remota"
 
 test("tema Chuva e modo leitura respeitam conteúdo e redução de movimento", async () => {
   const skyCss = await readFile(new URL("../src/shared/componentes/Ceu.css", import.meta.url), "utf8");
-  const modal = await readFile(new URL("../src/modules/home/components/CartaModal.jsx", import.meta.url), "utf8");
+  const modal = await readFile(new URL("../src/modules/letters/components/CartaModal.jsx", import.meta.url), "utf8");
   const diary = await readFile(new URL("../src/modules/diary/pages/Diary.jsx", import.meta.url), "utf8");
   assert.match(skyCss, /atmosphere-theme-rain/);
   assert.match(skyCss, /focus-reading/);
@@ -197,4 +197,29 @@ test("tema Chuva e modo leitura respeitam conteúdo e redução de movimento", a
   assert.match(modal, /enterReadingFocus/);
   assert.match(modal, /leaveReadingFocus/);
   assert.match(diary, /enterReadingFocus/);
+});
+
+test("Sprint 7E Cartas remove gamificação visual e preserva objeto com reduced motion", async () => {
+  const envelope = await readFile(new URL("../src/modules/letters/components/Envelope.jsx", import.meta.url), "utf8");
+  const css = await readFile(new URL("../src/modules/letters/components/Envelope.css", import.meta.url), "utf8");
+  assert.doesNotMatch(envelope, /progresso|porcentagem|Coleção concluída/);
+  assert.match(envelope, /Abra quando uma carta fizer sentido/);
+  assert.match(css, /prefers-reduced-motion:\s*reduce/);
+});
+
+test("Sprint 7 mantém Module First e componentes sem acesso direto ao storage", async () => {
+  const settings = await readFile(new URL("../src/modules/settings/Configuracoes.jsx", import.meta.url), "utf8");
+  const letters = await readFile(new URL("../src/modules/letters/Cartas.jsx", import.meta.url), "utf8");
+  assert.doesNotMatch(settings, /core\/storage\/storage|localStorage/);
+  assert.match(settings, /resetAbrigo/);
+  assert.doesNotMatch(letters, /\.\.\/home\//);
+  assert.match(letters, /\.\/components\/CartaModal/);
+});
+
+test("documentação registra prioridade do conteúdo e política não manipulativa", async () => {
+  const spec = await readFile(new URL("../ABRIGO_2_SPEC.md", import.meta.url), "utf8");
+  const vision = await readFile(new URL("../docs/PRODUCT_VISION.md", import.meta.url), "utf8");
+  assert.match(spec, /O céu cria atmosfera; o conteúdo continua sendo o protagonista/);
+  assert.match(spec, /não usa ausência, sequência perdida, culpa/);
+  assert.match(vision, /Notificações/);
 });

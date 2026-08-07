@@ -102,6 +102,10 @@ O tema Chuva usa somente efeito visual local quando não existem assets sonoros
 adequados. Em leitura focada, a atmosfera reduz movimento e elementos
 secundários. A preferência do sistema por movimento reduzido sempre prevalece.
 
+Notificações futuras só podem responder a eventos ou lembretes escolhidos pela
+pessoa. O Abrigo não usa ausência, sequência perdida, culpa, medo de perder
+progresso ou cobrança para induzir retorno ao aplicativo.
+
 ## Arquitetura
 
 O Abrigo segue Module First. Módulos podem conter apenas as pastas necessárias

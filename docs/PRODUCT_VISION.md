@@ -66,6 +66,24 @@ não renomeiam automaticamente storage keys nem apagam registros existentes.
 - preservar exportação, compartilhamento textual seguro, PWA, música e céu
   dentro das regras atuais de privacidade.
 
+### O Abrigo como lugar
+
+Atmosfera, acolhimento, memória e privacidade formam a camada de experiência da
+Sprint 7. O céu pode dar identidade ao espaço, mas reduz presença em leitura,
+formulários e configurações. Só Ficar/Janela do Abrigo oferece uma pausa sem
+métricas. Meu Abrigo permite preferências leves sem criar perfil social.
+
+Memórias reaparecem apenas por regras locais previsíveis e podem ser ocultadas.
+O produto não usa horário, interações do céu ou tempo de permanência para
+inferir estado emocional.
+
+## Notificações
+
+Notificações futuras, quando existirem, devem responder a uma escolha explícita
+da pessoa, como a chegada de uma cápsula, um lembrete consciente ou um evento do
+Meu Dia. O Abrigo não usa mensagens de retorno baseadas em ausência, sequência,
+culpa, perda de progresso ou medo de ficar para trás.
+
 ## Histórico de evolução
 
 Dashboard, Diário, Metas, Hábitos, Favoritos, Estatísticas, Conquistas e o

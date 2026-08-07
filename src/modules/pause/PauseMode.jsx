@@ -9,15 +9,14 @@ import { savePauseMoment } from "../../core/memory/MemoryService";
 import { getAvailableAmbientSounds } from "../../core/atmosphere/AmbientSoundService";
 import { useAtmospherePreferences } from "../../core/atmosphere/useAtmospherePreferences";
 import { useMusic } from "../../shared/contexts/MusicContext";
-import { useSkyTheme } from "../../core/atmosphere/useSkyTheme";
 import { usePersonalization } from "../../core/atmosphere/usePersonalization";
+import { resolveSkyPeriod } from "../../core/atmosphere/SkyThemeService";
 
 export default function PauseMode() {
   const atmosphere = useAtmospherePreferences();
   const music = useMusic();
   const moment = getDailyMoment();
   const ambientSounds = getAvailableAmbientSounds();
-  const sky = useSkyTheme();
   const personalization = usePersonalization();
   const [savingMoment, setSavingMoment] = useState(false);
   const [phrase, setPhrase] = useState("");
@@ -53,7 +52,7 @@ export default function PauseMode() {
           placeholder="Pode ficar em branco." />
         <div><button type="button" onClick={() => { setSavingMoment(false); setPhrase(""); }}>Cancelar</button>
           <button type="button" onClick={() => {
-            savePauseMoment({ phrase, period: sky.realPeriod }); setPhrase(""); setSavingMoment(false);
+            savePauseMoment({ phrase, period: resolveSkyPeriod() }); setPhrase(""); setSavingMoment(false);
             setSavedMessage("Este momento ficou guardado com delicadeza.");
           }}>Guardar</button></div>
       </div>}

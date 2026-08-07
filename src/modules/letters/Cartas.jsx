@@ -8,7 +8,7 @@ import PageHeader from "../../shared/componentes/PageHeader";
 import Container from "../../shared/ui/Container";
 import Section from "../../shared/ui/Section";
 
-import CartaModal from "../home/components/CartaModal";
+import CartaModal from "./components/CartaModal";
 
 import Envelope from "./components/Envelope";
 

@@ -1,7 +1,6 @@
 import "./Envelope.css";
 
 import { useState } from "react";
-import { obterProgresso } from "../../../core/utils/progressoCartas";
 
 export default function Envelope({
   categoria,
@@ -9,17 +8,17 @@ export default function Envelope({
 }) {
   const [abrindo, setAbrindo] = useState(false);
 
-  const progresso = obterProgresso(categoria);
-
   function abrirEnvelope() {
     if (categoria.bloqueado || abrindo) return;
 
     setAbrindo(true);
 
+    const reduceMotion = typeof window.matchMedia === "function"
+      && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     setTimeout(() => {
       onAbrir(categoria);
       setAbrindo(false);
-    }, 700);
+    }, reduceMotion ? 0 : 700);
   }
 
   function teclado(e) {
@@ -28,11 +27,6 @@ export default function Envelope({
       abrirEnvelope();
     }
   }
-
-  const porcentagem =
-    progresso.total > 0
-      ? (progresso.lidas / progresso.total) * 100
-      : 0;
 
   return (
     <article
@@ -72,36 +66,7 @@ export default function Envelope({
             {categoria.emoji}
           </div>
 
-          <div className="envelope__progress">
-
-            <div className="envelope__numbers">
-              <span>
-                {progresso.lidas}
-              </span>
-
-              <small>
-                de {progresso.total}
-              </small>
-            </div>
-
-            <div className="progress">
-
-              <div
-                className="progress__fill"
-                style={{
-                  width: `${porcentagem}%`,
-                }}
-              />
-
-            </div>
-
-          </div>
-
-          {progresso.completo && (
-            <div className="envelope__complete">
-              ✨ Coleção concluída
-            </div>
-          )}
+          <p className="envelope__invitation">Abra quando uma carta fizer sentido.</p>
 
           {categoria.bloqueado && (
             <div className="envelope__locked">

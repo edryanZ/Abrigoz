@@ -86,6 +86,22 @@ export default function Sobre() {
           </GlassCard>
         </Section>
 
+        <Section title="Um lugar para voltar">
+          <GlassCard>
+            <h2>Desacelerar também cabe aqui</h2>
+            <p>
+              O céu, a música opcional, as cartas e a Janela do Abrigo existem
+              para criar atmosfera sem tirar o foco daquilo que você veio ler,
+              guardar ou simplesmente sentir. Você escolhe quanto quer usar.
+            </p>
+            <p>
+              Suas memórias e preferências funcionam localmente. Quando você
+              decide sincronizar, o Abrigo mantém as proteções existentes e
+              continua tratando a Chave do Abrigo como algo que pertence a você.
+            </p>
+          </GlassCard>
+        </Section>
+
         <Section title="Quem criou o Abrigo">
           <GlassCard className="sobre-criador">
             <div>

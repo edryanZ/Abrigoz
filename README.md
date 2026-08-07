@@ -21,6 +21,8 @@ Abrigo, com foco em simplicidade, privacidade e acolhimento.
 - Meu Dia para quem quiser usar o calendário;
 - Retrospectiva e Marcos sem gamificação de produtividade;
 - céu dinâmico e música opcional;
+- Atmosfera 2.0 com variação local, Modo Só Ficar e personalização em Meu Abrigo;
+- cápsulas para o futuro e memórias locais controláveis;
 - pesquisa, exportação, backup e sincronização opcional protegida.
 
 O Abrigo funciona localmente e não exige sincronização nem preenchimento de

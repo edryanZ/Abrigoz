@@ -26,6 +26,11 @@ git diff --check
   formatos históricos;
 - Meu Dia, Cartas, Pesquisa e Retrospectiva carregam sem erro;
 - Configurações, música, tema, céu, exportação e PWA continuam funcionais;
+- Splash aparece apenas na inicialização da aplicação, sem virar rota;
+- céu evolui pela hora local sem reload e mantém variação diária determinística;
+- Modo Só Ficar, Meu Abrigo e Cápsulas funcionam sem rede;
+- cápsulas continuam seladas na UI antes da data local e podem ser excluídas;
+- memórias podem ser desativadas ou ocultadas individualmente;
 - sincronização é opcional e o modo somente local continua utilizável;
 - redirects legados levam às experiências atuais;
 - não existe runtime do antigo Assistente/IA.
@@ -77,6 +82,25 @@ Validar manualmente e, quando possível, automaticamente:
 - botões somente com ícone possuem nome acessível;
 - contraste em tema claro e escuro;
 - `prefers-reduced-motion: reduce` reduz movimento decorativo.
+- meteoros, fauna atravessando a tela, parallax e abertura animada de envelopes
+  são removidos ou simplificados em movimento reduzido.
+
+## Atmosfera e privacidade
+
+- validar os seis períodos e transições intermediárias usando datas locais;
+- validar seed diário, fase lunar e níveis de intensidade como funções puras;
+- confirmar uma única instância global de `Ceu` durante navegação;
+- confirmar ausência de fetch de clima, geolocalização e analytics de interação;
+- verificar que leitura e formulários recebem atmosfera reduzida;
+- confirmar que preferências antigas de céu continuam válidas.
+
+## Memória
+
+- validar criação, selagem por data local, liberação e exclusão de cápsula;
+- validar entrada das novas chaves no backup consolidado;
+- validar seleção determinística de lembrança e “não mostrar novamente”;
+- confirmar que “Hoje não quero escrever” não persiste registro;
+- confirmar integração “Guardar este momento” sem import direto entre módulos.
 
 ## Responsividade
 

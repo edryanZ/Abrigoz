@@ -133,6 +133,17 @@ hash de token; chave e token ficam somente em memória. O backup inclui apenas
 metadados de cápsulas. O histórico autorizado entra no backup remoto
 consolidado criptografado e é excluído do backup plaintext de compatibilidade.
 
+Essas são as cápsulas de **compartilhamento** da Sprint 5. As **Cápsulas para o
+futuro** da Sprint 7 são um módulo pessoal local diferente: seguem a mesma
+limitação já documentada para os demais dados locais normais e não prometem
+criptografia individual no `localStorage`. A interface não revela a mensagem
+antes da data escolhida; quando entram em backup remoto, recebem a proteção do
+backup consolidado AES-GCM existente. Nenhum endpoint, tabela ou RPC novo foi
+criado para elas.
+
+Interações do céu, Modo Só Ficar e tempo de contemplação não são registrados
+como analytics identificável nem usados para inferência emocional.
+
 A exportação remove campos internos, sanitiza nomes e oferece prévia. JSON pode
 usar AES-GCM com PBKDF2-SHA-256. Recursos remotos da Sprint 5 ficam desativados
 sem endpoints server-side revisados.

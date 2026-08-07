@@ -5,9 +5,8 @@ import { FaLeaf, FaMusic, FaMoon, FaPalette } from "react-icons/fa";
 import { getAvailableAmbientSounds } from "../../core/atmosphere/AmbientSoundService";
 import { useAtmospherePreferences } from "../../core/atmosphere/useAtmospherePreferences";
 import { ATMOSPHERE_THEMES } from "../../core/atmosphere/PersonalizationService";
-import { saveSkyPreferences } from "../../core/atmosphere/SkyThemePreferencesService";
+import { loadSkyPreferences, saveSkyPreferences } from "../../core/atmosphere/SkyThemePreferencesService";
 import { usePersonalization } from "../../core/atmosphere/usePersonalization";
-import { useSkyTheme } from "../../core/atmosphere/useSkyTheme";
 import { useMemoryPreferences } from "../../core/memory/useMemoryPreferences";
 import Navbar from "../../shared/componentes/Navbar";
 import PageHeader from "../../shared/componentes/PageHeader";
@@ -22,7 +21,7 @@ export default function MeuAbrigo() {
   const atmosphere = useAtmospherePreferences();
   const personalization = usePersonalization();
   const memories = useMemoryPreferences();
-  const sky = useSkyTheme();
+  const [skyPreferences, setSkyPreferences] = useState(loadSkyPreferences);
   const [draftName, setDraftName] = useState(name);
   const [phrase, setPhrase] = useState(personalization.preferences.personalPhrase);
   const [message, setMessage] = useState("");
@@ -65,10 +64,10 @@ export default function MeuAbrigo() {
           <option value="quiet">Tranquila</option><option value="vivid">Viva</option>
         </select></label>
         <label className="my-abrigo-switch"><span>Céu dinâmico</span><input type="checkbox"
-          checked={sky.preferences.automatic && !sky.preferences.staticBackground}
-          onChange={(event) => saveSkyPreferences({
+          checked={skyPreferences.automatic && !skyPreferences.staticBackground}
+          onChange={(event) => setSkyPreferences(saveSkyPreferences({
             automatic: event.target.checked, staticBackground: !event.target.checked,
-          })} /></label>
+          }))} /></label>
         <label className="my-abrigo-switch"><span>Interações do céu</span><input type="checkbox"
           checked={atmosphere.preferences.interactiveSky}
           onChange={(event) => atmosphere.update({ interactiveSky: event.target.checked })} /></label>

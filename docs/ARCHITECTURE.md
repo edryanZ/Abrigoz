@@ -66,7 +66,17 @@ emocional. Não há chat, prompt, contexto de IA ou endpoint externo na
 experiência vigente. O histórico dessa decisão permanece registrado no
 Roadmap.
 
-`src/core/atmosphere` calcula seis períodos e o próximo limite. `Ceu` renderiza
-camadas CSS sem remontar páginas. Sharing, offline e export mantêm regras fora
-dos componentes. Exportação permanece em chunk lazy. Não existe módulo Galeria,
+`src/core/atmosphere` calcula seis períodos locais, interpolação gradual,
+variação diária determinística, fase lunar aproximada e níveis de intensidade.
+`Ceu` é uma única instância global e renderiza camadas CSS sem remontar páginas
+ou o player. Interações não registram comportamento. Preferências de atmosfera
+e personalização passam por services/hooks; foco de leitura reduz elementos
+decorativos de forma transitória.
+
+`src/core/memory` concentra cápsulas futuras, momentos de pausa, preferências de
+memória e o adapter de “Guardar este momento”. Cápsulas, pausas e personalização
+usam schemas locais versionados e entram no backup consolidado. O adapter de
+momentos escreve de forma compatível no formato histórico de Favoritos sem que
+um módulo importe outro. Sharing, offline e export mantêm regras fora dos
+componentes. Exportação permanece em chunk lazy. Não existe módulo Galeria,
 asset pessoal ou provedor de IA no produto.
