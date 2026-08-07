@@ -20,9 +20,11 @@ import {
 import {
   createBackup,
   createEncryptedLocalBackup,
+  decryptBackupEnvelope,
   inspectBackupDocument,
   restoreBackup,
   restoreEncryptedBackup,
+  summarizeBackup,
   validateBackup,
 } from "./BackupManager";
 import { getDevice, markDeviceSynced } from "./DeviceService";
@@ -34,6 +36,7 @@ import {
   isValidAbrigoKey,
   isValidKeyHash,
 } from "./AbrigoKey";
+import { isPersonalWorkspace } from "../privacy/WorkspaceModeService.js";
 
 const VALID_STATES = new Set([
   "idle",
@@ -542,6 +545,33 @@ export const SyncService = {
     return {
       backup: await restoreEncryptedBackup(document, cryptoKey),
       legacy: false,
+    };
+  },
+
+  async previewLocalBackup(document, originalKey = null) {
+    if (!isPersonalWorkspace()) {
+      throw new Error("Prévia disponível somente no Abrigo Pessoal.");
+    }
+    const inspection = inspectBackupDocument(document);
+    if (!inspection.valid) throw new Error("Arquivo de backup inválido.");
+    if (inspection.format === "legacy") {
+      return { ...inspection, categories: summarizeBackup(document) };
+    }
+    const cryptoKey = originalKey
+      ? await deriveEncryptionKey(originalKey, ENCRYPTION_PURPOSES.BACKUP_EXPORT)
+      : (await getActiveMaterial())?.backupExport ?? null;
+    if (!cryptoKey) {
+      throw new Error("Sua Chave do Abrigo é necessária para visualizar este backup.");
+    }
+    const backup = await decryptBackupEnvelope(
+      document,
+      cryptoKey,
+      ENCRYPTION_PURPOSES.BACKUP_EXPORT
+    );
+    return {
+      format: "encrypted",
+      valid: true,
+      categories: summarizeBackup(backup),
     };
   },
 

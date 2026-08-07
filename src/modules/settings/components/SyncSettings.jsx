@@ -35,6 +35,7 @@ export default function SyncSettings() {
   const [backupFile, setBackupFile] = useState(null);
   const [backupInspection, setBackupInspection] = useState(null);
   const [legacyConfirmed, setLegacyConfirmed] = useState(false);
+  const [restoreConfirmed, setRestoreConfirmed] = useState(false);
 
   async function handleKeyAction(action) {
     const succeeded = action === "restore"
@@ -57,11 +58,13 @@ export default function SyncSettings() {
   async function handleBackupFile(file) {
     setBackupFile(file);
     setLegacyConfirmed(false);
+    setRestoreConfirmed(false);
     if (!file) {
       setBackupInspection(null);
       return;
     }
-    setBackupInspection(await sync.inspectBackupFile(file));
+    const inspection = await sync.inspectBackupFile(file);
+    setBackupInspection(inspection);
   }
 
   async function handleProtectedExport() {
@@ -70,7 +73,7 @@ export default function SyncSettings() {
   }
 
   async function handleLocalRestore() {
-    if (!backupFile) return;
+    if (!backupFile || !restoreConfirmed) return;
     const restored = await sync.restoreLocalBackup(
       backupFile,
       backupKey,
@@ -81,6 +84,7 @@ export default function SyncSettings() {
       setBackupFile(null);
       setBackupInspection(null);
       setLegacyConfirmed(false);
+      setRestoreConfirmed(false);
       window.setTimeout(() => window.location.reload(), 600);
     }
   }
@@ -108,6 +112,11 @@ export default function SyncSettings() {
       </div>
       <PrivacyNotice />
 
+      <div className="sync-protection-path" aria-label="Como a proteção funciona">
+        <span>Neste dispositivo</span><span aria-hidden="true">↓</span><strong>Protegido</strong>
+        <span aria-hidden="true">↓</span><span>Seu Abrigo</span>
+      </div>
+
       <dl className="sync-settings__status">
         <div>
           <dt>Conexão do Abrigo</dt>
@@ -129,7 +138,7 @@ export default function SyncSettings() {
           </dd>
         </div>
         <div>
-          <dt>Última sincronização</dt>
+          <dt>Última proteção</dt>
           <dd>{formatSyncDate(sync.status.lastSyncAt)}</dd>
         </div>
         <div>
@@ -359,10 +368,24 @@ export default function SyncSettings() {
             )}
 
             {backupInspection?.format === "encrypted" && (
-              <p className="sync-protected-file" role="status">
-                Backup protegido reconhecido.
-              </p>
+              <div className="sync-protected-file" role="status">
+                <p>Backup protegido reconhecido.</p>
+                <button type="button" className="config-button secondary" disabled={sync.busy}
+                  onClick={async () => {
+                    const preview = await sync.previewLocalBackup(backupFile, backupKey);
+                    if (preview) setBackupInspection(preview);
+                  }}>Ver prévia segura</button>
+              </div>
             )}
+
+            {backupInspection?.categories?.length > 0 && <div className="sync-backup-preview">
+              <strong>Este arquivo contém:</strong>
+              <ul>{backupInspection.categories.map((category) => <li key={category}>{category}</li>)}</ul>
+              <p>A prévia mostra somente categorias, sem revelar o conteúdo dos registros.</p>
+              <label><input type="checkbox" checked={restoreConfirmed}
+                onChange={(event) => setRestoreConfirmed(event.target.checked)} />
+                Confirmo que desejo aplicar este backup</label>
+            </div>}
 
             <button
               type="button"
@@ -372,6 +395,7 @@ export default function SyncSettings() {
                 sync.busy
                 || !backupFile
                 || !backupInspection?.valid
+                || !restoreConfirmed
                 || (
                   backupInspection.format === "legacy"
                   && !legacyConfirmed

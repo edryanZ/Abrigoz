@@ -8,6 +8,10 @@
   gap: 1rem;
 }
 
+.sync-protection-path{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin:14px 0;padding:12px;border:1px solid var(--border-color);border-radius:14px;background:var(--card-bg)}
+.sync-backup-preview{margin-top:12px;padding:12px;border:1px solid var(--border-color);border-radius:12px;background:var(--card-bg)}
+.sync-backup-preview ul{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.sync-backup-preview li{padding:4px 8px;border-radius:999px;background:var(--surface-strong)}
+
 .sync-settings__heading h3,
 .sync-settings__heading p,
 .sync-connect h4,

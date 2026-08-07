@@ -7,6 +7,14 @@ export const EXPORT_MODULES = Object.freeze({
   goals: { label: "Intenções", key: STORAGE_KEYS.GOALS },
   habits: { label: "Pequenos Cuidados", key: STORAGE_KEYS.HABITS },
   favorites: { label: "Coisas que fazem bem", key: STORAGE_KEYS.FAVORITE_ITEMS },
+  letters: { label: "Cartas", key: STORAGE_KEYS.LETTERS },
+  capsules: { label: "Cápsulas abertas ou permitidas", key: STORAGE_KEYS.FUTURE_CAPSULES },
+  preferences: { label: "Preferências", keys: [
+    STORAGE_KEYS.PERSONALIZATION,
+    STORAGE_KEYS.MEMORY_PREFERENCES,
+    STORAGE_KEYS.ACCESSIBILITY,
+    STORAGE_KEYS.OFFLINE_PREFERENCES,
+  ] },
   achievements: { label: "Marcos", key: STORAGE_KEYS.ACHIEVEMENTS },
   statistics: { label: "Retrospectiva", key: STORAGE_KEYS.STATISTICS },
 });
@@ -39,6 +47,11 @@ export function collectExportData(moduleIds, { period = "all", itemIdsByModule =
   for (const id of moduleIds) {
     const definition = EXPORT_MODULES[id];
     if (!definition) continue;
+    if (definition.keys) {
+      modules[id] = Object.fromEntries(definition.keys.map((key) => [key, safeClone(storage.get(key))])
+        .filter(([, value]) => value !== null));
+      continue;
+    }
     const raw = storage.get(definition.key);
     const container = Array.isArray(raw) ? raw : Array.isArray(raw?.items) ? raw.items : raw;
     let data = safeClone(container ?? []);

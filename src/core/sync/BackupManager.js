@@ -231,9 +231,30 @@ export function inspectBackupDocument(document) {
     return { format: "encrypted", valid: true };
   }
   if (validateBackup(document)) {
-    return { format: "legacy", valid: true };
+    return { format: "legacy", valid: true, categories: summarizeBackup(document) };
   }
   return { format: "invalid", valid: false };
+}
+
+const BACKUP_CATEGORY_LABELS = Object.freeze({
+  "abrigo:diary": "Reflexões",
+  "abrigo:letters": "Cartas",
+  "abrigo:events": "Meu Dia",
+  "abrigo:personal-favorites:v2": "Coisas que fazem bem",
+  "abrigo:future-capsules:v1": "Cápsulas",
+  "abrigo:memory-preferences:v1": "Preferências de memórias",
+  "abrigo:personalization:v1": "Preferências do Meu Abrigo",
+  "abrigo:accessibility:v1": "Preferências de acessibilidade",
+});
+
+export function summarizeBackup(backup) {
+  if (!validateBackup(backup)) return [];
+  const labels = Object.keys(backup.modules).map((key) => BACKUP_CATEGORY_LABELS[key] ?? (
+    key.includes("goal") ? "Intenções"
+      : key.includes("habit") ? "Pequenos Cuidados"
+        : key.replace(/^abrigo:/, "Dados do Abrigo")
+  ));
+  return [...new Set(labels)].slice(0, 30);
 }
 
 export function loadLocalBackup() {

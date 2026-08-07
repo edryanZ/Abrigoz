@@ -265,6 +265,16 @@ export function useAbrigoSync() {
     [run]
   );
 
+  const previewLocalBackup = useCallback(async (file, originalKey = null) => {
+    try {
+      const document = await readBackupFile(file);
+      return await SyncService.previewLocalBackup(document, originalKey || null);
+    } catch (error) {
+      showMessage("error", safeMessage(error, "Não foi possível visualizar este backup."));
+      return null;
+    }
+  }, [showMessage]);
+
   const disconnect = useCallback(() => run(
     () => SyncService.disconnect(),
     "Sincronização desconectada deste dispositivo.",
@@ -285,6 +295,7 @@ export function useAbrigoSync() {
     rotateAbrigoKey,
     exportLocalBackup,
     inspectBackupFile,
+    previewLocalBackup,
     restoreLocalBackup,
     disconnect,
     copyRevealedKey,
