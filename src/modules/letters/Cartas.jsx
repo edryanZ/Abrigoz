@@ -49,8 +49,8 @@ export default function Cartas() {
       <Container>
         <PageHeader
           greeting="💌 Cartas"
-          title="Caixa de Cartas"
-          subtitle="Cada envelope guarda uma mensagem diferente. Escolha um deles e descubra o que o Abrigo preparou para este momento."
+          title="Cartas"
+          subtitle="Escolha um envelope quando quiser encontrar uma mensagem para fazer companhia ao seu momento."
         />
 
         <Section>

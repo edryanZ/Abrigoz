@@ -1,1 +1,1 @@
-export default function DiarySearch({ value, onChange }) { return <input className="diary-search" value={value} onChange={(event) => onChange(event.target.value)} placeholder="Pesquisar no diário" aria-label="Pesquisar no diário" />; }
+export default function DiarySearch({ value, onChange }) { return <input className="diary-search" value={value} onChange={(event) => onChange(event.target.value)} placeholder="Reencontrar uma reflexão" aria-label="Pesquisar reflexões guardadas" />; }

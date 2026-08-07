@@ -53,12 +53,14 @@ try {
   const main = Object.entries(sizes).filter(([file]) => file.startsWith("index-"))
     .sort((first, second) => second[1] - first[1])[0];
   const assistant = Object.entries(sizes).find(([file]) => file.startsWith("Assistant-"));
+  const moment = Object.entries(sizes).find(([file]) => file.startsWith("MomentoDoDia-"));
   const exportChunk = Object.entries(sizes).find(([file]) => file.startsWith("ExportCenter-"));
   const mainContent = main && await readFile(new URL(`assets/${main[0]}`, distDir));
   assert.ok(main?.[1] < 270 * 1024, "Bundle principal excede 270 KB.");
   assert.ok(mainContent && gzipSync(mainContent, { level: 9 }).byteLength < 88 * 1024,
     "Bundle principal excede 88 KB gzip.");
-  assert.ok(assistant?.[1] < 100 * 1024, "Chunk do Assistente ausente ou excessivo.");
+  assert.equal(assistant, undefined, "O antigo chunk do Assistente não deve ser gerado.");
+  assert.ok(moment?.[1] < 100 * 1024, "Chunk do Momento do Dia ausente ou excessivo.");
   assert.ok(exportChunk?.[1] < 100 * 1024, "Chunk da Exportação ausente ou excessivo.");
   const serviceWorker = await readFile(new URL("sw.js", distDir), "utf8");
   assert.equal(/"url":\s*"[^"]+\.mp3"/i.test(serviceWorker), false,

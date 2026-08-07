@@ -40,3 +40,23 @@ O roadmap oficial do Abrigo e organizado por Sprints. Os principios e limites do
 - [x] Central de Exportação
 
 A Sprint 5 não possui Galeria, fotografias pessoais, álbuns ou upload de imagens.
+
+## Reformulação emocional — direção vigente
+
+A experiência de produto foi reposicionada para **“um espaço digital de
+acolhimento, reflexão e motivação leve”**. As entregas anteriores continuam no
+histórico técnico, mas as seguintes experiências foram substituídas na
+interface vigente:
+
+- Assistente opcional → **Momento do Dia**, 100% local e sem IA;
+- Diário → **Reflexões**, com escrita opcional;
+- Metas → **Intenções**, sem cobrança de progresso;
+- Hábitos → **Pequenos Cuidados**, sem streak ou punição;
+- Favoritos → **Coisas que fazem bem**;
+- Estatísticas → **Retrospectiva**, sem desempenho;
+- Conquistas → **Marcos**, sem gamificação compulsiva;
+- Calendário permanece funcional como **Meu Dia**.
+
+Dados históricos continuam preservados em seus formatos locais existentes.
+Sincronização, backup criptografado, recuperação, PWA, música e céu não são
+reescritos por esta etapa.

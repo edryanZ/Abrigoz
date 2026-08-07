@@ -59,7 +59,7 @@ export const diasDificeis = [
     id: "dias-dificeis-09",
     titulo: "Pequenos avanços",
     texto:
-      "Mesmo um pequeno progresso ainda é progresso. Não subestime a importância de continuar.",
+      "Você não precisa medir o dia pelo quanto avançou. Às vezes, atravessá-lo no seu ritmo já ocupa espaço suficiente.",
     assinatura: "Abrigo",
   },
   {
@@ -108,7 +108,7 @@ export const diasDificeis = [
     id: "dias-dificeis-16",
     titulo: "Continue",
     texto:
-      "Você não precisa correr. Apenas continue caminhando no seu ritmo. Cada passo conta.",
+      "Você não precisa correr nem provar nada pelo caminho. Vá no ritmo que for possível para você agora.",
     assinatura: "Abrigo",
   },
   {

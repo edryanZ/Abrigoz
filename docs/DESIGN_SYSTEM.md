@@ -2,23 +2,21 @@
 
 > Guia oficial de identidade visual e componentes do Abrigo.
 
----
+## Direção emocional vigente
 
-# Objetivo
+O Abrigo é um espaço digital de acolhimento, reflexão e motivação leve. A
+interface deve parecer um lugar onde a pessoa pode respirar, não um painel que
+precisa administrar. Convites são opcionais e nunca comunicam atraso, falha,
+sequência perdida ou obrigação de produtividade.
 
-Atualize apenas o arquivo docs/DESIGN_SYSTEM.md.
+Priorizar bastante espaço respirável, poucos elementos simultâneos, textos
+curtos e humanos e uma hierarquia calma. Evitar contadores, barras de progresso,
+badges de desempenho, excesso de cards e linguagem corporativa na experiência
+principal. Céu, vidro, natureza, luz, noite e amanhecer continuam centrais.
 
-Objetivo:
-
-Alinhar o Design System à especificação oficial do ABRIGO_2_SPEC.md.
-
-Não modificar código.
-
-Não alterar nenhum outro arquivo.
-
-Preservar toda a documentação existente e apenas complementar ou atualizar onde houver conflito.
-
-Adicionar as seguintes diretrizes:
+Termos técnicos ficam em detalhes avançados e documentação. A interface comum
+evita “dashboard”, “performance”, “produtividade”, “prioridade alta”,
+“sequência”, “falha” e linguagem de IA.
 
 ## Componentes oficiais reutilizáveis
 
@@ -53,13 +51,12 @@ Toda nova tela deve seguir:
 
 ---
 
-## Dashboard
+## Lar
 
-O Dashboard (Lar) deve utilizar GlassCards para organizar informações.
-
-Os widgets devem seguir o mesmo padrão visual.
-
-Evitar cartões com estilos diferentes.
+A Lar usa poucos blocos e GlassCards somente quando ajudarem a hierarquia. A
+saudação, o humor opcional, o Momento do Dia, um Pequeno Cuidado e uma Reflexão
+devem ter prioridade sobre métricas ou atalhos. Não transformar a página em
+dashboard de produtividade nem preencher todo o espaço com widgets.
 
 ---
 
@@ -67,13 +64,13 @@ Evitar cartões com estilos diferentes.
 
 Padronizar a Navbar com a estrutura:
 
-🎵        Abrigo        ☰
+☰        Abrigo        🎵
 
 Onde:
 
-- botão da música à esquerda;
+- menu principal à esquerda;
 - nome Abrigo centralizado;
-- menu à direita.
+- botão da música à direita.
 
 ---
 
@@ -102,6 +99,11 @@ Sempre dividir quando necessário.
 ## Animações
 
 As animações devem ser discretas.
+
+Quando `prefers-reduced-motion: reduce` estiver ativo, movimentos decorativos,
+transforms animados e transições não essenciais devem ser reduzidos ou
+removidos. O feedback essencial de estado deve continuar perceptível sem
+depender de movimento.
 
 Priorizar:
 

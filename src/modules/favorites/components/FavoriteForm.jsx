@@ -89,39 +89,15 @@ export default function FavoriteForm({ item, onSave, onCancel }) {
             checked={form.pinned}
             onChange={(event) => update("pinned", event.target.checked)}
           />
-          Fixado
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={form.primary}
-            onChange={(event) => update("primary", event.target.checked)}
-          />
-          Favorito principal
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={form.avoidWhenTired}
-            onChange={(event) => update("avoidWhenTired", event.target.checked)}
-          />
-          Evitar quando eu estiver cansado
+          Deixar por perto
         </label>
       </div>
-      <label htmlFor="favorite-moods">Combina com estes momentos</label>
-      <input id="favorite-moods"
-        placeholder="tranquilo, animado"
-        value={Array.isArray(form.moodTags) ? form.moodTags.join(", ") : form.moodTags}
-        onChange={(event) => update("moodTags", event.target.value.split(","))} />
-      <label htmlFor="favorite-duration">Duração aproximada</label>
-      <input id="favorite-duration" maxLength={40} value={form.approximateDuration}
-        onChange={(event) => update("approximateDuration", event.target.value)} />
       {error && <p className="organizer-error" role="alert">{error}</p>}
       <div className="organizer-form-actions">
         <button type="button" className="secondary" onClick={onCancel}>
           Cancelar
         </button>
-        <button type="submit">Salvar favorito</button>
+        <button type="submit">Guardar</button>
       </div>
     </form>
   );

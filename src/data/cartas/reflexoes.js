@@ -136,7 +136,7 @@ export const reflexoes = [
     id: "reflexoes-20",
     titulo: "A jornada",
     texto:
-      "A vida não é feita apenas de grandes conquistas. Ela também é construída pelos pequenos momentos que vivemos todos os dias.",
+      "Muitos pequenos momentos fazem parte da vida. Alguns parecem comuns e ainda assim podem guardar significado.",
     assinatura: "Abrigo",
   },
 ];

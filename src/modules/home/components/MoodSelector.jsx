@@ -9,18 +9,12 @@ const moods = [
   {
     id: "very_happy",
     emoji: <FaGrinStars />,
-    label: "Muito feliz",
+    label: "Muito bem",
   },
-  { id: "excited", emoji: <FaGrinStars />, label: "Animado" },
-  { id: "unmotivated", emoji: <FaMeh />, label: "Sem motivação" },
-  { id: "anxious", emoji: <FaTired />, label: "Ansioso" },
-  { id: "irritated", emoji: <FaFrown />, label: "Irritado" },
-  { id: "confused", emoji: <FaMeh />, label: "Confuso" },
-  { id: "prefer_not", emoji: <FaSmile />, label: "Prefiro não dizer" },
   {
     id: "happy",
     emoji: <FaLaughBeam />,
-    label: "Feliz",
+    label: "Bem",
   },
   {
     id: "calm",
@@ -30,12 +24,12 @@ const moods = [
   {
     id: "normal",
     emoji: <FaMeh />,
-    label: "Normal",
+    label: "Mais ou menos",
   },
   {
-    id: "sad",
+    id: "difficult",
     emoji: <FaFrown />,
-    label: "Triste",
+    label: "Dia difícil",
   },
   {
     id: "tired",
@@ -63,9 +57,11 @@ export default function MoodSelector() {
         {moods.map((mood) => (
           <button
             key={mood.id}
+            type="button"
             className={`mood-button ${
               selectedMood === mood.id ? "active" : ""
             }`}
+            aria-pressed={selectedMood === mood.id}
             onClick={() => handleMood(mood)}
           >
             <span className="mood-icon">{mood.emoji}</span>
@@ -77,7 +73,7 @@ export default function MoodSelector() {
 
       {selectedMood && (
         <p className="mood-success">
-          Seu humor foi registrado 💚
+          Ficou guardado só para você. 💚
         </p>
       )}
     </GlassCard>

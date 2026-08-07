@@ -192,3 +192,36 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* Experiência emocional: Pequenos Cuidados. O formato histórico de hábitos é
+   mantido internamente, sem expor streak ou taxa de conclusão. */
+.cares-page { display: grid; gap: 26px; padding-bottom: 56px; }
+.daily-care { display: grid; gap: 14px; width: min(100%, 720px); padding: clamp(20px, 5vw, 30px); }
+.daily-care > span { color: var(--accent); font-size: .8rem; font-weight: 700; }
+.daily-care h2, .daily-care p { margin: 0; line-height: 1.55; }
+.daily-care button, .care-compose button, .care-card button, .care-filter button {
+  min-height: 44px; border: 1px solid var(--border-color); border-radius: 999px;
+  background: var(--card-bg); color: var(--text-primary); padding: 9px 14px; cursor: pointer;
+}
+.daily-care button { width: fit-content; background: var(--accent); color: #fff; }
+.care-compose { display: grid; gap: 8px; max-width: 720px; }
+.care-compose label, .care-empty { color: var(--text-secondary); }
+.care-compose > div { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.care-compose input { min-width: 0; border: 1px solid var(--border-color); border-radius: 14px;
+  background: var(--card-bg); color: var(--text-primary); padding: 11px; font: inherit; }
+.care-compose button:disabled { opacity: .5; cursor: default; }
+.care-filter { display: flex; gap: 8px; overflow-x: auto; }
+.care-filter button { flex: 0 0 auto; }
+.care-filter button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.care-list { display: grid; gap: 12px; }
+.care-card { display: grid; gap: 12px; padding: 18px; }
+.care-card > div { display: flex; align-items: center; gap: 10px; }
+.care-card h2, .care-card p { margin: 0; }
+.care-card > button { justify-self: start; }
+.care-card > button.is-done { border-color: var(--accent); color: var(--accent); }
+.care-card > button.care-archive { border: 0; background: transparent; color: var(--text-secondary); }
+.daily-care button:focus-visible, .care-compose input:focus-visible,
+.care-compose button:focus-visible, .care-filter button:focus-visible,
+.care-card button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+@media (min-width: 760px) { .care-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .care-compose > div { grid-template-columns: 1fr; } }

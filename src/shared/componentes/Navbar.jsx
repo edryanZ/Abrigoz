@@ -14,13 +14,8 @@ import {
   FaHeart,
   FaMusic,
   FaCog,
-  FaStar,
-  FaBullseye,
   FaLeaf,
-  FaChartBar,
   FaSearch,
-  FaTrophy,
-  FaComments,
   FaFileExport,
   FaBookOpen,
 } from "react-icons/fa";
@@ -57,6 +52,9 @@ export default function Navbar() {
     if (!menuAberto) return;
 
     document.body.style.overflow = "hidden";
+    const focusFrame = requestAnimationFrame(() => {
+      menuRef.current?.querySelector("button")?.focus();
+    });
 
     function handleKey(event) {
       if (event.key === "Escape") {
@@ -78,6 +76,7 @@ export default function Navbar() {
 
     return () => {
       document.body.style.overflow = "";
+      cancelAnimationFrame(focusFrame);
 
       window.removeEventListener("keydown", handleKey);
       document.removeEventListener("mousedown", handleClick);
@@ -86,39 +85,29 @@ export default function Navbar() {
 
   const grupos = [
     {
-      nome: "Pessoal",
+      nome: "Principal",
       itens: [
         { nome: "Lar", rota: ROUTES.HOME, icone: <FaHome /> },
-        { nome: "Diário", rota: ROUTES.DIARY, icone: <FaBookOpen /> },
-        {
-          nome: "Calendário",
-          rota: ROUTES.CALENDAR,
-          icone: <FaCalendarAlt />,
-        },
+        { nome: "Momento do Dia", rota: ROUTES.MOMENT, icone: <FaHeart /> },
+        { nome: "Reflexões", rota: ROUTES.DIARY, icone: <FaBookOpen /> },
         { nome: "Cartas", rota: ROUTES.LETTERS, icone: <FaEnvelope /> },
+        { nome: "Coisas que fazem bem", rota: ROUTES.FAVORITES, icone: <FaHeart /> },
       ],
     },
     {
-      nome: "Jornada",
+      nome: "Seu espaço",
       itens: [
-        { nome: "Favoritos", rota: ROUTES.FAVORITES, icone: <FaStar /> },
-        { nome: "Metas", rota: ROUTES.GOALS, icone: <FaBullseye /> },
-        { nome: "Hábitos", rota: ROUTES.HABITS, icone: <FaLeaf /> },
-        { nome: "Estatísticas", rota: ROUTES.STATISTICS, icone: <FaChartBar /> },
-        { nome: "Conquistas", rota: ROUTES.ACHIEVEMENTS, icone: <FaTrophy /> },
+        { nome: "Pequenos Cuidados", rota: ROUTES.HABITS, icone: <FaLeaf /> },
+        { nome: "Intenções", rota: ROUTES.GOALS, icone: <FaHeart /> },
+        { nome: "Meu Dia", rota: ROUTES.CALENDAR, icone: <FaCalendarAlt /> },
+        { nome: "Retrospectiva", rota: ROUTES.STATISTICS, icone: <FaBookOpen /> },
       ],
     },
     {
-      nome: "Ferramentas",
+      nome: "Mais",
       itens: [
         { nome: "Pesquisa", rota: ROUTES.SEARCH, icone: <FaSearch /> },
-        { nome: "Assistente", rota: ROUTES.ASSISTANT, icone: <FaComments /> },
         { nome: "Exportar", rota: ROUTES.EXPORT, icone: <FaFileExport /> },
-      ],
-    },
-    {
-      nome: "Sistema",
-      itens: [
         {
           nome: "Configurações",
           rota: ROUTES.SETTINGS,
@@ -175,16 +164,15 @@ export default function Navbar() {
         className={`menu-lateral ${menuAberto ? "aberto" : ""}`}
         aria-label="Menu principal"
         aria-hidden={!menuAberto}
+        inert={menuAberto ? undefined : ""}
       >
         <div className="menu-topo">
           <div>
             <h2>Abrigo</h2>
 
             <p>
-              Um lugar para guardar
-              momentos,
-              lembranças
-              e histórias.
+              Um espaço de acolhimento,
+              reflexão e motivação leve.
             </p>
           </div>
 

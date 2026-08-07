@@ -12,13 +12,9 @@ globalThis.localStorage = {
 };
 globalThis.window = { dispatchEvent() {} };
 
-const { loadAIPreferences } = await import("../src/core/ai/AIPreferencesService.js");
-const { buildAIContext } = await import("../src/core/ai/AIContextBuilder.js");
-const { redactPersonalInformation } = await import("../src/core/ai/AIRedactionService.js");
-const { AIService } = await import("../src/core/ai/AIService.js");
 const {
-  prioritizeRecommendations,
-} = await import("../src/core/ai/RecommendationService.js");
+  getDailyCare, getDailyMoment, getDailyReflection,
+} = await import("../src/core/emotional/DailyEmotionalService.js");
 const {
   nextSkyBoundary, resolveColorMode, resolveSkyPeriod,
 } = await import("../src/core/atmosphere/SkyThemeService.js");
@@ -56,40 +52,12 @@ const {
   createBackup, createLocalExportBackup, validateBackup,
 } = await import("../src/core/sync/BackupManager.js");
 
-test("Assistente inicia desativado e sem contexto automático", () => {
-  values.clear();
-  const preferences = loadAIPreferences();
-  assert.equal(preferences.assistantEnabled, false);
-  assert.equal(preferences.allowSelectedContent, false);
-  const context = buildAIContext({
-    instruction: "Organize meu dia",
-    selections: [{ label: "Diário", content: "privado", selected: false }],
-  });
-  assert.deepEqual(context.selections, []);
-});
-
-test("redaction oculta dados comuns e identificadores", () => {
-  const hash = "a".repeat(64);
-  const result = redactPersonalInformation(
-    `Contato teste@example.com, (69) 99999-9999 e ${hash}`
-  );
-  assert.ok(!result.includes("teste@example.com"));
-  assert.ok(!result.includes("99999-9999"));
-  assert.ok(!result.includes(hash));
-});
-
-test("Assistente local funciona sem serviço externo", () => {
-  assert.match(AIService.localSuggestion("goal"), /meta/i);
-});
-
-test("recomendações mantêm prioridade local", () => {
-  const result = prioritizeRecommendations({
-    favorites: [{ id: "favorite" }],
-    local: [{ id: "local" }],
-    external: [{ id: "external" }],
-  });
-  assert.deepEqual(result.map((item) => item.id), ["favorite", "local", "external"]);
-  assert.equal(result.at(-1).origin, "Serviço externo");
+test("Momento, reflexão e cuidado do dia são locais e determinísticos", () => {
+  const date = new Date(2026, 7, 7, 12, 0);
+  assert.deepEqual(getDailyMoment(date), getDailyMoment(date));
+  assert.deepEqual(getDailyReflection(date), getDailyReflection(date));
+  assert.deepEqual(getDailyCare(date), getDailyCare(date));
+  assert.ok(getDailyMoment(date).message.length > 20);
 });
 
 test("céu respeita os seis períodos e limites locais", () => {
@@ -149,12 +117,11 @@ test("céu é global, persistente entre rotas e não reinicia o player", async (
   assert.match(providers, /<MusicProvider>[\s\S]*\{children\}[\s\S]*<\/MusicProvider>/);
 
   const routeFiles = [
-    "modules/achievements/Achievements.jsx", "modules/admin/AdminAnalytics.jsx",
-    "modules/assistant/Assistant.jsx", "modules/calendar/Calendario.jsx",
+    "modules/admin/AdminAnalytics.jsx", "modules/calendar/Calendario.jsx",
     "modules/diary/pages/Diary.jsx", "modules/export/ExportCenter.jsx",
     "modules/favorites/Favoritos.jsx", "modules/goals/Metas.jsx",
     "modules/habits/Habitos.jsx", "modules/home/Lar.jsx",
-    "modules/home/components/Welcome.jsx", "modules/letters/Cartas.jsx",
+    "modules/home/components/Welcome.jsx", "modules/letters/Cartas.jsx", "modules/moment/MomentoDoDia.jsx",
     "modules/profile/Sobre.jsx", "modules/search/GlobalSearch.jsx",
     "modules/settings/Configuracoes.jsx", "modules/statistics/Statistics.jsx",
   ];
@@ -244,7 +211,7 @@ test("JSON protegido não mantém conteúdo em texto aberto", async () => {
   assert.ok(!JSON.stringify(protectedDocument).includes("conteúdo pessoal"));
 });
 
-test("backup inclui preferências elegíveis sem segredos de cápsula", () => {
+test("backup remoto preserva histórico legado e exportação local não o expõe", () => {
   values.clear();
   values.set("abrigo:sky-preferences:v1", JSON.stringify({ version: 1, intensity: "soft" }));
   values.set("abrigo:ai-history:v1", JSON.stringify({

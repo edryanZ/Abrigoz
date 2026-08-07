@@ -23,6 +23,9 @@
   padding:.8rem 1rem;border:0;border-radius:13px;background:var(--accent);color:#fff;font-weight:650;
   text-decoration:none;cursor:pointer}.config-button.danger{background:#b93a45}.config-card.is-danger{border-color:#d6454555}
 .config-button:focus-visible,.config-link:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.config-card input:focus-visible,.config-card select:focus-visible,.config-card textarea:focus-visible{
+  outline:3px solid var(--accent);outline-offset:3px}.legacy-assistant-data{display:grid;gap:9px;padding-top:12px;
+  border-top:1px solid var(--border-color)}.legacy-assistant-data h3{margin:0;font-size:1rem}
 .config-actions{display:flex;flex-wrap:wrap;gap:8px}.config-actions .config-button{font-size:.82rem;padding:.65rem .8rem}
 @media(max-width:800px){.settings-shell{grid-template-columns:1fr}.settings-nav{position:static;
   display:flex;overflow-x:auto;scrollbar-width:thin}.settings-nav a{flex:0 0 auto}.config-button{width:100%}}

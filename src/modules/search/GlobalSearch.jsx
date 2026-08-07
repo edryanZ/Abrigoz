@@ -20,8 +20,8 @@ import Container from "../../shared/ui/Container";
 import GlassCard from "../../shared/ui/GlassCard";
 
 const LABELS = {
-  diary: "Diário", calendar: "Calendário", favorites: "Favoritos",
-  goals: "Metas", habits: "Hábitos", achievements: "Conquistas", letters: "Cartas",
+  diary: "Reflexões", calendar: "Meu Dia", favorites: "Coisas que fazem bem",
+  goals: "Intenções", habits: "Pequenos Cuidados", achievements: "Marcos", letters: "Cartas",
 };
 
 function Highlight({ text, query, hidden }) {
@@ -73,8 +73,8 @@ export default function GlobalSearch() {
     <>
       <Navbar />
       <Container>
-        <PageHeader title="Pesquisa global" subtitle="Encontre o que já está guardado neste dispositivo." />
-        <main className="global-search">
+        <PageHeader title="Pesquisa" subtitle="Reencontre, com calma, o que você guardou neste dispositivo." />
+        <div className="global-search">
           <GlassCard className="global-search__controls">
             <label>Pesquisar
               <input type="search" value={query} autoComplete="off"
@@ -130,7 +130,7 @@ export default function GlobalSearch() {
                   </div>
                 </section>)}
               </>}
-        </main>
+        </div>
       </Container>
     </>
   );

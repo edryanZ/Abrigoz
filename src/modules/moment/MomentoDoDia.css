@@ -1,0 +1,20 @@
+.daily-moment-page { width: min(100%, 760px); margin: 0 auto; padding-bottom: 64px; }
+.daily-moment-card { display: grid; gap: 24px; padding: clamp(22px, 6vw, 42px); }
+.daily-moment-category { width: fit-content; color: var(--accent); font-size: .78rem;
+  font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.daily-moment-card blockquote { margin: 0; font-size: clamp(1.45rem, 6vw, 2.2rem);
+  line-height: 1.45; font-weight: 600; }
+.daily-moment-invitation { padding-top: 18px; border-top: 1px solid var(--border-color); }
+.daily-moment-invitation span { color: var(--text-secondary); font-size: .82rem; }
+.daily-moment-invitation p { margin: 8px 0 0; line-height: 1.7; }
+.daily-moment-card button { justify-self: start; min-height: 44px; padding: 10px 15px;
+  border: 1px solid var(--border-color); border-radius: 999px; background: var(--card-bg);
+  color: var(--text-primary); cursor: pointer; }
+.daily-moment-card button:disabled { opacity: .72; cursor: default; }
+.daily-moment-card button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.daily-moment-note { color: var(--text-secondary); font-size: .86rem; text-align: center; }
+@media (prefers-reduced-motion: no-preference) {
+  .daily-moment-card { animation: emotional-fade .6s ease both; }
+  @keyframes emotional-fade { from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); } }
+}

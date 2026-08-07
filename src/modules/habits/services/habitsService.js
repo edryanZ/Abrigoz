@@ -13,7 +13,7 @@ function normalizeHabit(habit) {
   const now = new Date().toISOString();
   return {
     id: String(habit.id ?? crypto.randomUUID()),
-    name: String(habit.name ?? habit.nome ?? "Hábito sem nome").trim(),
+    name: String(habit.name ?? habit.nome ?? "Cuidado sem nome").trim(),
     description: String(habit.description ?? habit.descricao ?? ""),
     icon: String(habit.icon ?? habit.icone ?? "🌱").slice(0, 8),
     color: /^#[0-9a-f]{6}$/i.test(habit.color ?? "")
@@ -49,7 +49,7 @@ function migrate(raw) {
 
 function persist(data) {
   if (!storage.set(STORAGE_KEYS.HABITS, data)) {
-    throw new Error("Não foi possível salvar seus hábitos.");
+    throw new Error("Não foi possível guardar seus cuidados.");
   }
 }
 

@@ -30,7 +30,7 @@ function normalizeGoal(goal) {
   const status = GOAL_STATUSES[goal.status] ? goal.status : "not_started";
   return {
     id: String(goal.id ?? crypto.randomUUID()),
-    title: String(goal.title ?? goal.titulo ?? "Meta sem título").trim(),
+    title: String(goal.title ?? goal.titulo ?? "Intenção sem título").trim(),
     description: String(goal.description ?? goal.descricao ?? ""),
     category: String(goal.category ?? goal.categoria ?? "Pessoal").trim(),
     startDate: goal.startDate ?? goal.dataInicial ?? now.slice(0, 10),
@@ -57,7 +57,7 @@ function migrate(raw) {
 
 function persist(data) {
   if (!storage.set(STORAGE_KEYS.GOALS, data)) {
-    throw new Error("Não foi possível salvar suas metas.");
+    throw new Error("Não foi possível guardar suas intenções.");
   }
 }
 

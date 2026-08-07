@@ -12,6 +12,10 @@
 .global-search__results a { display: grid; gap: 7px; padding: 16px; border: 1px solid var(--border-color);
   border-radius: 16px; background: var(--card-bg); color: var(--text-primary); }
 .global-search__results p { margin: 0; color: var(--text-secondary); }
+.global-search input:focus-visible, .global-search select:focus-visible,
+.global-search button:focus-visible, .global-search__results a:focus-visible {
+  outline: 3px solid var(--accent); outline-offset: 3px;
+}
 .global-search__results mark { background: color-mix(in srgb, var(--accent) 30%, transparent); color: inherit; }
 .global-search__empty { padding: 36px; text-align: center; color: var(--text-secondary); }
 @media (max-width: 520px) { .global-search__filters { grid-template-columns: 1fr; } }

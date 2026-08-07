@@ -1,291 +1,109 @@
-# 🧪 Testing
+# Testing
 
-> Guia oficial de testes do Abrigo.
+## Objetivo
 
----
+Validar o Abrigo antes de cada publicação sem perder compatibilidade com dados
+e experiências existentes. Testes novos devem confirmar comportamento, não
+somente a presença de textos no código.
 
-# Objetivo
+## Testes automatizados
 
-Garantir que todas as funcionalidades do Abrigo funcionem corretamente antes de serem publicadas.
-
-Todo recurso novo deve ser validado antes do deploy.
-
----
-
-# Filosofia
-
-O objetivo dos testes não é apenas encontrar erros.
-
-Os testes garantem que funcionalidades antigas continuem funcionando após novas implementações.
-
----
-
-# Tipos de Testes
-
-O Abrigo poderá utilizar:
-
-- Testes Manuais
-- Testes Unitários
-- Testes de Componentes
-- Testes de Integração
-- Testes End-to-End
-
----
-
-# Testes Manuais
-
-Antes de publicar qualquer versão verificar:
-
-✔ Home
-
-✔ Dashboard
-
-✔ Cartas
-
-✔ Calendário
-
-✔ Configurações
-
-✔ Navegação
-
-✔ Tema
-
-✔ Música
-
-✔ Responsividade
-
-✔ Performance
-
-✔ Console
-
----
-
-# Testes de Responsividade
-
-Validar sempre:
-
-## Mobile
-
-320px
-
-375px
-
-390px
-
-414px
-
-480px
-
----
-
-## Tablet
-
-768px
-
-820px
-
-912px
-
-1024px
-
----
-
-## Desktop
-
-1280px
-
-1366px
-
-1440px
-
-1600px
-
-1920px
-
----
-
-# Navegadores
-
-Sempre testar:
-
-- Chrome
-
-- Edge
-
-- Firefox
-
-- Safari
-
----
-
-# PWA
-
-Verificar:
-
-- Instalação
-
-- Ícones
-
-- Splash Screen
-
-- Funcionamento Offline
-
----
-
-# Performance
-
-Sempre verificar:
-
-- Tempo de carregamento
-
-- Imagens
-
-- Lazy Loading
-
-- Lighthouse
-
----
-
-# Console
-
-Antes de cada Release:
-
-✔ Sem Errors
-
-✔ Sem Warnings importantes
-
-✔ Sem Imports quebrados
-
-✔ Sem Requests falhando
-
----
-
-# Acessibilidade
-
-Verificar:
-
-- Navegação por teclado
-
-- Focus
-
-- Contraste
-
-- Leitura dos textos
-
-- Labels
-
-- Botões
-
----
-
-# Checklist
-
-Antes do Deploy
-
-☐ Projeto compila
-
-☐ Sem erros
-
-☐ Sem warnings importantes
-
-☐ Responsivo
-
-☐ Componentes funcionando
-
-☐ Tema funcionando
-
-☐ Cartas funcionando
-
-☐ Dashboard funcionando
-
-☐ Navegação funcionando
-
-☐ Build funcionando
-
-☐ Deploy funcionando
-
----
-
-# Testes Futuros
-
-Planejado
-
-- Vitest
-
-- React Testing Library
-
-- Playwright
-
-- Lighthouse CI
-
----
-
-# Cobertura
-
-Objetivo futuro
-
-Componentes críticos
-
-100%
-
-Serviços
-
-100%
-
-Hooks
-
-100%
-
-Fluxos principais
-
-100%
-
----
-
-# Bugs
-
-Todo bug deve conter:
-
-Descrição
-
-Passos para reproduzir
-
-Resultado esperado
-
-Resultado encontrado
-
-Versão
-
-Navegador
-
-Sistema operacional
-
----
-
-# Objetivo Final
-
-Toda nova versão do Abrigo deve ser publicada apenas após passar por uma validação completa de funcionamento, responsividade, acessibilidade e desempenho.
-
-## Validação reproduzível da Sprint 6
-
-Execute, sem alterar dependências:
+Executar antes de uma entrega:
 
 ```bash
 npm run test
 npm run lint
 npm run build
 npm run check:budgets
-npm run analyze:bundle
-npm audit
+git diff --check
 ```
 
-Os testes permanentes cobrem dados antigos e corrompidos, armazenamento
-indisponível, player, céu, PWA, privacidade, criptografia, exportação,
-sincronização e analytics. A inspeção manual em `npm run preview` deve
-complementá-los em navegador real, incluindo cache limpo, offline, instalação,
-atualização sob confirmação, rotas diretas, player durante navegação, temas,
-redução de movimento e larguras de 320 a 1366 px.
+## Checklist funcional atual
 
-Não use conteúdo pessoal real nos testes. Migrations e endpoints
-administrativos são revisados localmente, mas aplicados ou publicados apenas
-em procedimento separado e autorizado.
+- Lar funciona sem aparência de dashboard de produtividade;
+- Momento do Dia permanece igual na mesma data local e muda no dia seguinte;
+- Reflexões, Intenções, Pequenos Cuidados e Coisas que fazem bem preservam os
+  formatos históricos;
+- Meu Dia, Cartas, Pesquisa e Retrospectiva carregam sem erro;
+- Configurações, música, tema, céu, exportação e PWA continuam funcionais;
+- sincronização é opcional e o modo somente local continua utilizável;
+- redirects legados levam às experiências atuais;
+- não existe runtime do antigo Assistente/IA.
+
+## Compatibilidade de dados
+
+Testar com registros de versões anteriores para garantir que mudanças de
+nomenclatura não apaguem nem renomeiem storage keys. Backups antigos aceitos
+pelo formato de compatibilidade devem ser restaurados e validados antes de
+qualquer gravação definitiva.
+
+O histórico legado do antigo Assistente, quando presente após uso antigo ou
+restauração compatível, deve poder ser apagado voluntariamente sem remover os
+demais dados.
+
+## Momento do Dia
+
+Cobrir pelo menos:
+
+- mesma data local produz o mesmo conteúdo;
+- dia seguinte produz conteúdo diferente;
+- virada de mês;
+- virada de ano;
+- seleção baseada em calendário local, sem `toISOString()` para definir o dia.
+
+## Rotas de compatibilidade
+
+Validar redirects para:
+
+- `/assistente`;
+- `/diario`;
+- `/metas`;
+- `/habitos`;
+- `/favoritos`;
+- `/estatisticas`;
+- `/conquistas`;
+- `/calendario`;
+- `/home`.
+
+## Acessibilidade
+
+Validar manualmente e, quando possível, automaticamente:
+
+- Tab e Shift+Tab;
+- foco visível em botões, links, inputs, selects e textareas;
+- drawer fechado da Navbar fora da ordem de tabulação;
+- Escape fecha o drawer e devolve foco ao botão de abertura;
+- labels associados aos campos;
+- botões somente com ícone possuem nome acessível;
+- contraste em tema claro e escuro;
+- `prefers-reduced-motion: reduce` reduz movimento decorativo.
+
+## Responsividade
+
+Validar pelo menos:
+
+- 360px e 412px;
+- 768px e 1024px;
+- 1280px e 1920px.
+
+Observar Navbar, Lar, Momento do Dia, Welcome, Reflexões e Configurações para
+overflow horizontal, textos longos e alvos de toque.
+
+## Navegadores e PWA
+
+Testar versões suportadas de Chrome, Edge, Firefox e Safari. Na PWA, verificar
+instalação, ícones, inicialização, funcionamento offline e atualização
+confirmada.
+
+## Performance e console
+
+- sem erros ou warnings relevantes no console;
+- sem imports quebrados ou requests inesperados;
+- lazy loading preservado;
+- budgets do bundle aprovados;
+- nenhum request de IA na experiência atual.
+
+## Registro de bugs
+
+Todo bug deve registrar descrição, passos para reproduzir, resultado esperado,
+resultado encontrado, versão e navegador.

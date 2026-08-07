@@ -46,6 +46,11 @@
   background: rgba(255,255,255,.12);
 }
 
+.mood-button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .mood-button.active {
   background: rgba(255,255,255,.18);
 
@@ -106,4 +111,10 @@
     justify-content:flex-start;
   }
 
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mood-button { transition: none; }
+  .mood-button:hover, .mood-button.active { transform: none; }
+  .mood-success { animation: none; }
 }

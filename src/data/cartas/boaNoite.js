@@ -108,7 +108,7 @@ export const boaNoite = [
     id: "boa-noite-16",
     titulo: "Valorize sua caminhada",
     texto:
-      "Olhe para trás por um instante e reconheça o quanto você já evoluiu. Muitas conquistas começaram com pequenos passos.",
+      "Se quiser olhar para trás por um instante, repare apenas no que teve significado para você ao longo do caminho.",
     assinatura: "Abrigo",
   },
   {

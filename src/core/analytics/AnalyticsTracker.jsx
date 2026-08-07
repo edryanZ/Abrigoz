@@ -8,7 +8,7 @@ const PAGE_NAMES = {
   [ROUTES.HOME]: "home", [ROUTES.DIARY]: "diary", [ROUTES.CALENDAR]: "calendar",
   [ROUTES.LETTERS]: "letters", [ROUTES.FAVORITES]: "favorites", [ROUTES.GOALS]: "goals",
   [ROUTES.HABITS]: "habits", [ROUTES.STATISTICS]: "statistics",
-  [ROUTES.ACHIEVEMENTS]: "achievements", [ROUTES.SEARCH]: "search",
+  [ROUTES.MOMENT]: "moment", [ROUTES.SEARCH]: "search",
   [ROUTES.SETTINGS]: "settings",
 };
 

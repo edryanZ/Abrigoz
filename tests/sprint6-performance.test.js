@@ -8,7 +8,7 @@ test("todas as páginas permanecem lazy e a estrutura global é estável", async
   const expected = [
     "Welcome", "Lar", "Calendario", "Favoritos", "Metas", "Habitos", "Cartas",
     "Sobre", "Configuracoes", "Diary", "Statistics", "GlobalSearch",
-    "Achievements", "AdminAnalytics", "Assistant", "ExportCenter",
+    "MomentoDoDia", "AdminAnalytics", "ExportCenter",
   ];
   for (const name of expected) {
     assert.match(routes, new RegExp(`const ${name} = lazy\\(`), name);

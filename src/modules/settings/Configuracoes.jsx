@@ -1,6 +1,6 @@
 import "./Configuracoes.css";
 import {
-  FaAccessibleIcon, FaChartBar, FaCog, FaHeart, FaInfoCircle, FaKey,
+  FaAccessibleIcon, FaChartBar, FaCog, FaInfoCircle, FaKey,
   FaMusic, FaPalette, FaShieldAlt, FaTrashAlt, FaUser,
 } from "react-icons/fa";
 import Navbar from "../../shared/componentes/Navbar";
@@ -11,18 +11,15 @@ import { useTheme } from "../../shared/contexts/ThemeContext";
 import { useUser } from "../../shared/contexts/UserContext";
 import { useMusic } from "../../shared/contexts/MusicContext";
 import { storage } from "../../core/storage/storage";
-import {
-  loadCompanionPreferences, saveCompanionPreferences,
-} from "../../core/companion/CompanionPreferencesService";
 import SyncSettings from "./components/SyncSettings";
 import PrivacyToggle from "../../shared/componentes/PrivacyToggle";
 import AnalyticsSettings from "./components/AnalyticsSettings";
 import { APP } from "../../core/constants/app";
 import { useState } from "react";
 import {
-  loadAIPreferences, saveAIPreferences,
-} from "../../core/ai/AIPreferencesService";
-import { clearAIHistory } from "../../core/ai/AIHistoryRepository";
+  clearLegacyAssistantHistory,
+  hasLegacyAssistantHistory,
+} from "../../core/privacy/LegacyAssistantDataService";
 import {
   loadSkyPreferences, restoreSkyPreferences, saveSkyPreferences,
 } from "../../core/atmosphere/SkyThemePreferencesService";
@@ -34,13 +31,12 @@ import OfflineSettings from "./components/OfflineSettings";
 import ExportSettings from "./components/ExportSettings";
 
 const SECTIONS = [
-  ["assistente","Assistente e serviços externos"],
   ["ceu","Céu e atmosfera"],
   ["compartilhamento","Compartilhamento"],
   ["offline","Offline e armazenamento"],
   ["exportacao","Exportação"],
   ["perfil","Perfil"],["aparencia","Aparência"],["musica","Música e som"],
-  ["privacidade","Privacidade"],["companheiro","Sugestões e Companheiro"],
+  ["privacidade","Privacidade"],
   ["dados","Dados e backup"],["sincronizacao","Sincronização"],["chave","Chave do Abrigo"],
   ["metricas","Métricas anônimas"],["acessibilidade","Acessibilidade"],
   ["aplicativo","Informações do aplicativo"],["cuidado","Área de cuidado"],
@@ -56,9 +52,10 @@ export default function Configuracoes() {
   const { greeting } = useTheme();
   const { name, updateUser, clearUser } = useUser();
   const music = useMusic();
-  const [companion, setCompanion] = useState(loadCompanionPreferences);
-  const [ai, setAI] = useState(loadAIPreferences);
   const [sky, setSky] = useState(loadSkyPreferences);
+  const [hasLegacyAssistantData, setHasLegacyAssistantData] = useState(
+    hasLegacyAssistantHistory
+  );
 
   const changeName = () => {
     const value = prompt("Como você gostaria de ser chamado?", name);
@@ -70,17 +67,15 @@ export default function Configuracoes() {
     storage.removeMany(["abrigo_streak","abrigo_statistics","abrigo_moods","abrigo_achievements"]);
     window.location.replace("/");
   };
-  const updateCompanion = (changes) => setCompanion(saveCompanionPreferences(changes));
-  const updateAI = (changes) => {
-    const next = saveAIPreferences(changes);
-    if (!next.assistantEnabled) {
-      import("../../core/ai/AIService").then(({ AIService }) => AIService.cancel());
-    }
-    setAI(next);
-  };
   const updateSky = (changes) => setSky(saveSkyPreferences(changes));
+  const clearLegacyAssistantData = () => {
+    if (!window.confirm(
+      "Apagar somente o histórico local deixado pelo antigo Assistente? Os outros dados do Abrigo serão preservados."
+    )) return;
+    if (clearLegacyAssistantHistory()) setHasLegacyAssistantData(false);
+  };
 
-  return <><Navbar /><Container><main className="configuracoes-page">
+  return <><Navbar /><Container><div className="configuracoes-page">
     <PageHeader greeting={greeting} title="Configurações"
       subtitle="Deixe o Abrigo confortável para o seu jeito de usar." />
     <div className="settings-shell">
@@ -89,24 +84,6 @@ export default function Configuracoes() {
           <span>{index + 1}</span>{label}</a>)}
       </nav>
       <div className="settings-content">
-        <SettingCard id="assistente" icon={<FaHeart />} title="Assistente e serviços externos">
-          <p>A IA começa desligada. Cada autorização pode ser alterada separadamente.</p>
-          {[
-            ["assistantEnabled","Ativar Assistente externo"],
-            ["allowSelectedContent","Permitir envio de conteúdo selecionado"],
-            ["saveHistory","Salvar histórico do Assistente"],
-            ["allowStatistics","Usar estatísticas como contexto"],
-            ["allowMood","Usar humor como contexto"],
-            ["externalRecommendations","Receber recomendações externas"],
-            ["autoRedact","Ocultar informações pessoais automaticamente"],
-          ].map(([key, label]) => <label className="config-switch" key={key}><span>{label}</span>
-            <input type="checkbox" checked={ai[key]}
-              onChange={(event) => updateAI({ [key]: event.target.checked })} /></label>)}
-          <p>A remoção automática pode não encontrar todos os dados sensíveis. Revise sempre antes de enviar.</p>
-          <button className="config-button" onClick={() => {
-            clearAIHistory(); setAI(loadAIPreferences());
-          }}>Apagar histórico</button>
-        </SettingCard>
         <SettingCard id="ceu" icon={<FaPalette />} title="Céu e atmosfera">
           <p>O fundo acompanha o horário local sem recarregar páginas ou interromper músicas.</p>
           {[
@@ -173,20 +150,12 @@ export default function Configuracoes() {
         <SettingCard id="privacidade" icon={<FaShieldAlt />} title="Privacidade">
           <p>Oculta rapidamente textos pessoais. Não substitui o bloqueio do dispositivo.</p>
           <PrivacyToggle />
-        </SettingCard>
-        <SettingCard id="companheiro" icon={<FaHeart />} title="Sugestões e Companheiro">
-          <label className="config-switch"><span>Mostrar sugestões no Lar</span>
-            <input type="checkbox" checked={companion.enabled}
-              onChange={(event) => updateCompanion({ enabled: event.target.checked })} /></label>
-          <label>Quantidade exibida
-            <select value={companion.displayCount}
-              onChange={(event) => updateCompanion({ displayCount: Number(event.target.value) })}>
-              <option value="3">3 sugestões</option><option value="4">4 sugestões</option>
-              <option value="5">5 sugestões</option>
-            </select></label>
-          <label className="config-switch"><span>Evitar atividades com tela</span>
-            <input type="checkbox" checked={!companion.showScreen}
-              onChange={(event) => updateCompanion({ showScreen: !event.target.checked })} /></label>
+          {hasLegacyAssistantData && <div className="legacy-assistant-data">
+            <h3>Dados antigos do Assistente</h3>
+            <p>Versões antigas do Abrigo podiam guardar um histórico local do antigo Assistente. Esse conteúdo não é mais usado pela experiência atual.</p>
+            <button className="config-button danger" type="button"
+              onClick={clearLegacyAssistantData}>Apagar dados antigos do Assistente</button>
+          </div>}
         </SettingCard>
         <SettingCard id="dados" icon={<FaCog />} title="Dados e backup">
           <p>Backups locais e restauração permanecem dentro do painel seguro abaixo.</p>
@@ -214,5 +183,5 @@ export default function Configuracoes() {
         </SettingCard>
       </div>
     </div>
-  </main></Container></>;
+  </div></Container></>;
 }

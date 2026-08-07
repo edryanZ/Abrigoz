@@ -16,10 +16,16 @@ const recursos = [
       "A página principal do Abrigo, criada para transmitir conforto e reunir tudo o que é mais importante.",
   },
   {
-    icon: "📅",
-    titulo: "Calendário",
+    icon: "🌿",
+    titulo: "Momento do Dia",
     descricao:
-      "Datas importantes ficam organizadas para que momentos especiais nunca sejam esquecidos.",
+      "Uma mensagem local e tranquila para acompanhar o dia sem pedir nada em troca.",
+  },
+  {
+    icon: "📖",
+    titulo: "Reflexões",
+    descricao:
+      "Perguntas opcionais para guardar respostas quando existir vontade de escrever.",
   },
   {
     icon: "💌",
@@ -28,10 +34,10 @@ const recursos = [
       "Um espaço para escrever, guardar e revisitar mensagens sempre que desejar.",
   },
   {
-    icon: "🎵",
-    titulo: "Música",
+    icon: "💚",
+    titulo: "Pequenos Cuidados",
     descricao:
-      "Trilhas sonoras ajudam cada lembrança a se tornar ainda mais especial.",
+      "Sugestões simples de cuidado, sem sequência, cobrança ou desempenho.",
   },
 ];
 
@@ -59,7 +65,7 @@ export default function Sobre() {
         <PageHeader
           greeting="🌙 Sobre"
           title="Conheça o Abrigo"
-          subtitle="Um espaço criado para guardar memórias, registrar momentos importantes e transformar lembranças em algo que sempre estará ao seu alcance."
+          subtitle="Um espaço digital de acolhimento, reflexão e motivação leve."
         />
 
         <Section>
@@ -67,16 +73,15 @@ export default function Sobre() {
             <h2>O que é o Abrigo?</h2>
 
             <p>
-              O Abrigo é um aplicativo pensado para preservar momentos importantes
-              de uma forma simples, organizada e acolhedora. Mais do que armazenar
-              informações, ele busca dar significado às lembranças, permitindo que
-              cada registro continue vivo com o passar do tempo.
+              O Abrigo é um espaço pessoal para desacelerar, refletir e guardar
+              aquilo que faz sentido para você. Tudo pode ser usado no seu ritmo,
+              sem transformar cuidado em tarefa ou resultado.
             </p>
 
             <p>
               Cada detalhe foi desenvolvido para criar um ambiente tranquilo,
-              onde seja possível revisitar histórias, celebrar datas especiais
-              e manter memórias sempre por perto.
+              onde seja possível revisitar histórias, encontrar pequenas pausas
+              e manter lembranças por perto.
             </p>
           </GlassCard>
         </Section>
@@ -95,8 +100,8 @@ export default function Sobre() {
 
             <p>
               O Abrigo foi criado por Edryan Lopes com a ideia de oferecer um
-              lugar pessoal para guardar momentos, organizar a rotina,
-              acompanhar objetivos e cuidar da própria jornada. O projeto busca
+              lugar pessoal para guardar momentos, acolher reflexões e cuidar da
+              própria jornada. O projeto busca
               unir simplicidade, privacidade e acolhimento em uma experiência
               que respeita o tempo e as escolhas de cada pessoa.
             </p>
@@ -138,9 +143,8 @@ export default function Sobre() {
 
             <p>
               O Abrigo foi criado acreditando que pequenas lembranças podem ter
-              um grande significado. Registrar acontecimentos, guardar mensagens
-              e organizar momentos importantes é uma forma de manter vivas partes
-              da nossa história.
+              um grande significado. Guardar mensagens, perguntas e momentos é
+              uma forma de deixar partes da nossa história por perto.
             </p>
 
             <p>

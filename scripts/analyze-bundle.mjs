@@ -5,7 +5,7 @@ import { gzipSync } from "node:zlib";
 const root = path.resolve("dist");
 const assetsDirectory = path.join(root, "assets");
 const routePrefixes = new Set([
-  "Achievements", "AdminAnalytics", "Assistant", "Calendario", "Cartas",
+  "AdminAnalytics", "MomentoDoDia", "Calendario", "Cartas",
   "Configuracoes", "Diary", "ExportCenter", "Favoritos", "GlobalSearch",
   "Habitos", "Lar", "Metas", "Sobre", "Statistics", "Welcome",
 ]);

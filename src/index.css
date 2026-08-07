@@ -138,6 +138,13 @@ select{
 
 }
 
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible{
+  outline:3px solid var(--accent);
+  outline-offset:2px;
+}
+
 img{
 
   display:block;

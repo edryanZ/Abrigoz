@@ -17,7 +17,7 @@ export const bomDia = [
     id: "bom-dia-03",
     titulo: "Pequenos passos",
     texto:
-      "Nem todo progresso precisa ser enorme. Um pequeno passo dado hoje vale muito mais do que um grande plano que nunca saiu do papel.",
+      "Um pequeno passo pode ser apenas isso: algo que coube no seu dia. Não precisa virar medida para o que ainda está por vir.",
     assinatura: "Abrigo",
   },
   {
@@ -52,7 +52,7 @@ export const bomDia = [
     id: "bom-dia-08",
     titulo: "Acredite no processo",
     texto:
-      "Grandes conquistas costumam nascer de pequenas atitudes repetidas todos os dias. Continue seguindo em frente.",
+      "Algumas coisas encontram seu caminho aos poucos. Você pode seguir no ritmo que fizer sentido para este dia.",
     assinatura: "Abrigo",
   },
   {

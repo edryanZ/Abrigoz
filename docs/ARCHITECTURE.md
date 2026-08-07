@@ -35,12 +35,18 @@ Componentes não acessam `localStorage`, IndexedDB, Supabase ou `CryptoKey`
 diretamente. O aviso compartilhado `PrivacyNotice` traduz o estado seguro
 publicado por `SyncService` sem expor detalhes internos.
 
-## Inteligência local
+## Experiências locais e inteligência do produto
 
-`src/core/intelligence` oferece funções puras de períodos, estatísticas, mapa
-de momentos, Hoje, memórias e resumos. A pesquisa usa adaptadores e índice
-reconstruível em memória. Conquistas e Companheiro usam regras versionadas e
-fatos locais. Não existe IA externa nesta Sprint.
+`src/core/intelligence` oferece funções puras de períodos, retrospectiva, mapa
+de momentos, memórias e resumos. A pesquisa usa adaptadores e índice
+reconstruível em memória. Regras locais podem apoiar recordações e sugestões,
+mas não são apresentadas como inteligência artificial nem análise pessoal.
+
+A reformulação emocional mantém os formatos persistidos existentes e adapta a
+experiência por services e funções locais. `Momento do Dia` seleciona conteúdo
+deterministicamente pela data local. Reflexões, Intenções e Pequenos Cuidados
+reutilizam a persistência histórica de Diário, Metas e Hábitos por camadas de
+compatibilidade não destrutivas; componentes não migram storage diretamente.
 
 Preferências pessoais elegíveis entram no backup protegido. Índice de
 pesquisa, consentimento de métricas e tokens temporários não entram. O modo
@@ -53,13 +59,14 @@ passar por `SyncService`, fila, backup ou Chave do Abrigo. O endpoint em `api/`
 consulta agregados com credenciais server-side e fica desativado sem
 configuração.
 
-## Expansão opcional
+## Atmosfera e recursos opcionais
 
-`src/core/ai` separa preferências, redaction, contexto explícito, histórico e
-adaptador. A página lazy nunca lê módulos automaticamente. Chamadas externas
-usam `/api/ai`, ficam desligadas e dependem de endpoint não implantado.
+A experiência de Assistente/IA da Sprint 5 foi substituída na reformulação
+emocional. Não há chat, prompt, contexto de IA ou endpoint externo na
+experiência vigente. O histórico dessa decisão permanece registrado no
+Roadmap.
 
 `src/core/atmosphere` calcula seis períodos e o próximo limite. `Ceu` renderiza
 camadas CSS sem remontar páginas. Sharing, offline e export mantêm regras fora
-dos componentes. Assistente e Exportação têm chunks lazy. Não existe módulo
-Galeria, asset pessoal ou provedor de IA no bundle inicial.
+dos componentes. Exportação permanece em chunk lazy. Não existe módulo Galeria,
+asset pessoal ou provedor de IA no produto.

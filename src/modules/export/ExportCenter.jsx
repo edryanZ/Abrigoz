@@ -79,7 +79,7 @@ export default function ExportCenter() {
     } catch (error) { setMessage(error.message); }
   };
 
-  return <><Navbar /><Container><main className="export-page">
+  return <><Navbar /><Container><div className="export-page">
     <PageHeader greeting={greeting} title="Exportar"
       subtitle="Escolha exatamente o que deseja levar com você." />
     <GlassCard className="export-card">
@@ -131,5 +131,5 @@ export default function ExportCenter() {
           aria-label="Prévia completa da exportação" />
         <div><button onClick={() => setReviewing(false)}>Cancelar</button>
           <button onClick={generate}>Confirmar e exportar</button></div></div></div>}
-  </main></Container></>;
+  </div></Container></>;
 }

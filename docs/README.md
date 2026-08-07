@@ -1,212 +1,81 @@
-# 🏡 Abrigo
+# Abrigo
 
-> Sua vida muda. Suas lembranças permanecem. O Abrigo existe para protegê-las.
+> Um espaço digital de acolhimento, reflexão e motivação leve.
 
----
+## Sobre
 
-# Sobre
+O Abrigo oferece um espaço pessoal para respirar, guardar momentos e revisitar
+o que faz sentido sem cobrança de produtividade. A experiência funciona
+localmente e a sincronização é opcional.
 
-Abrigo é uma plataforma desenvolvida para ajudar pessoas a registrarem, organizarem e preservarem momentos importantes da vida.
+Privacidade, simplicidade, acessibilidade e compatibilidade com dados já
+guardados orientam o produto.
 
-Mais do que um diário, o Abrigo reúne ferramentas para acompanhar a jornada pessoal do usuário, registrar emoções, criar hábitos, alcançar metas e guardar lembranças de forma segura.
+## Estado do projeto
 
-O projeto foi criado com foco em uma experiência acolhedora, moderna e intuitiva, colocando a privacidade e a organização como pilares fundamentais.
+Abrigo 2.0 está em desenvolvimento ativo como aplicação Web/PWA mobile-first.
 
----
+## Experiências atuais
 
-# Objetivo
+- Lar;
+- Momento do Dia;
+- Reflexões;
+- Intenções;
+- Pequenos Cuidados;
+- Coisas que fazem bem;
+- Meu Dia;
+- Retrospectiva e Marcos;
+- Cartas e Pesquisa;
+- música e atmosfera;
+- exportação, backup e sincronização opcional;
+- Configurações e Sobre.
 
-Criar um ambiente digital onde qualquer pessoa possa guardar sua história com segurança, simplicidade e conforto.
+Os nomes antigos Diário, Metas, Hábitos, Favoritos, Estatísticas e Conquistas
+permanecem somente quando necessários para compatibilidade técnica ou registro
+histórico. A antiga experiência de Assistente/IA foi descontinuada e não faz
+parte do produto vigente.
 
----
+## Arquitetura e tecnologia
 
-# Estado do Projeto
+O frontend usa React, Vite, JavaScript e CSS com arquitetura Module First. A
+aplicação é preparada como PWA. O Supabase é usado apenas pela sincronização
+opcional, conforme `DATABASE.md` e `SECURITY.md`.
 
-**Versão atual**
+## Documentação
 
-Abrigo 2.0
+- `ABRIGO_2_SPEC.md` — fonte normativa;
+- `ARCHITECTURE.md` — arquitetura;
+- `PRODUCT_VISION.md` — visão do produto;
+- `ROADMAP.md` — evolução histórica;
+- `DESIGN_SYSTEM.md` — experiência e linguagem visual;
+- `SECURITY.md` — segurança e privacidade;
+- `DATABASE.md` — limites do armazenamento remoto;
+- `TESTING.md` — estratégia de testes.
 
-**Status**
+## Segurança e dados
 
-🟢 Em desenvolvimento ativo.
+O Abrigo funciona sem sincronização. Quando ela é ativada, a Chave do Abrigo
+continua sob controle da pessoa e o servidor recebe somente o hash necessário
+para identificação. Backups remotos são consolidados e protegidos segundo as
+regras de `SECURITY.md`.
 
----
+## Filosofia
 
-# Tecnologias
+- simplicidade;
+- acolhimento;
+- segurança e privacidade;
+- acessibilidade;
+- autonomia;
+- preservação não destrutiva dos dados.
 
-Frontend
+## Licença
 
-- React
-- Vite
-- JavaScript
-- CSS
+Este projeto é privado. Todos os direitos reservados ao autor.
 
-Hospedagem
+## Autor
 
-- Vercel
+**Edryan Lopes** — idealizador e desenvolvedor do Abrigo.
 
-Controle de versão
+## Projeto
 
-- Git
-- GitHub
-
----
-
-# Funcionalidades atuais
-
-- Home
-- Jornada
-- Carta do Dia
-- Estatísticas
-- Configurações
-- Sistema de temas
-- Dashboard
-- PWA
-
----
-
-# Funcionalidades planejadas
-
-- Diário
-- Registro de humor
-- Hábitos
-- Metas
-- Conquistas
-- Calendário inteligente
-- Cápsula do Tempo
-- Linha da Vida
-- Login
-- Sincronização
-- Backup
-- Inteligência Artificial
-- Aplicativo Android
-- Aplicativo iOS
-
----
-
-# Estrutura da documentação
-
-Toda a documentação do projeto está localizada na pasta:
-
-```
-docs/
-```
-
-Ela é composta por:
-
-```
-README.md
-PRODUCT_VISION.md
-ROADMAP.md
-ARCHITECTURE.md
-DESIGN_SYSTEM.md
-SECURITY.md
-DATABASE.md
-CONTRIBUTING.md
-CHANGELOG.md
-BRANDING.md
-```
-
----
-
-# Estrutura do Projeto
-
-A arquitetura do Abrigo segue uma organização baseada em módulos.
-
-Cada funcionalidade possui seu próprio espaço dentro do projeto.
-
-Mais detalhes podem ser encontrados em:
-
-```
-docs/ARCHITECTURE.md
-```
-
----
-
-# Design
-
-O Abrigo utiliza um Design System próprio.
-
-Todas as cores, componentes, espaçamentos e padrões de interface estão documentados em:
-
-```
-docs/DESIGN_SYSTEM.md
-```
-
----
-
-# Segurança
-
-Privacidade é um dos pilares do Abrigo.
-
-As diretrizes de segurança, autenticação e proteção de dados estão documentadas em:
-
-```
-docs/SECURITY.md
-```
-
----
-
-# Roadmap
-
-O planejamento de evolução do projeto está disponível em:
-
-```
-docs/ROADMAP.md
-```
-
----
-
-# Objetivo de longo prazo
-
-Transformar o Abrigo em uma plataforma completa para registro da vida, organização pessoal e bem-estar, disponível para Web, Android e iOS.
-
----
-
-# Filosofia
-
-O Abrigo foi desenvolvido seguindo alguns princípios fundamentais.
-
-- Simplicidade
-- Organização
-- Segurança
-- Privacidade
-- Escalabilidade
-- Reutilização de código
-- Experiência do usuário em primeiro lugar
-
----
-
-# Contribuição
-
-As regras de desenvolvimento podem ser encontradas em:
-
-```
-docs/CONTRIBUTING.md
-```
-
----
-
-# Licença
-
-Este projeto é privado.
-
-Todos os direitos reservados ao autor.
-
----
-
-# Autor
-
-**Edryãn Lopes Lobo**
-
-GitHub
-
-https://github.com/edryanZ
-
----
-
-# Projeto
-
-Abrigo 2.0
-
-Desenvolvido com dedicação para criar um espaço seguro onde pessoas possam preservar suas histórias, acompanhar sua evolução e construir novas lembranças.
+Abrigo 2.0.

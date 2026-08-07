@@ -1,129 +1,26 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
-import { useUser } from "./UserContext";
+import { getMoodHistory, saveMood as saveMoodService } from "../../core/services/mood";
 
-import {
-  registerVisit,
-  getStreakData,
-} from "../../core/services/streak";
-
-import {
-  getStatistics,
-  incrementVisits,
-  incrementLettersRead,
-  incrementDailyLetters,
-  incrementMoods,
-} from "../../core/services/statistics";
-
-import {
-  getMoodHistory,
-  getMoodCount,
-  saveMood as saveMoodService,
-} from "../../core/services/mood";
-
-import {
-  checkAchievements,
-  getUnlockedAchievementObjects,
-} from "../../core/services/achievements";
-
-const JourneyContext = createContext();
+const JourneyContext = createContext(null);
 
 export function JourneyProvider({ children }) {
-  const { user } = useUser();
+  const [moods, setMoods] = useState(getMoodHistory);
 
-  const [streak, setStreak] = useState(getStreakData());
-  const [statistics, setStatistics] = useState(getStatistics());
-  const [moods, setMoods] = useState(getMoodHistory());
-  const [achievements, setAchievements] = useState(
-    getUnlockedAchievementObjects()
-  );
-
-  const refresh = useCallback(() => {
-    const streakData = getStreakData();
-    const stats = getStatistics();
-    const moodHistory = getMoodHistory();
-
-    checkAchievements({
-      lettersRead: stats.lettersRead,
-      currentStreak: streakData.currentStreak,
-      moodsRegistered: getMoodCount(),
-      profileCreated: !!user,
-      firstVisit: streakData.totalVisits > 0,
-    });
-
-    setStreak(streakData);
-    setStatistics(stats);
-    setMoods(moodHistory);
-    setAchievements(getUnlockedAchievementObjects());
-  }, [user]);
-
-  useEffect(() => {
-    registerVisit();
-    incrementVisits();
-  }, []);
-
-  useEffect(() => {
-    const timer = window.setTimeout(refresh, 0);
-    return () => window.clearTimeout(timer);
+  const refresh = useCallback(() => setMoods(getMoodHistory()), []);
+  const saveMood = useCallback((mood, note = "") => {
+    const saved = saveMoodService(mood, note);
+    refresh();
+    return saved;
   }, [refresh]);
 
-  function saveMood(mood, note = "") {
-    saveMoodService(mood, note);
-
-    incrementMoods();
-
-    refresh();
-  }
-
-  function incrementLetters(amount = 1) {
-    incrementLettersRead(amount);
-    incrementDailyLetters(amount);
-
-    refresh();
-  }
-
-  function unlockAllAchievements() {
-    incrementLettersRead(1000);
-
-    checkAchievements({
-      lettersRead: 1000,
-      currentStreak: 1000,
-      moodsRegistered: 1000,
-      profileCreated: true,
-      firstVisit: true,
-    });
-
-    refresh();
-  }
-
-  return (
-    <JourneyContext.Provider
-      value={{
-        streak,
-        statistics,
-        moods,
-        achievements,
-
-        refresh,
-
-        saveMood,
-
-        incrementLetters,
-
-        unlockAllAchievements,
-      }}
-    >
-      {children}
-    </JourneyContext.Provider>
-  );
+  return <JourneyContext.Provider value={{ moods, refresh, saveMood }}>
+    {children}
+  </JourneyContext.Provider>;
 }
 
 export function useJourney() {
-  return useContext(JourneyContext);
+  const value = useContext(JourneyContext);
+  if (!value) throw new Error("useJourney precisa estar dentro de JourneyProvider.");
+  return value;
 }

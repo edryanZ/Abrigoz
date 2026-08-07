@@ -10,7 +10,7 @@ export const motivacao = [
     id: "motivacao-02",
     titulo: "Um passo de cada vez",
     texto:
-      "Grandes conquistas são construídas aos poucos. Continue caminhando, mesmo que o progresso pareça pequeno.",
+      "Nem tudo precisa acontecer de uma vez. Respeite o seu ritmo e deixe cada passo ter o tamanho que couber hoje.",
     assinatura: "Abrigo",
   },
   {
@@ -29,9 +29,9 @@ export const motivacao = [
   },
   {
     id: "motivacao-05",
-    titulo: "Pequenas vitórias",
+    titulo: "Pequenos momentos",
     texto:
-      "Valorize cada conquista, por menor que pareça. Elas são a prova de que você está evoluindo.",
+      "Alguns momentos simples merecem ser reconhecidos pelo que significaram para você, sem precisar medir onde levaram.",
     assinatura: "Abrigo",
   },
   {
@@ -80,7 +80,7 @@ export const motivacao = [
     id: "motivacao-12",
     titulo: "Faça acontecer",
     texto:
-      "Esperar pelas condições ideais pode atrasar seus sonhos. Comece, ajuste o caminho e siga evoluindo.",
+      "Nem sempre as condições ideais aparecem. Se fizer sentido, você pode começar pequeno e ajustar o caminho no seu tempo.",
     assinatura: "Abrigo",
   },
   {
@@ -127,9 +127,9 @@ export const motivacao = [
   },
   {
     id: "motivacao-19",
-    titulo: "Você está evoluindo",
+    titulo: "Olhe para o caminho",
     texto:
-      "Mesmo que ainda falte muito caminho, lembre-se de quanto você já percorreu até aqui.",
+      "Sem precisar comparar distâncias, você pode olhar com carinho para o caminho que já fez até aqui.",
     assinatura: "Abrigo",
   },
   {

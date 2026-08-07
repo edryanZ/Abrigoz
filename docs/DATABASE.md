@@ -70,9 +70,17 @@ liberadas ao cliente.
 
 ## Conteúdo local
 
-Diário, calendário, favoritos, metas, hábitos e demais módulos continuam
-armazenados localmente. O servidor recebe um único backup consolidado e
+Reflexões, Meu Dia, Coisas que fazem bem, Intenções, Pequenos Cuidados e demais
+módulos continuam armazenados localmente. Internamente, os formatos históricos
+de Diário, Calendário, Favoritos, Metas e Hábitos permanecem compatíveis para
+evitar perda de dados. O servidor recebe um único backup consolidado e
 criptografado, sem estrutura individual de tabelas para esses módulos.
+
+## Reformulação emocional
+
+A reformulação emocional não cria tabelas, buckets, Auth, RPCs ou endpoints de
+dados pessoais. Nenhuma migration é necessária. A mudança é de experiência e
+camadas locais; a arquitetura de backup consolidado continua inalterada.
 
 ## Métricas anônimas
 
@@ -92,10 +100,10 @@ dias pela rotina de limpeza e mantém o acesso administrativo via
 `service_role`. Ela não cria eventos brutos, não altera dados pessoais e
 também deve ser aplicada manualmente após revisão.
 
-## Sprint 5
+## Sprint 5 e evolução posterior
 
-Nenhuma migration foi criada ou aplicada. Assistente, recomendações, céu,
-preferências, compartilhamento local, offline e exportação não exigem novas
-tabelas. Cápsulas remotas exigiriam ciphertext, token hasheado, expiração e
-revogação server-side e permanecem desativadas. Não existe tabela, bucket ou
-migration de Galeria.
+Nenhuma migration foi criada ou aplicada para Assistente, recomendações, céu,
+preferências, compartilhamento local, offline ou exportação. O Assistente foi
+posteriormente substituído por uma experiência totalmente local. Cápsulas
+remotas exigiriam ciphertext, token hasheado, expiração e revogação server-side
+e permanecem desativadas. Não existe tabela, bucket ou migration de Galeria.

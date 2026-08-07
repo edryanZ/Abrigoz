@@ -106,12 +106,12 @@ antiga permanece por compatibilidade.
 - Quem possuir a Chave do Abrigo e acesso ao serviço poderá abrir o conteúdo
   protegido; a chave deve ser guardada com cuidado.
 
-## Inteligência e métricas
+## Processamento local e métricas
 
-Estatísticas, pesquisa, humor, memórias, conquistas e recomendações são
-processados localmente. A pesquisa não cria índice remoto plaintext e o
-histórico é opcional. Recomendações explicam a regra local, podem ser
-dispensadas e não oferecem diagnóstico.
+Retrospectiva, pesquisa, humor, memórias, Marcos e sugestões emocionais são
+processados localmente. Momento do Dia não recebe texto pessoal nem realiza
+chamadas externas. A pesquisa não cria índice remoto plaintext. Nenhum desses
+recursos oferece diagnóstico ou inferência clínica.
 
 O modo privacidade é visual: não criptografa o armazenamento local, não bloqueia
 o dispositivo e não impede screenshots.
@@ -121,11 +121,12 @@ separada. Eventos têm esquema fechado e token temporário sem ligação com
 Abrigo, chave ou conteúdo. Não há publicidade, fingerprinting, rastreamento
 entre sites ou perfil individual. O painel depende de autenticação server-side.
 
-## Proteções da Sprint 5
+## Recursos preservados da Sprint 5
 
-O Assistente exige autorizações separadas e prévia. Redaction tenta ocultar
-dados comuns, mas não substitui revisão humana. Prompts e respostas não entram
-em métricas.
+O Assistente opcional implementado na Sprint 5 foi descontinuado pela
+reformulação emocional. Seus prompts, preferências e integrações externas não
+fazem parte da experiência vigente. A remoção não altera as garantias de
+criptografia, sincronização, backup, compartilhamento ou métricas.
 
 Cápsulas locais usam AES-GCM e chave exclusiva. O storage guarda ciphertext e
 hash de token; chave e token ficam somente em memória. O backup inclui apenas

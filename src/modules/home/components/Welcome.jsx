@@ -1,6 +1,6 @@
 import "./Welcome.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import {
   FaCloud,
@@ -26,8 +26,11 @@ export default function Welcome() {
 
   const [name, setName] = useState("");
   const [typedKey, setTypedKey] = useState("");
-  const [step, setStep] = useState("choices");
+  const [step, setStep] = useState("intro");
   const [localMessage, setLocalMessage] = useState("");
+
+  const clearRevealedKey = sync.clearRevealedKey;
+  useEffect(() => () => clearRevealedKey(), [clearRevealedKey]);
 
   if (user) {
     return <Navigate to={ROUTES.HOME} replace />;
@@ -79,7 +82,7 @@ export default function Welcome() {
   return (
     <>
       <Container>
-        <main className="welcome-page">
+        <div className="welcome-page">
           <GlassCard className="welcome-card" hover={false}>
             <div className="welcome-icon" aria-hidden="true">
               <FaShieldAlt />
@@ -89,8 +92,8 @@ export default function Welcome() {
               <span className="welcome-eyebrow">{greeting}</span>
               <h1>Bem-vindo ao Abrigo</h1>
               <p>
-                Um espaço seu, acolhedor e privado. Você decide se quer
-                começar somente neste dispositivo ou ativar a sincronização.
+                Um espaço digital de acolhimento, reflexão e motivação leve.
+                Você pode entrar sem configurar nada além do seu nome.
               </p>
             </div>
 
@@ -127,38 +130,42 @@ export default function Welcome() {
               </div>
             )}
 
-            {step === "choices" && (
-              <div className="welcome-paths" aria-label="Formas de começar">
+            {step === "intro" && (
+              <div className="welcome-paths" aria-label="Começar no Abrigo">
                 <button
                   type="button"
-                  className="welcome-path"
+                  className="welcome-path welcome-path--primary"
                   onClick={startLocalOnly}
                   disabled={sync.busy}
                 >
                   <FaMobileAlt aria-hidden="true" />
                   <span>
-                    <strong>Começar somente neste dispositivo</strong>
-                    <small>
-                      Use o Abrigo normalmente sem configurar sincronização.
-                    </small>
+                    <strong>Entrar no meu Abrigo</strong>
+                    <small>Comece neste dispositivo, no seu tempo.</small>
                   </span>
                 </button>
 
                 <button
                   type="button"
-                  className="welcome-path welcome-path--primary"
-                  onClick={() => void createSynchronizedAbrigo()}
+                  className="welcome-path"
+                  onClick={() => setStep("data")}
                   disabled={sync.busy}
                 >
-                  <FaCloud aria-hidden="true" />
+                  <FaKey aria-hidden="true" />
                   <span>
-                    <strong>Criar meu Abrigo sincronizado</strong>
-                    <small>
-                      Gere uma chave segura para usar em outros dispositivos.
-                    </small>
+                    <strong>Já usa o Abrigo? Recuperar meus dados</strong>
+                    <small>Use sua Chave do Abrigo ou prepare a sincronização se quiser.</small>
                   </span>
                 </button>
+              </div>
+            )}
 
+            {step === "data" && (
+              <div className="welcome-paths" aria-label="Dados e sincronização opcionais">
+                <div className="welcome-content">
+                  <h2>Dados e sincronização</h2>
+                  <p>Esta parte é opcional. Você pode voltar e usar o Abrigo somente neste dispositivo.</p>
+                </div>
                 <button
                   type="button"
                   className="welcome-path"
@@ -168,11 +175,17 @@ export default function Welcome() {
                   <FaKey aria-hidden="true" />
                   <span>
                     <strong>Restaurar com minha Chave do Abrigo</strong>
-                    <small>
-                      Recupere o backup de um Abrigo já sincronizado.
-                    </small>
+                    <small>Traga de volta um Abrigo que já foi sincronizado.</small>
                   </span>
                 </button>
+                <button type="button" className="welcome-path"
+                  onClick={() => void createSynchronizedAbrigo()} disabled={sync.busy}>
+                  <FaCloud aria-hidden="true" />
+                  <span><strong>Criar sincronização para este Abrigo</strong>
+                    <small>Receba uma chave de recuperação para guardar em segurança.</small></span>
+                </button>
+                <button type="button" className="welcome-button welcome-button--secondary"
+                  onClick={() => setStep("intro")} disabled={sync.busy}>Voltar</button>
               </div>
             )}
 
@@ -187,8 +200,8 @@ export default function Welcome() {
                 <div>
                   <h2>Restaurar seu Abrigo</h2>
                   <p>
-                    A chave será transformada em SHA-256 neste dispositivo.
-                    Ela não será armazenada nem enviada em sua forma original.
+                    Sua chave é usada com segurança neste dispositivo para localizar
+                    seu Abrigo. O texto original não fica guardado aqui.
                   </p>
                 </div>
                 <label htmlFor="welcome-abrigo-key">Chave do Abrigo</label>
@@ -211,7 +224,7 @@ export default function Welcome() {
                     className="welcome-button welcome-button--secondary"
                     onClick={() => {
                       setTypedKey("");
-                      setStep("choices");
+                      setStep("data");
                     }}
                     disabled={sync.busy}
                   >
@@ -238,7 +251,7 @@ export default function Welcome() {
               />
             )}
           </GlassCard>
-        </main>
+        </div>
       </Container>
     </>
   );

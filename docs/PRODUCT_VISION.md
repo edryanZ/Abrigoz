@@ -1,63 +1,78 @@
-Atualize apenas o arquivo docs/PRODUCT_VISION.md.
+# Visão do Produto
 
-Objetivo:
+`ABRIGO_2_SPEC.md` é a fonte normativa do Abrigo.
 
-Alinhar a visão do produto com a especificação oficial do ABRIGO_2_SPEC.md.
+## Propósito
 
-Não modificar código.
+O Abrigo é **um espaço digital de acolhimento, reflexão e motivação leve**.
+Existe para oferecer calma, pequenas pausas e um lugar simples onde a pessoa
+possa guardar aquilo que importa sem transformar cuidado pessoal em cobrança.
 
-Não alterar nenhum outro arquivo.
+## Missão
 
-Manter o propósito, missão, visão, valores, personalidade e pilares já existentes.
+Oferecer uma experiência pessoal, simples e acolhedora que respeite o ritmo e
+as escolhas de cada pessoa, funcionando plenamente de forma local.
 
-Atualizar apenas os pontos relacionados à evolução do produto.
+## Visão
 
-Regras obrigatórias:
+Ser um espaço digital no qual privacidade e controle do usuário façam parte da
+experiência desde o início. Sincronização, quando desejada, é uma extensão
+opcional do Abrigo local e nunca uma condição para usá-lo.
 
-- Remover login tradicional como funcionalidade planejada.
-- Remover cadastro por e-mail.
-- Remover recuperação de senha.
-- Remover Google Auth.
-- Remover Apple Auth.
-- Remover Supabase Auth.
+## Valores e personalidade
 
-Adicionar e reforçar:
+- acolhimento sem cobrança;
+- simplicidade e clareza;
+- privacidade por padrão;
+- autonomia e controle do usuário;
+- acessibilidade;
+- compatibilidade não destrutiva com dados já guardados;
+- tecnologia discreta, sem aparência de produtividade ou performance.
 
-- A Chave do Abrigo como forma exclusiva de conexão e sincronização entre dispositivos.
-- O usuário controla sua própria chave.
-- A chave original nunca é armazenada no banco.
-- A sincronização utiliza apenas o hash SHA-256 da chave para identificação.
-- O Supabase é utilizado somente como infraestrutura de banco e sincronização.
-- A criptografia AES-GCM será utilizada futuramente para proteger os dados sincronizados.
-- O Abrigo deve funcionar mesmo sem sincronização.
-- A sincronização é opcional.
-- Privacidade e controle do usuário são diferenciais centrais do produto.
+## Pilares
 
-Atualizar a seção de objetivos de curto, médio e longo prazo para refletir:
+### Experiência local
 
-Curto prazo:
-- Consolidar a arquitetura Module First.
-- Finalizar a Sprint 1.
-- Implementar Dashboard, Diário, Navbar e novo Welcome.
-- Organizar a sincronização nas Configurações.
+Lar, Momento do Dia, Reflexões, Intenções, Pequenos Cuidados, Coisas que fazem
+bem, Meu Dia e Retrospectiva funcionam sem conta e sem sincronização. O Momento
+do Dia é local e determinístico; não há Assistente ou serviço de IA na direção
+vigente do produto.
 
-Médio prazo:
-- Calendário 2.0.
-- Favoritos.
-- Metas.
-- Hábitos.
-- Backup seguro.
-- Sincronização criptografada.
+### Privacidade e conexão opcional
 
-Longo prazo:
-- Inteligência Artificial.
-- Portabilidade e compartilhamento textual seguro.
-- Compartilhamento.
-- Exportação.
-- Aplicativos Android e iOS.
+A Chave do Abrigo é a forma de conectar e recuperar um Abrigo sincronizado em
+outros dispositivos. A pessoa controla a própria chave, cuja forma original
+nunca é armazenada no banco. O Supabase é usado somente como infraestrutura de
+banco e sincronização, e a identificação remota utiliza o hash SHA-256 da
+chave.
 
-Ao final informar:
+Backups remotos já são protegidos com AES-GCM e derivação HKDF-SHA-256. A
+sincronização é opcional: sem Supabase disponível, a experiência local continua
+funcionando.
 
-- seções atualizadas;
-- referências antigas removidas;
-- conflitos resolvidos com ABRIGO_2_SPEC.md.
+### Continuidade
+
+Dados históricos permanecem compatíveis. Mudanças de nomenclatura na interface
+não renomeiam automaticamente storage keys nem apagam registros existentes.
+
+## Direção atual
+
+- consolidar a experiência emocional definida em `ABRIGO_2_SPEC.md`;
+- manter a arquitetura Module First;
+- preservar Lar e navegação simples como entrada principal;
+- manter Reflexões, Intenções, Pequenos Cuidados, Coisas que fazem bem, Meu Dia
+  e Retrospectiva compatíveis com os formatos históricos;
+- manter backup protegido e sincronização criptografada opcionais;
+- preservar exportação, compartilhamento textual seguro, PWA, música e céu
+  dentro das regras atuais de privacidade.
+
+## Histórico de evolução
+
+Dashboard, Diário, Metas, Hábitos, Favoritos, Estatísticas, Conquistas e o
+Assistente fizeram parte de etapas anteriores. Os dados compatíveis dessas
+experiências são preservados, mas suas antigas propostas de produtividade,
+gamificação e IA não definem a experiência atual. O histórico detalhado das
+Sprints permanece em `ROADMAP.md`.
+
+Aplicativos móveis nativos não fazem parte do escopo vigente documentado; a
+experiência atual é Web/PWA e mobile-first.

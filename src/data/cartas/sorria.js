@@ -122,7 +122,7 @@ export const sorria = [
     id: "sorria-18",
     titulo: "Olhe com carinho",
     texto:
-      "Às vezes somos muito exigentes conosco. Reconheça seus esforços e celebre suas pequenas conquistas.",
+      "Às vezes somos muito exigentes conosco. Se puder, olhe para si com a mesma gentileza que ofereceria a alguém querido.",
     assinatura: "Abrigo",
   },
   {

@@ -24,7 +24,7 @@ export const objetivos = [
     id: "objetivos-04",
     titulo: "Aprenda durante a caminhada",
     texto:
-      "Os desafios encontrados no caminho ensinam tanto quanto a conquista no final da jornada.",
+      "O caminho pode guardar coisas importantes por si só, mesmo quando a chegada deixa de ser o centro da atenção.",
     assinatura: "Abrigo",
   },
   {
@@ -57,9 +57,9 @@ export const objetivos = [
   },
   {
     id: "objetivos-09",
-    titulo: "Celebre o progresso",
+    titulo: "Reconheça o caminho",
     texto:
-      "Não espere chegar ao final para comemorar. Cada etapa concluída merece ser reconhecida.",
+      "Você pode reconhecer o que viveu pelo caminho sem transformar cada etapa em uma medida de resultado.",
     assinatura: "Abrigo",
   },
   {
@@ -87,7 +87,7 @@ export const objetivos = [
     id: "objetivos-13",
     titulo: "Confie em você",
     texto:
-      "Você conhece melhor do que ninguém sua própria história. Confie na capacidade que possui para continuar evoluindo.",
+      "Você conhece a sua própria história. Permita que suas escolhas encontrem espaço para mudar quando isso fizer sentido.",
     assinatura: "Abrigo",
   },
   {
@@ -113,9 +113,9 @@ export const objetivos = [
   },
   {
     id: "objetivos-17",
-    titulo: "Você já evoluiu",
+    titulo: "O caminho até aqui",
     texto:
-      "Pare por um instante e perceba o quanto já caminhou. Reconhecer sua evolução ajuda a manter a motivação.",
+      "Se quiser, pare por um instante e lembre de algo que fez parte do caminho até aqui, sem precisar comparar antes e depois.",
     assinatura: "Abrigo",
   },
   {

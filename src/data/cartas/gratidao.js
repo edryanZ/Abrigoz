@@ -3,7 +3,7 @@ export const gratidao = [
     id: "gratidao-01",
     titulo: "Comece agradecendo",
     texto:
-      "Antes de pensar no que falta, olhe por um instante para tudo o que você já conquistou. A gratidão muda a forma como enxergamos a vida.",
+      "Se tiver vontade, olhe por um instante para algo que teve significado para você. Até uma lembrança simples pode merecer espaço.",
     assinatura: "Abrigo",
   },
   {
@@ -43,7 +43,7 @@ export const gratidao = [
   },
   {
     id: "gratidao-07",
-    titulo: "As pequenas conquistas",
+    titulo: "Os pequenos momentos",
     texto:
       "Nem toda vitória faz barulho. Muitas delas acontecem silenciosamente, um passo de cada vez.",
     assinatura: "Abrigo",
@@ -52,7 +52,7 @@ export const gratidao = [
     id: "gratidao-08",
     titulo: "O que você aprendeu",
     texto:
-      "Tudo aquilo que você sabe hoje foi construído ao longo do tempo. Reconheça sua própria evolução.",
+      "Muito do que você sabe hoje foi encontrado ao longo do tempo. Talvez alguma dessas lembranças mereça carinho.",
     assinatura: "Abrigo",
   },
   {

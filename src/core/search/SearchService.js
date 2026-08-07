@@ -21,6 +21,20 @@ function text(value, limit = 800) {
   return String(value ?? "").slice(0, limit);
 }
 
+function currentLanguage(value) {
+  return String(value ?? "")
+    .replace(/conquistas/gi, (match) => match[0] === "C" ? "Marcos" : "marcos")
+    .replace(/conquista/gi, (match) => match[0] === "C" ? "Marco" : "marco")
+    .replace(/sequências/gi, (match) => match[0] === "S" ? "Continuidades" : "continuidades")
+    .replace(/sequência/gi, (match) => match[0] === "S" ? "Continuidade" : "continuidade")
+    .replace(/metas/gi, (match) => match[0] === "M" ? "Intenções" : "intenções")
+    .replace(/meta/gi, (match) => match[0] === "M" ? "Intenção" : "intenção")
+    .replace(/hábitos/gi, (match) => match[0] === "H" ? "Cuidados" : "cuidados")
+    .replace(/hábito/gi, (match) => match[0] === "H" ? "Cuidado" : "cuidado")
+    .replace(/progresso/gi, (match) => match[0] === "P" ? "Caminho" : "caminho")
+    .replace(/desempenho/gi, (match) => match[0] === "D" ? "Percurso" : "percurso");
+}
+
 function result(module, item, title, body, extra = {}) {
   return {
     id: `${module}:${item.id ?? extra.date ?? title}`,
@@ -38,7 +52,7 @@ function result(module, item, title, body, extra = {}) {
 
 const adapters = {
   diary: (data) => data.diary.map((item) =>
-    result("diary", item, item.title ?? item.titulo ?? "Registro do Diário",
+    result("diary", item, item.title ?? item.titulo ?? "Reflexão guardada",
       item.content ?? item.text ?? item.conteudo, { route: ROUTES.DIARY })),
   calendar: (data) => data.calendar.map((item) =>
     result("calendar", item, item.title ?? item.titulo, `${item.description ?? ""} ${item.location ?? ""}`,
@@ -50,7 +64,7 @@ const adapters = {
     result("goals", item, item.title, `${item.description ?? ""} ${item.notes ?? ""}`,
       { route: ROUTES.GOALS }),
     ...(item.steps ?? []).map((step) => result("goals", step, step.title,
-      `Etapa de ${item.title}`, { route: ROUTES.GOALS, status: step.completed ? "completed" : "pending",
+      `Parte guardada de ${item.title}`, { route: ROUTES.GOALS, status: step.completed ? "completed" : "pending",
         date: item.updatedAt })),
   ]),
   habits: (data) => data.habits.map((item) =>
@@ -58,8 +72,9 @@ const adapters = {
       { route: ROUTES.HABITS, status: item.archived ? "archived" : "active" })),
   achievements: (data) => {
     const items = Array.isArray(data.achievements?.items) ? data.achievements.items : [];
-    return items.map((item) => result("achievements", item, item.title, item.description,
-      { route: ROUTES.ACHIEVEMENTS, status: item.unlocked ? "unlocked" : "locked" }));
+    return items.map((item) => result("achievements", item,
+      currentLanguage(item.title), currentLanguage(item.description),
+      { route: ROUTES.STATISTICS, status: item.unlocked ? "guardado" : "histórico" }));
   },
   letters: () => [],
 };

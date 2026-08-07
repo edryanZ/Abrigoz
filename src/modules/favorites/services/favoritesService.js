@@ -69,7 +69,7 @@ function migrate(raw) {
 
 function persist(data) {
   if (!storage.set(STORAGE_KEYS.FAVORITE_ITEMS, data)) {
-    throw new Error("Não foi possível salvar este favorito.");
+    throw new Error("Não foi possível guardar isso agora.");
   }
 }
 

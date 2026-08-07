@@ -30,9 +30,9 @@ export default function Favoritos() {
       <Navbar />
       <Container>
         <PageHeader
-          greeting={`${greeting} ⭐`}
-          title="Favoritos"
-          subtitle="Guarde ideias, histórias e coisas que fazem bem."
+          greeting={`${greeting} 💛`}
+          title="Coisas que fazem bem"
+          subtitle="Um cantinho para guardar referências, lugares, ideias e pequenas coisas de que você gosta."
         />
         <PrivacyNotice />
         <GlassCard className="organizer-toolbar" hover={false}>
@@ -79,13 +79,13 @@ export default function Favoritos() {
             </select>
           </label>
           <button type="button" onClick={() => setFormOpen(true)}>
-            <FaPlus /> Novo favorito
+            <FaPlus /> Guardar algo
           </button>
         </GlassCard>
 
         {formOpen && (
           <GlassCard className="organizer-editor" hover={false}>
-            <h2>{editing ? "Editar favorito" : "Novo favorito"}</h2>
+            <h2>{editing ? "Editar o que ficou guardado" : "Guardar algo que faz bem"}</h2>
             <FavoriteForm
               item={editing}
               onCancel={close}
@@ -118,8 +118,8 @@ export default function Favoritos() {
         {!favorites.items.length && (
           <GlassCard className="organizer-empty" hover={false}>
             <span>⭐</span>
-            <h2>Seu cantinho de favoritos está esperando</h2>
-            <p>Adicione algo especial ou ajuste os filtros da busca.</p>
+            <h2>Este cantinho pode ficar vazio pelo tempo que quiser</h2>
+            <p>Quando alguma coisa merecer ficar por perto, você pode guardá-la aqui.</p>
           </GlassCard>
         )}
       </Container>

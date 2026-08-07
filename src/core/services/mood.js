@@ -7,7 +7,7 @@ export const MOOD_VERSION = 2;
 export const MOODS = {
   very_happy: "Muito bem", happy: "Bem", calm: "Tranquilo", excited: "Animado",
   tired: "Cansado", unmotivated: "Sem motivação", anxious: "Ansioso",
-  sad: "Triste", irritated: "Irritado", confused: "Confuso",
+  sad: "Triste", difficult: "Dia difícil", irritated: "Irritado", confused: "Confuso",
   prefer_not: "Prefiro não dizer", custom: "Personalizado", normal: "Tranquilo",
 };
 const LEGACY_KEY = "abrigo_moods";

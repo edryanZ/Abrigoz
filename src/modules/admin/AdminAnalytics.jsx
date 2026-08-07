@@ -85,7 +85,7 @@ export default function AdminAnalytics() {
 
   return (
     <Container>
-      <main className="admin-analytics">
+      <div className="admin-analytics">
         <header>
           <p className="admin-analytics__eyebrow">Área administrativa</p>
           <h1>Atividade agregada do Abrigo</h1>
@@ -147,7 +147,7 @@ export default function AdminAnalytics() {
             Atualizado em {new Date(data.updated_at).toLocaleString("pt-BR")}
           </p>
         </>}
-      </main>
+      </div>
     </Container>
   );
 }

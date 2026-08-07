@@ -91,11 +91,11 @@ function serializedSize(value) {
   }
 }
 
-function collectModules({ includeAIHistory = true } = {}) {
+function collectModules({ includeLegacyAssistantHistory = true } = {}) {
   return storage.keys()
     .filter((key) =>
       STORAGE_KEY_PATTERN.test(key) && !isSensitiveStorageKey(key)
-      && (includeAIHistory || key !== "abrigo:ai-history:v1"))
+      && (includeLegacyAssistantHistory || key !== "abrigo:ai-history:v1"))
     .reduce((modules, key) => {
       modules[key] = prepareModuleForBackup(key, storage.get(key));
       return modules;
@@ -150,7 +150,7 @@ export function createBackup(modules = collectModules(), metadata = {}) {
 
 export function createLocalExportBackup() {
   return buildBackup(
-    collectModules({ includeAIHistory: false }),
+    collectModules({ includeLegacyAssistantHistory: false }),
     { exportedAt: new Date().toISOString(), source: "local" }
   );
 }

@@ -2,14 +2,13 @@ import STORAGE_KEYS from "../constants/storageKeys.js";
 import { storage } from "../storage/storage.js";
 
 export const EXPORT_MODULES = Object.freeze({
-  diary: { label: "Diário", key: STORAGE_KEYS.DIARY },
-  calendar: { label: "Calendário", key: STORAGE_KEYS.EVENTS },
-  goals: { label: "Metas", key: STORAGE_KEYS.GOALS },
-  habits: { label: "Hábitos", key: STORAGE_KEYS.HABITS },
-  favorites: { label: "Favoritos", key: STORAGE_KEYS.FAVORITE_ITEMS },
-  achievements: { label: "Conquistas", key: STORAGE_KEYS.ACHIEVEMENTS },
-  statistics: { label: "Estatísticas", key: STORAGE_KEYS.STATISTICS },
-  assistant: { label: "Assistente", key: STORAGE_KEYS.AI_HISTORY },
+  diary: { label: "Reflexões", key: STORAGE_KEYS.DIARY },
+  calendar: { label: "Meu Dia", key: STORAGE_KEYS.EVENTS },
+  goals: { label: "Intenções", key: STORAGE_KEYS.GOALS },
+  habits: { label: "Pequenos Cuidados", key: STORAGE_KEYS.HABITS },
+  favorites: { label: "Coisas que fazem bem", key: STORAGE_KEYS.FAVORITE_ITEMS },
+  achievements: { label: "Marcos", key: STORAGE_KEYS.ACHIEVEMENTS },
+  statistics: { label: "Retrospectiva", key: STORAGE_KEYS.STATISTICS },
 });
 
 const FORBIDDEN = /keyhash|synckey|cryptokey|abrigoid|deviceid|credential|secret|ciphertext|syncqueue/i;

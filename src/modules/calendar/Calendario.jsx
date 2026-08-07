@@ -53,8 +53,8 @@ export default function Calendario() {
       <Container>
         <PageHeader
           greeting={`${greeting} 📅`}
-          title="Calendário"
-          subtitle="Organize compromissos e momentos importantes com tranquilidade."
+          title="Meu Dia"
+          subtitle="Veja o que faz parte dos seus dias, sem transformar a rotina em cobrança."
         />
         <PrivacyNotice />
         <Section>
@@ -73,7 +73,7 @@ export default function Calendario() {
             <GlassCard className="calendar-agenda" hover={false}>
               <header className="calendar-agenda-header">
                 <div>
-                  <span>Agenda do dia</span>
+                  <span>O que faz parte deste dia</span>
                   <h2>{new Intl.DateTimeFormat("pt-BR", {
                     dateStyle: "long",
                   }).format(new Date(`${calendar.selectedDate}T12:00:00`))}</h2>

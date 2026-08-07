@@ -28,7 +28,7 @@ export default function FavoriteCard({ item, onEdit, onDelete, onPin }) {
           type="button"
           className={item.pinned ? "active" : ""}
           onClick={() => onPin(item.id)}
-          aria-label={item.pinned ? "Desafixar favorito" : "Fixar favorito"}
+          aria-label={item.pinned ? "Tirar de perto" : "Deixar por perto"}
         >
           <FaThumbtack />
         </button>

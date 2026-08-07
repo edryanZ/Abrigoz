@@ -1,89 +1,69 @@
 import "./Lar.css";
 
-import { useEffect, useState } from "react";
-import { useTheme } from "../../shared/contexts/ThemeContext";
+import { Link } from "react-router-dom";
 
-import Navbar from "../../shared/componentes/Navbar";
-
-import Container from "../../shared/ui/Container";
-import PageHeader from "../../shared/componentes/PageHeader";
-import Section from "../../shared/ui/Section";
-import Divider from "../../shared/ui/Divider";
-
-import FraseDoDia from "../../shared/componentes/FraseDoDia";
-import PrivacyNotice from "../../shared/componentes/PrivacyNotice";
-
-import MoodSelector from "./components/MoodSelector";
-import DailyLetter from "./components/DailyLetter";
-import DashboardGrid from "./components/DashboardGrid";
-import CompanionCard from "./components/CompanionCard";
-import TodayCenter from "./components/TodayCenter";
-import PrivacyToggle from "../../shared/componentes/PrivacyToggle";
-import DashboardCustomizer from "./components/DashboardCustomizer";
-import { loadDashboardPreferences } from "../../core/intelligence/DashboardIntelligence";
+import { getDailyCare, getDailyMoment, getDailyReflection } from "../../core/emotional/DailyEmotionalService";
+import ROUTES from "../../core/constants/routes";
 import { APP } from "../../core/constants/app";
+import Navbar from "../../shared/componentes/Navbar";
+import PageHeader from "../../shared/componentes/PageHeader";
+import PrivacyNotice from "../../shared/componentes/PrivacyNotice";
 import { JourneyProvider } from "../../shared/contexts/JourneyContext";
+import { useTheme } from "../../shared/contexts/ThemeContext";
+import { useUser } from "../../shared/contexts/UserContext";
+import Container from "../../shared/ui/Container";
+import GlassCard from "../../shared/ui/GlassCard";
+import MoodSelector from "./components/MoodSelector";
 
 function LarContent() {
   const { greeting } = useTheme();
-  const [dashboard, setDashboard] = useState(loadDashboardPreferences);
-  useEffect(() => {
-    const update = (event) => setDashboard(event.detail);
-    window.addEventListener("abrigo:dashboard-preferences", update);
-    return () => window.removeEventListener("abrigo:dashboard-preferences", update);
-  }, []);
-  const visible = (id) => !dashboard.hidden.includes(id);
-  const order = (id) => dashboard.order.indexOf(id);
+  const { name } = useUser();
+  const moment = getDailyMoment();
+  const care = getDailyCare();
+  const reflection = getDailyReflection();
 
-  return (
-    <>
-      <Navbar />
+  return <>
+    <Navbar />
+    <Container>
+      <PageHeader
+        greeting={greeting}
+        title={name ? `Que bom ter você aqui, ${name}.` : "Que bom ter você aqui."}
+        subtitle="Seu espaço para respirar, guardar o que importa e seguir no seu ritmo."
+      />
+      <PrivacyNotice compact />
 
-      <Container>
-        <PageHeader
-          greeting={greeting}
-          title="Bem-vindo ao Abrigo"
-          subtitle="Um lugar para desacelerar, guardar lembranças e encontrar um pouco de paz."
-        />
-        <PrivacyNotice compact />
-        <PrivacyToggle compact />
-        <DashboardCustomizer />
+      <div className="home-emotional" aria-label="Seu Lar no Abrigo">
+        <MoodSelector />
 
-        <div className="smart-dashboard">
-          {visible("today") && <div style={{ order: order("today") }}><TodayCenter /></div>}
+        <div className="home-emotional__grid">
+          <GlassCard className="home-gentle-card" hover={false}>
+            <span className="home-gentle-card__eyebrow">Momento do Dia</span>
+            <h2>{moment.message}</h2>
+            <p>{moment.invitation}</p>
+            <Link to={ROUTES.MOMENT}>Ficar um pouco com este momento</Link>
+          </GlassCard>
 
-          <div style={{ order: order("today") }}>
-            <Section><MoodSelector /></Section>
-          </div>
+          <GlassCard className="home-gentle-card" hover={false}>
+            <span className="home-gentle-card__eyebrow">Um pequeno cuidado</span>
+            <h2>{care.text}</h2>
+            <p>Talvez caiba no seu dia. Se não couber, tudo bem também.</p>
+            <Link to={ROUTES.HABITS}>Ver Pequenos Cuidados</Link>
+          </GlassCard>
 
-          {visible("organization") && <div style={{ order: order("organization") }}>
-            <DashboardGrid />
-          </div>}
-
-          {visible("companion") && <div style={{ order: order("companion") }}>
-            <Section><CompanionCard /></Section>
-          </div>}
+          <GlassCard className="home-gentle-card home-gentle-card--wide" hover={false}>
+            <span className="home-gentle-card__eyebrow">Uma pergunta para hoje</span>
+            <h2>{reflection.question}</h2>
+            <p>Você não precisa responder agora. A pergunta pode apenas acompanhar o seu dia.</p>
+            <Link to={ROUTES.DIARY}>Ir para Reflexões</Link>
+          </GlassCard>
         </div>
+      </div>
 
-        <Section>
-          <DailyLetter />
-        </Section>
-
-        <Section
-          title="Frase do Dia"
-          subtitle="Uma pequena mensagem para acompanhar você hoje."
-        >
-          <FraseDoDia />
-        </Section>
-
-        <Divider />
-
-        <footer className="page-footer">
-          <p>{APP.NAME} — criado por {APP.AUTHOR}</p>
-        </footer>
-      </Container>
-    </>
-  );
+      <footer className="page-footer">
+        <p>{APP.NAME} — criado por {APP.AUTHOR}</p>
+      </footer>
+    </Container>
+  </>;
 }
 
 export default function Lar() {

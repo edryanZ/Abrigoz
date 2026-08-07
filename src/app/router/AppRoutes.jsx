@@ -8,6 +8,7 @@ import NotFound from "../../modules/errors/NotFound";
 
 const Welcome = lazy(() => import("../../modules/home/components/Welcome"));
 const Lar = lazy(() => import("../../modules/home/Lar"));
+const MomentoDoDia = lazy(() => import("../../modules/moment/MomentoDoDia"));
 
 const Calendario = lazy(() => import("../../modules/calendar/Calendario"));
 const Favoritos = lazy(() => import("../../modules/favorites/Favoritos"));
@@ -22,9 +23,7 @@ const Configuracoes = lazy(() =>
 const Diary = lazy(() => import("../../modules/diary/pages/Diary"));
 const Statistics = lazy(() => import("../../modules/statistics/Statistics"));
 const GlobalSearch = lazy(() => import("../../modules/search/GlobalSearch"));
-const Achievements = lazy(() => import("../../modules/achievements/Achievements"));
 const AdminAnalytics = lazy(() => import("../../modules/admin/AdminAnalytics"));
-const Assistant = lazy(() => import("../../modules/assistant/Assistant"));
 const ExportCenter = lazy(() => import("../../modules/export/ExportCenter"));
 
 export default function AppRoutes() {
@@ -33,6 +32,7 @@ export default function AppRoutes() {
       <Routes>
         <Route path={ROUTES.WELCOME} element={<Welcome />} />
         <Route path={ROUTES.HOME} element={<Lar />} />
+        <Route path={ROUTES.MOMENT} element={<MomentoDoDia />} />
         <Route path={ROUTES.CALENDAR} element={<Calendario />} />
         <Route path={ROUTES.FAVORITES} element={<Favoritos />} />
         <Route path={ROUTES.GOALS} element={<Metas />} />
@@ -47,10 +47,18 @@ export default function AppRoutes() {
         <Route path={ROUTES.DIARY} element={<Diary />} />
         <Route path={ROUTES.STATISTICS} element={<Statistics />} />
         <Route path={ROUTES.SEARCH} element={<GlobalSearch />} />
-        <Route path={ROUTES.ACHIEVEMENTS} element={<Achievements />} />
         <Route path={ROUTES.ADMIN_ACTIVITY} element={<AdminAnalytics />} />
-        <Route path={ROUTES.ASSISTANT} element={<Assistant />} />
         <Route path={ROUTES.EXPORT} element={<ExportCenter />} />
+
+        {/* Endereços antigos continuam levando ao conteúdo preservado. */}
+        <Route path="/diario" element={<Navigate to={ROUTES.DIARY} replace />} />
+        <Route path="/calendario" element={<Navigate to={ROUTES.CALENDAR} replace />} />
+        <Route path="/favoritos" element={<Navigate to={ROUTES.FAVORITES} replace />} />
+        <Route path="/metas" element={<Navigate to={ROUTES.GOALS} replace />} />
+        <Route path="/habitos" element={<Navigate to={ROUTES.HABITS} replace />} />
+        <Route path="/estatisticas" element={<Navigate to={ROUTES.STATISTICS} replace />} />
+        <Route path="/conquistas" element={<Navigate to={ROUTES.STATISTICS} replace />} />
+        <Route path="/assistente" element={<Navigate to={ROUTES.MOMENT} replace />} />
 
         <Route
           path="/home"
