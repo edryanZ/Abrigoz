@@ -9,6 +9,7 @@ import AnalyticsTracker from "../core/analytics/AnalyticsTracker";
 import Ceu from "../shared/componentes/Ceu";
 import OfflineStatus from "../shared/componentes/OfflineStatus";
 import AbrigoSplash from "../shared/componentes/AbrigoSplash";
+import AnalyticsNotice from "../shared/componentes/AnalyticsNotice";
 
 export default function App() {
   const [ready, setReady] = useState(false);
@@ -21,8 +22,15 @@ export default function App() {
           <Ceu />
           <AnalyticsTracker />
           <OfflineStatus />
+
           {!ready && <AbrigoSplash onComplete={finishSplash} />}
-          {ready && <AppRoutes />}
+
+          {ready && (
+            <>
+              <AnalyticsNotice />
+              <AppRoutes />
+            </>
+          )}
         </AppProviders>
       </BrowserRouter>
     </ErrorBoundary>

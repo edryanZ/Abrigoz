@@ -17,7 +17,7 @@ export default function AnalyticsSettings() {
       await setAnalyticsConsent(next);
       setEnabled(next);
       setMessage(next
-        ? "Obrigado. As contagens anônimas estão ativadas."
+        ? "As contagens anônimas estão ativadas."
         : "As contagens anônimas foram desativadas.");
     } catch {
       setEnabled(previous);
@@ -30,13 +30,22 @@ export default function AnalyticsSettings() {
   return (
     <div className="analytics-settings">
       <h3>Métricas anônimas</h3>
-      <p>O Abrigo pode enviar contagens anônimas de funcionamento, como abertura de páginas e erros técnicos seguros, para ajudar a melhorar o aplicativo. Nenhum texto pessoal, humor, Chave do Abrigo ou conteúdo dos seus módulos é enviado.</p>
+      <p>
+        As métricas anônimas ficam ativadas por padrão para ajudar a entender
+        o uso e o funcionamento do Abrigo. Elas registram apenas contagens
+        genéricas, como abertura de páginas, categoria de dispositivo e versão
+        do aplicativo.
+      </p>
       <label>
         <input type="checkbox" checked={enabled} disabled={changing}
           onChange={changeConsent} />
         Permitir métricas anônimas para ajudar a melhorar o Abrigo
       </label>
-      <small>Não há publicidade, venda de dados ou criação de perfil individual. A mesma pessoa pode abrir mais de uma sessão.</small>
+      <small>
+        Não são enviados nome, textos pessoais, humor, Chave do Abrigo, backup,
+        pesquisas ou conteúdo dos módulos. Você pode desativar esta opção a
+        qualquer momento.
+      </small>
       {message && <small role="status">{message}</small>}
     </div>
   );

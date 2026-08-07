@@ -79,14 +79,20 @@ test("cliente carrega repositório remoto somente depois do consentimento", asyn
   assert.doesNotMatch(service, /localStorage|sessionStorage/);
 });
 
-test("analytics começa desativado, não envia antes do consentimento e pode ser revogado", async () => {
+test("analytics começa ativado por padrão e pode ser revogado", async () => {
   values.clear();
+
   const service = await import("../src/core/analytics/AnalyticsService.js");
-  assert.equal(service.getAnalyticsConsent(), false);
-  assert.equal(await service.trackAnonymousEvent("app_open"), false);
+
+  assert.equal(service.getAnalyticsConsent(), true);
+
   await service.setAnalyticsConsent(false);
+
   assert.equal(service.getAnalyticsConsent(), false);
-  assert.equal(await service.trackAnonymousEvent("page_view", { page: "home" }), false);
+  assert.equal(
+    await service.trackAnonymousEvent("page_view", { page: "home" }),
+    false
+  );
 });
 
 test("intervalos administrativos inválidos e campos extras são rejeitados", () => {
