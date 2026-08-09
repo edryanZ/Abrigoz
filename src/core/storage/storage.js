@@ -1,5 +1,9 @@
+import { getEphemeralWorkspaceStore } from "../privacy/WorkspaceModeService.js";
+
 const storage = {
   get(key) {
+    const ephemeral = getEphemeralWorkspaceStore();
+    if (ephemeral) return ephemeral.has(key) ? structuredClone(ephemeral.get(key)) : null;
     try {
       const value = localStorage.getItem(key);
       if (value === null) return null;
@@ -20,6 +24,11 @@ const storage = {
   },
 
   set(key, value) {
+    const ephemeral = getEphemeralWorkspaceStore();
+    if (ephemeral) {
+      ephemeral.set(key, structuredClone(value));
+      return true;
+    }
     try {
       localStorage.setItem(
         key,
@@ -39,6 +48,8 @@ const storage = {
   },
 
   has(key) {
+    const ephemeral = getEphemeralWorkspaceStore();
+    if (ephemeral) return ephemeral.has(key);
     try {
       return localStorage.getItem(key) !== null;
     } catch {
@@ -47,6 +58,8 @@ const storage = {
   },
 
   remove(key) {
+    const ephemeral = getEphemeralWorkspaceStore();
+    if (ephemeral) return ephemeral.delete(key) || true;
     try {
       localStorage.removeItem(key);
       return true;
@@ -60,6 +73,8 @@ const storage = {
   },
 
   keys() {
+    const ephemeral = getEphemeralWorkspaceStore();
+    if (ephemeral) return [...ephemeral.keys()];
     try {
       return Array.from(
         { length: localStorage.length },
@@ -71,6 +86,12 @@ const storage = {
   },
 
   clear(prefix = null) {
+    const ephemeral = getEphemeralWorkspaceStore();
+    if (ephemeral) {
+      if (!prefix) ephemeral.clear();
+      else [...ephemeral.keys()].filter((key) => key.startsWith(prefix)).forEach((key) => ephemeral.delete(key));
+      return true;
+    }
     if (!prefix) {
       try {
         localStorage.clear();

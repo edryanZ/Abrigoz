@@ -8,6 +8,7 @@ import {
   persistAnalyticsConsent,
 } from "./AnalyticsConsentService.js";
 import { APP } from "../constants/app.js";
+import { isPersonalWorkspace } from "../privacy/WorkspaceModeService.js";
 const HEARTBEAT_MS = 60_000;
 const EVENT_INTERVAL_MS = 1_000;
 
@@ -38,7 +39,7 @@ function executionMode() {
 }
 
 async function safePresence() {
-  if (!getAnalyticsConsent() || document.visibilityState === "hidden") return;
+  if (!isPersonalWorkspace() || !getAnalyticsConsent() || document.visibilityState === "hidden") return;
   const hash = await createSessionHash();
   if (!hash) return;
   const { AnalyticsRepository } = await import("../repository/AnalyticsRepository.js");
@@ -86,7 +87,7 @@ export async function setAnalyticsConsent(enabled) {
 }
 
 export async function trackAnonymousEvent(name, fields = {}) {
-  if (!getAnalyticsConsent() || !validateAnalyticsEvent(name, fields)) return false;
+  if (!isPersonalWorkspace() || !getAnalyticsConsent() || !validateAnalyticsEvent(name, fields)) return false;
   if (Date.now() - lastEventAt < EVENT_INTERVAL_MS) return false;
   lastEventAt = Date.now();
   const hash = await createSessionHash();
@@ -105,7 +106,7 @@ export async function trackAnonymousEvent(name, fields = {}) {
 }
 
 export function startAnalytics() {
-  if (!getAnalyticsConsent()) return;
+  if (!isPersonalWorkspace() || !getAnalyticsConsent()) return;
   if (!visibilityListening) {
     document.addEventListener("visibilitychange", handleVisibility);
     visibilityListening = true;

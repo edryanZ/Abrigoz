@@ -1,3 +1,5 @@
+import { isPersonalWorkspace } from "../privacy/WorkspaceModeService.js";
+
 const KEY = "abrigo:sync-queue:v1";
 const STATE_KEY = "abrigo:sync-state:v1";
 const STATE_VERSION = 1;
@@ -8,6 +10,7 @@ function getLocalStorage() {
 }
 
 export function loadQueue() {
+  if (!isPersonalWorkspace()) return [];
   try {
     const value = JSON.parse(getLocalStorage()?.getItem(KEY) ?? "[]");
     return Array.isArray(value) ? value : [];
@@ -17,10 +20,12 @@ export function loadQueue() {
 }
 
 export function saveQueue(queue) {
+  if (!isPersonalWorkspace()) return;
   getLocalStorage()?.setItem(KEY, JSON.stringify(queue));
 }
 
 export function loadSyncState() {
+  if (!isPersonalWorkspace()) return {};
   try {
     const value = JSON.parse(
       getLocalStorage()?.getItem(STATE_KEY) ?? "null"
@@ -43,6 +48,7 @@ export function loadSyncState() {
 }
 
 export function saveSyncState(state) {
+  if (!isPersonalWorkspace()) throw new Error("Sincronização indisponível neste espaço.");
   const target = getLocalStorage();
   if (!target) {
     throw new Error("Armazenamento local indisponível.");
@@ -70,6 +76,7 @@ export function saveSyncState(state) {
 }
 
 export function clearSyncState() {
+  if (!isPersonalWorkspace()) return;
   getLocalStorage()?.removeItem(STATE_KEY);
 }
 export { KEY as SYNC_QUEUE_STORAGE_KEY };

@@ -1,7 +1,9 @@
 # Métricas anônimas e painel privado
 
-As métricas são opcionais, desativadas por padrão e separadas dos Abrigos. Elas
-estimam sessões, não pessoas. Uma pessoa pode abrir mais de uma sessão.
+As métricas anônimas ficam habilitadas por padrão com aviso transparente e
+opção de desativação imediata em Configurações. Elas são separadas dos Abrigos,
+estimam sessões, não pessoas, e deixam de emitir eventos e heartbeat quando o
+usuário faz opt-out. Uma pessoa pode abrir mais de uma sessão.
 
 Somente nomes fechados de eventos, páginas genéricas, categoria ampla de tela,
 versão do aplicativo e modo de execução (`browser` ou `pwa`) são aceitos. Termos pesquisados, humor, textos, IDs

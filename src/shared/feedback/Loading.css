@@ -64,21 +64,6 @@
 
 }
 
-.loading-spinner{
-
-    width:42px;
-
-    height:42px;
-
-    border-radius:50%;
-
-    border:3px solid rgba(255,255,255,.15);
-
-    border-top-color:#f3d38b;
-
-    animation:spin .8s linear infinite;
-
-}
 
 .sr-only{
 
@@ -102,15 +87,6 @@
 
 }
 
-@keyframes spin{
-
-    to{
-
-        transform:rotate(360deg);
-
-    }
-
-}
 
 @keyframes moonFloat{
 
@@ -126,6 +102,10 @@
 
     }
 
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .loading-content,.loading-moon{animation:none}
 }
 
 @keyframes fadeIn{

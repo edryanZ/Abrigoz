@@ -18,6 +18,12 @@ export default defineConfig({
         lang: "pt-BR",
         orientation: "portrait",
         start_url: "/",
+        shortcuts: [
+          { name: "Só Ficar", short_name: "Só Ficar", url: "/so-ficar" },
+          { name: "Reflexões", short_name: "Reflexões", url: "/reflexoes" },
+          { name: "Momento do Dia", short_name: "Momento", url: "/momento-do-dia" },
+          { name: "Meu Dia", short_name: "Meu Dia", url: "/meu-dia" }
+        ],
 
         icons: [
           {

@@ -135,10 +135,12 @@ recursos oferece diagnóstico ou inferência clínica.
 O modo privacidade é visual: não criptografa o armazenamento local, não bloqueia
 o dispositivo e não impede screenshots.
 
-Métricas anônimas exigem consentimento explícito e usam infraestrutura
-separada. Eventos têm esquema fechado e token temporário sem ligação com
-Abrigo, chave ou conteúdo. Não há publicidade, fingerprinting, rastreamento
-entre sites ou perfil individual. O painel depende de autenticação server-side.
+Métricas anônimas ficam habilitadas por padrão com aviso transparente e opt-out
+imediato em Configurações. Ao desativá-las, eventos e heartbeat são
+interrompidos. Elas usam infraestrutura separada, esquema fechado e token
+temporário sem ligação com Abrigo, chave ou conteúdo. Não há publicidade,
+fingerprinting, rastreamento entre sites ou perfil individual. O painel depende
+de autenticação server-side. Visitante e Demonstração nunca iniciam analytics.
 
 ## Recursos preservados da Sprint 5
 

@@ -30,11 +30,11 @@ export default function OfflineStatus() {
     }
   };
   return <div className="offline-status" aria-live="polite">
-    {!online && <div>Você está offline. Seus recursos e alterações locais continuam disponíveis.</div>}
-    {update && <div>Uma nova versão do Abrigo está disponível. Seus dados locais serão preservados durante a atualização.
+    {!online && <div>Essa parte precisa de conexão quando usar recursos online. O restante do seu Abrigo continua aqui.</div>}
+    {update && <div>Há uma pequena atualização pronta para o Abrigo. Seus dados locais serão preservados.
       <span><button onClick={() => setUpdate(false)}>Atualizar depois</button>
         <button disabled={updating} onClick={installUpdate}>
-          {updating ? "Atualizando..." : "Atualizar agora"}</button></span></div>}
+          {updating ? "Preparando…" : "Atualizar agora"}</button></span></div>}
     {updateError && <div role="alert">Não foi possível atualizar agora. Você pode continuar usando
       o Abrigo e tentar novamente mais tarde.</div>}
   </div>;

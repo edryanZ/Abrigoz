@@ -19,17 +19,8 @@ export default function Loading() {
           Abrigo
         </h1>
 
-        <p className="loading-version">
-          v2.0
-        </p>
-
-        <div
-          className="loading-spinner"
-          aria-hidden="true"
-        />
-
         <span className="sr-only">
-          Carregando...
+          Abrindo seu Abrigo…
         </span>
       </div>
     </div>

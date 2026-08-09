@@ -6,6 +6,10 @@ import {
 
 import App from "./app/App";
 import "./index.css";
+import { captureInstallPrompt, markInstalled } from "./core/offline/PWAInstallService";
+
+window.addEventListener("beforeinstallprompt", captureInstallPrompt);
+window.addEventListener("appinstalled", markInstalled);
 
 const updateSW = registerSW({
   immediate: true,

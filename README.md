@@ -41,7 +41,7 @@ informações pessoais para ser útil.
 - PWA;
 - Web Crypto API;
 - armazenamento local e IndexedDB isolados pelo core;
-- Supabase somente para sincronização opcional e métricas anônimas consentidas.
+- Supabase somente para sincronização opcional e métricas anônimas transparentes com opt-out.
 
 ## Especificação oficial
 

@@ -196,6 +196,10 @@ async function validateRemotePayload(remote, material) {
 
 export const SyncService = {
   async initialize() {
+    if (!isPersonalWorkspace()) {
+      setStatus("idle", { protection: "local", error: null, lastSyncAt: null });
+      return this.getStatus();
+    }
     if (initialized) return this.getStatus();
     initialized = true;
     const storedState = loadSyncState();
@@ -234,6 +238,7 @@ export const SyncService = {
   },
 
   async processQueue() {
+    if (!isPersonalWorkspace()) return this.getStatus();
     if (processingPromise) return processingPromise;
     processingPromise = (async () => {
       const keyHash = getKeyHash();
@@ -298,6 +303,9 @@ export const SyncService = {
   },
 
   async syncNow() {
+    if (!isPersonalWorkspace()) {
+      throw new Error("Sincronização disponível somente no Abrigo Pessoal.");
+    }
     enqueue({
       module: "all",
       action: "manual",
@@ -309,6 +317,9 @@ export const SyncService = {
   },
 
   async createRemoteAbrigo(originalKey) {
+    if (!isPersonalWorkspace()) {
+      throw new Error("Sincronização disponível somente no Abrigo Pessoal.");
+    }
     if (!AbrigoRepository.isAvailable()) {
       setStatus("unavailable");
       throw new Error("Sincronização remota indisponível.");
@@ -341,6 +352,9 @@ export const SyncService = {
   },
 
   async connectByKey(originalKey) {
+    if (!isPersonalWorkspace()) {
+      throw new Error("Sincronização disponível somente no Abrigo Pessoal.");
+    }
     if (!AbrigoRepository.isAvailable()) {
       setStatus("unavailable");
       throw new Error("Sincronização remota indisponível.");
@@ -381,6 +395,9 @@ export const SyncService = {
   },
 
   async restoreByKey(originalKey) {
+    if (!isPersonalWorkspace()) {
+      throw new Error("Sincronização disponível somente no Abrigo Pessoal.");
+    }
     setStatus("encrypting", { error: null, protection: "preparing" });
     try {
       const material = await deriveKeyMaterial(originalKey);
@@ -431,6 +448,9 @@ export const SyncService = {
   },
 
   async rotateAbrigoKey() {
+    if (!isPersonalWorkspace()) {
+      throw new Error("Sincronização disponível somente no Abrigo Pessoal.");
+    }
     if (rotating) throw new Error("A troca da chave já está em andamento.");
     if (!AbrigoRepository.isAvailable() || isOffline()) {
       throw new Error("Conecte-se à internet para trocar a chave.");
@@ -516,6 +536,9 @@ export const SyncService = {
   },
 
   async createProtectedLocalBackup(originalKey = null) {
+    if (!isPersonalWorkspace()) {
+      throw new Error("Backup protegido disponível somente no Abrigo Pessoal.");
+    }
     const cryptoKey = originalKey
       ? await deriveEncryptionKey(
         originalKey,
@@ -529,6 +552,9 @@ export const SyncService = {
   },
 
   async restoreLocalBackup(document, originalKey = null, allowLegacy = false) {
+    if (!isPersonalWorkspace()) {
+      throw new Error("Restauração disponível somente no Abrigo Pessoal.");
+    }
     const inspection = inspectBackupDocument(document);
     if (!inspection.valid) throw new Error("Arquivo de backup inválido.");
     if (inspection.format === "legacy") {
@@ -576,6 +602,7 @@ export const SyncService = {
   },
 
   async disconnect() {
+    if (!isPersonalWorkspace()) return this.getStatus();
     const keyHash = getKeyHash();
     if (keyHash) await deleteCryptoKeys(keyHash);
     activeMaterial = null;
